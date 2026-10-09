@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/layout/breakpoints.dart';
 import '../../../../l10n/l10n.dart';
 import '../widgets/app_sync.dart';
+import '../widgets/glass_nav_bar.dart';
 
-/// The five top-level destinations. A bottom bar on phones, a rail on wider windows.
+/// The five top-level destinations: a floating glass bar on phones, a rail on wider
+/// windows.
 class ShellPage extends StatelessWidget {
   const ShellPage({super.key, required this.navigationShell});
 
@@ -21,28 +24,27 @@ class ShellPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final destinations = [
-      (Icons.home_outlined, Icons.home_rounded, l10n.navHome),
-      (Icons.menu_book_outlined, Icons.menu_book_rounded, l10n.navQuran),
-      (Icons.access_time, Icons.access_time_filled_rounded, l10n.navPrayer),
-      (Icons.auto_awesome_outlined, Icons.auto_awesome, l10n.navAzkar),
-      (Icons.grid_view_outlined, Icons.grid_view_rounded, l10n.navMore),
+      (LucideIcons.house, l10n.navHome),
+      (LucideIcons.bookOpen, l10n.navQuran),
+      (LucideIcons.clock, l10n.navPrayer),
+      (LucideIcons.sparkles, l10n.navAzkar),
+      (LucideIcons.layoutGrid, l10n.navMore),
     ];
 
     final body = AppSync(child: navigationShell);
 
     if (context.windowSize == WindowSize.compact) {
+      // Pages scroll under the floating bar; they pad their ends with
+      // `navBarClearance` so the last item can be scrolled clear of it.
       return Scaffold(
+        extendBody: true,
         body: body,
-        bottomNavigationBar: NavigationBar(
+        bottomNavigationBar: GlassNavBar(
           selectedIndex: navigationShell.currentIndex,
-          onDestinationSelected: _go,
-          destinations: [
-            for (final (icon, selected, label) in destinations)
-              NavigationDestination(
-                icon: Icon(icon),
-                selectedIcon: Icon(selected),
-                label: label,
-              ),
+          onSelected: _go,
+          items: [
+            for (final (icon, label) in destinations)
+              GlassNavItem(icon: icon, label: label),
           ],
         ),
       );
@@ -60,10 +62,9 @@ class ShellPage extends StatelessWidget {
                   ? NavigationRailLabelType.none
                   : NavigationRailLabelType.all,
               destinations: [
-                for (final (icon, selected, label) in destinations)
+                for (final (icon, label) in destinations)
                   NavigationRailDestination(
                     icon: Icon(icon),
-                    selectedIcon: Icon(selected),
                     label: Text(label),
                   ),
               ],

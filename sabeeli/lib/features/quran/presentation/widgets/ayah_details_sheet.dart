@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/error/failure_text.dart';
@@ -121,9 +122,7 @@ class _AyahDetailsSheet extends StatelessWidget {
             children: [
               ActionChip(
                 avatar: Icon(
-                  bookmarked
-                      ? Icons.bookmark_rounded
-                      : Icons.bookmark_border_rounded,
+                  bookmarked ? LucideIcons.bookmarkCheck : LucideIcons.bookmark,
                   color: bookmarked ? colors.accent : null,
                   size: 18,
                 ),
@@ -137,7 +136,7 @@ class _AyahDetailsSheet extends StatelessWidget {
                 },
               ),
               ActionChip(
-                avatar: const Icon(Icons.flag_outlined, size: 18),
+                avatar: const Icon(LucideIcons.flag, size: 18),
                 label: Text(l10n.setAsLastRead),
                 onPressed: () {
                   context.read<QuranCubit>().savePosition(ref);
@@ -145,7 +144,7 @@ class _AyahDetailsSheet extends StatelessWidget {
                 },
               ),
               ActionChip(
-                avatar: const Icon(Icons.copy_rounded, size: 18),
+                avatar: const Icon(LucideIcons.copy, size: 18),
                 label: Text(l10n.copy),
                 onPressed: () {
                   Clipboard.setData(
@@ -248,7 +247,7 @@ class _TranslationSection extends StatelessWidget {
 
     final picker = PopupMenuButton<String>(
       tooltip: l10n.translationLanguage,
-      icon: Icon(Icons.translate_rounded, color: colors.textMuted, size: 20),
+      icon: Icon(LucideIcons.languages, color: colors.textMuted, size: 20),
       onSelected: (id) {
         final chosen = id.isEmpty
             ? null
@@ -301,7 +300,7 @@ class _TranslationSection extends StatelessWidget {
             const SizedBox(height: AppSpacing.sm),
             FilledButton.icon(
               onPressed: cubit.download,
-              icon: const Icon(Icons.download_rounded),
+              icon: const Icon(LucideIcons.download),
               label: Text(l10n.download),
             ),
           ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/error/failure_text.dart';
 import '../../../../core/error/failures.dart';
@@ -29,7 +30,7 @@ class SetLocationCard extends StatelessWidget {
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const IconBadge(Icons.place_outlined, size: 56),
+        const IconBadge(LucideIcons.mapPin, size: 56),
         const SizedBox(height: AppSpacing.lg),
         Text(
           l10n.setLocation,
@@ -65,7 +66,7 @@ class SetLocationCard extends StatelessWidget {
                     dimension: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Icon(Icons.my_location_rounded),
+                : const Icon(LucideIcons.locateFixed),
             label: Text(
               busy ? l10n.locating : _primaryLabel(l10n, state.failure),
             ),
@@ -76,7 +77,7 @@ class SetLocationCard extends StatelessWidget {
           width: double.infinity,
           child: OutlinedButton.icon(
             onPressed: () => context.pushNamed(AppRoutes.locationName),
-            icon: const Icon(Icons.search_rounded),
+            icon: const Icon(LucideIcons.search),
             label: Text(l10n.searchCity),
           ),
         ),

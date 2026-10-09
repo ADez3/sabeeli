@@ -144,7 +144,6 @@ class _MushafPageState extends State<MushafPage> {
           color: bookmarked ? colors.accent : colors.primary,
           background: background,
           recognizer: recognizer,
-          onTap: () => widget.onAyahTap(ref),
         ),
       ],
     );

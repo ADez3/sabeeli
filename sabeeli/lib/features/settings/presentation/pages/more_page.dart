@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/layout/breakpoints.dart';
 import '../../../../core/router/app_routes.dart';
@@ -7,6 +8,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../../core/theme/app_icons.dart';
 
 class MorePage extends StatelessWidget {
   const MorePage({super.key});
@@ -16,35 +18,39 @@ class MorePage extends StatelessWidget {
     final l10n = context.l10n;
     final colors = context.colors;
     final tools = [
-      (Icons.explore_rounded, l10n.qibla, AppRoutes.qiblaName, colors.accent),
+      (LucideIcons.compass, l10n.qibla, AppRoutes.qiblaName, colors.accent),
       (
-        Icons.radio_button_checked_rounded,
+        LucideIcons.circleDot,
         l10n.tasbih,
         AppRoutes.tasbihName,
         colors.primary,
       ),
       (
-        Icons.calendar_month_rounded,
+        LucideIcons.calendarDays,
         l10n.hijriCalendar,
         AppRoutes.hijriName,
         colors.primary,
       ),
     ];
     final settings = [
-      (Icons.tune_rounded, l10n.prayerTimes, AppRoutes.prayerSettingsName),
-      (Icons.palette_outlined, l10n.settings, AppRoutes.settingsName),
-      (Icons.info_outline_rounded, l10n.about, AppRoutes.aboutName),
+      (
+        LucideIcons.slidersHorizontal,
+        l10n.prayerTimes,
+        AppRoutes.prayerSettingsName,
+      ),
+      (LucideIcons.palette, l10n.settings, AppRoutes.settingsName),
+      (LucideIcons.info, l10n.about, AppRoutes.aboutName),
     ];
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.more)),
       body: ContentWidth(
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(
+          padding: EdgeInsets.fromLTRB(
             AppSpacing.lg,
             0,
             AppSpacing.lg,
-            AppSpacing.xxl,
+            context.navBarClearance,
           ),
           children: [
             const SizedBox(height: AppSpacing.sm),
@@ -86,7 +92,7 @@ class MorePage extends StatelessWidget {
                     ListTile(
                       leading: Icon(icon),
                       title: Text(label),
-                      trailing: const Icon(Icons.chevron_right_rounded),
+                      trailing: Icon(context.forwardChevron),
                       onTap: () => context.pushNamed(route),
                     ),
                 ],

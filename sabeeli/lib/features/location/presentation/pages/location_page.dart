@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/error/failure_text.dart';
@@ -96,7 +97,7 @@ class _LocationPageState extends State<LocationPage> {
                       ),
                 child: Row(
                   children: [
-                    const IconBadge(Icons.my_location_rounded),
+                    const IconBadge(LucideIcons.locateFixed),
                     const SizedBox(width: AppSpacing.md),
                     Expanded(
                       child: Column(
@@ -132,7 +133,7 @@ class _LocationPageState extends State<LocationPage> {
                     q.trim().length >= 2 ? _run(q.trim()) : null,
                 decoration: InputDecoration(
                   hintText: l10n.searchCityHint,
-                  prefixIcon: const Icon(Icons.search_rounded),
+                  prefixIcon: const Icon(LucideIcons.search),
                   suffixIcon: _searching
                       ? const Padding(
                           padding: EdgeInsets.all(14),
@@ -172,7 +173,7 @@ class _LocationPageState extends State<LocationPage> {
                 ),
               for (final place in _results)
                 ListTile(
-                  leading: const Icon(Icons.location_city_rounded),
+                  leading: const Icon(LucideIcons.building2),
                   title: Text(place.name ?? ''),
                   onTap: () {
                     context.read<LocationCubit>().choose(place);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/utils/formatters.dart';
 import '../../../../core/layout/breakpoints.dart';
@@ -8,7 +9,6 @@ import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/app_card.dart';
-import '../../../../core/widgets/geometric_pattern.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/entities/azkar_entities.dart';
 import '../cubit/azkar_cubit.dart';
@@ -83,7 +83,7 @@ class _AzkarCategoriesPageState extends State<AzkarCategoriesPage> {
                             onChanged: (v) => setState(() => _query = v),
                             decoration: InputDecoration(
                               hintText: l10n.searchAzkar,
-                              prefixIcon: const Icon(Icons.search_rounded),
+                              prefixIcon: const Icon(LucideIcons.search),
                               isDense: true,
                               filled: true,
                               fillColor: colors.surface,
@@ -121,8 +121,8 @@ class _AzkarCategoriesPageState extends State<AzkarCategoriesPage> {
                       );
                     },
                   ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(height: AppSpacing.xxl),
+                  SliverToBoxAdapter(
+                    child: SizedBox(height: context.navBarClearance),
                   ),
                 ],
               ),
@@ -156,12 +156,6 @@ class _FeaturedTile extends StatelessWidget {
         onTap: () => _open(context, category),
         child: Stack(
           children: [
-            Positioned.fill(
-              child: GeometricPattern(
-                color: tint.withValues(alpha: 0.06),
-                cell: 44,
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.all(AppSpacing.lg),
               child: Column(

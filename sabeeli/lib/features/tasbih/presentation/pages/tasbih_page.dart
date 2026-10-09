@@ -2,13 +2,13 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_fonts.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/utils/formatters.dart';
-import '../../../../core/widgets/geometric_pattern.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/entities/tasbih_state_data.dart';
 import '../cubit/tasbih_cubit.dart';
@@ -42,13 +42,13 @@ class _TasbihView extends StatelessWidget {
           IconButton(
             tooltip: l10n.vibration,
             icon: Icon(
-              s.vibrate ? Icons.vibration_rounded : Icons.phone_android_rounded,
+              s.vibrate ? LucideIcons.vibrate : LucideIcons.smartphone,
             ),
             onPressed: cubit.toggleVibration,
           ),
           IconButton(
             tooltip: l10n.reset,
-            icon: const Icon(Icons.restart_alt_rounded),
+            icon: const Icon(LucideIcons.rotateCcw),
             onPressed: cubit.reset,
           ),
         ],
@@ -114,10 +114,6 @@ class _TasbihView extends StatelessWidget {
                                       colors.surface,
                                     ],
                                   ),
-                                ),
-                                child: GeometricPattern(
-                                  color: colors.primary.withValues(alpha: 0.06),
-                                  cell: 40,
                                 ),
                               ),
                             ),

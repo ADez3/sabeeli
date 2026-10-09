@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/astronomy/calculation_method.dart';
 import '../../../../core/astronomy/prayer.dart';
@@ -73,16 +74,16 @@ extension PrayerLabels on AppLocalizations {
 }
 
 IconData prayerIcon(Prayer prayer) => switch (prayer) {
-  Prayer.fajr => Icons.nights_stay_outlined,
-  Prayer.sunrise => Icons.wb_twilight_rounded,
-  Prayer.dhuhr => Icons.wb_sunny_outlined,
-  Prayer.asr => Icons.wb_cloudy_outlined,
-  Prayer.maghrib => Icons.wb_twilight_outlined,
-  Prayer.isha => Icons.dark_mode_outlined,
+  Prayer.fajr => LucideIcons.moonStar,
+  Prayer.sunrise => LucideIcons.sunrise,
+  Prayer.dhuhr => LucideIcons.sun,
+  Prayer.asr => LucideIcons.cloudSun,
+  Prayer.maghrib => LucideIcons.sunset,
+  Prayer.isha => LucideIcons.moon,
 };
 
 IconData alertIcon(PrayerAlert alert) => switch (alert) {
-  PrayerAlert.sound => Icons.notifications_active_outlined,
-  PrayerAlert.silent => Icons.notifications_paused_outlined,
-  PrayerAlert.off => Icons.notifications_off_outlined,
+  PrayerAlert.sound => LucideIcons.bellRing,
+  PrayerAlert.silent => LucideIcons.bellMinus,
+  PrayerAlert.off => LucideIcons.bellOff,
 };

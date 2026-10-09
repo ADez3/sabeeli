@@ -17,7 +17,6 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.accent,
     required this.text,
     required this.textMuted,
-    required this.heroGradient,
     required this.mushafPage,
     required this.ayahHighlight,
     required this.danger,
@@ -36,46 +35,41 @@ class AppColors extends ThemeExtension<AppColors> {
   final Color text;
   final Color textMuted;
 
-  /// Behind the next-prayer card on the home screen.
-  final List<Color> heroGradient;
-
   /// Page colour of the Quran reader, softer than [background] for long reading.
   final Color mushafPage;
   final Color ayahHighlight;
   final Color danger;
 
   static const dark = AppColors(
-    background: AppPalette.night,
-    surface: AppPalette.nightSurface,
-    surfaceHigh: AppPalette.nightSurfaceHigh,
-    surfaceHighest: AppPalette.nightSurfaceHighest,
-    outline: AppPalette.nightOutline,
-    primary: AppPalette.mint,
-    onPrimary: AppPalette.night,
-    accent: AppPalette.gold,
-    text: AppPalette.moonText,
-    textMuted: AppPalette.mistText,
-    heroGradient: [Color(0xFF0F3A36), Color(0xFF0B2226), Color(0xFF081315)],
-    mushafPage: Color(0xFF0B1517),
-    ayahHighlight: Color(0x335ED6BA),
+    background: AppPalette.ink,
+    surface: AppPalette.inkSurface,
+    surfaceHigh: AppPalette.inkSurfaceHigh,
+    surfaceHighest: AppPalette.inkSurfaceHighest,
+    outline: AppPalette.inkOutline,
+    primary: AppPalette.moonlight,
+    onPrimary: AppPalette.ink,
+    accent: AppPalette.dawn,
+    text: AppPalette.starText,
+    textMuted: AppPalette.dustText,
+    mushafPage: Color(0xFF0D1019),
+    ayahHighlight: Color(0x339DB2FF),
     danger: AppPalette.danger,
   );
 
   static const light = AppColors(
-    background: AppPalette.parchment,
-    surface: AppPalette.paper,
-    surfaceHigh: AppPalette.sand,
-    surfaceHighest: AppPalette.sandHigh,
-    outline: AppPalette.sandOutline,
-    primary: AppPalette.teal,
+    background: AppPalette.paper,
+    surface: AppPalette.white,
+    surfaceHigh: AppPalette.stone,
+    surfaceHighest: AppPalette.stoneHigh,
+    outline: AppPalette.stoneOutline,
+    primary: AppPalette.indigo,
     onPrimary: Colors.white,
-    accent: AppPalette.goldDeep,
-    text: AppPalette.ink,
-    textMuted: AppPalette.inkMuted,
-    heroGradient: [Color(0xFF0E6E5C), Color(0xFF0B5548), Color(0xFF083E35)],
-    mushafPage: Color(0xFFFBF8F0),
-    ayahHighlight: Color(0x260E6E5C),
-    danger: Color(0xFFC0473F),
+    accent: AppPalette.amber,
+    text: AppPalette.inkText,
+    textMuted: AppPalette.slateText,
+    mushafPage: Color(0xFFFBFAF6),
+    ayahHighlight: Color(0x223A4FD0),
+    danger: Color(0xFFC8433B),
   );
 
   @override
@@ -96,10 +90,6 @@ class AppColors extends ThemeExtension<AppColors> {
       accent: l(accent, other.accent),
       text: l(text, other.text),
       textMuted: l(textMuted, other.textMuted),
-      heroGradient: [
-        for (var i = 0; i < heroGradient.length; i++)
-          l(heroGradient[i], other.heroGradient[i]),
-      ],
       mushafPage: l(mushafPage, other.mushafPage),
       ayahHighlight: l(ayahHighlight, other.ayahHighlight),
       danger: l(danger, other.danger),

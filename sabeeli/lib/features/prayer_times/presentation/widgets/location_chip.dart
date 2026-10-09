@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -30,8 +31,8 @@ class LocationChip extends StatelessWidget {
           children: [
             Icon(
               state.location?.isManual ?? false
-                  ? Icons.location_city_rounded
-                  : Icons.near_me_rounded,
+                  ? LucideIcons.building2
+                  : LucideIcons.navigation,
               size: 16,
               color: colors.primary,
             ),
@@ -51,7 +52,7 @@ class LocationChip extends StatelessWidget {
                 child: CircularProgressIndicator(strokeWidth: 1.5),
               ),
             ],
-            Icon(Icons.expand_more_rounded, size: 18, color: colors.textMuted),
+            Icon(LucideIcons.chevronDown, size: 18, color: colors.textMuted),
           ],
         ),
       ),

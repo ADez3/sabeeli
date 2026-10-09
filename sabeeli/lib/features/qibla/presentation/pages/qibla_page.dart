@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/layout/breakpoints.dart';
@@ -104,7 +105,7 @@ class _QiblaBody extends StatelessWidget {
                       Positioned(
                         top: 0,
                         child: Icon(
-                          Icons.navigation_rounded,
+                          LucideIcons.navigation2,
                           size: 30,
                           color: facing ? colors.accent : colors.primary,
                         ),
@@ -130,8 +131,8 @@ class _QiblaBody extends StatelessWidget {
                             if (state.turn != null && !facing)
                               Icon(
                                 state.turn! > 0
-                                    ? Icons.rotate_right_rounded
-                                    : Icons.rotate_left_rounded,
+                                    ? LucideIcons.rotateCw
+                                    : LucideIcons.rotateCcw,
                                 color: colors.textMuted,
                               ),
                           ],
@@ -146,14 +147,11 @@ class _QiblaBody extends StatelessWidget {
           const SizedBox(height: AppSpacing.xl),
           if (state.status == QiblaStatus.noCompass)
             _Note(
-              icon: Icons.explore_off_outlined,
+              icon: LucideIcons.navigationOff,
               text: l10n.compassUnavailable,
             )
           else if (state.reading?.needsCalibration ?? false)
-            _Note(
-              icon: Icons.screen_rotation_alt_rounded,
-              text: l10n.calibrateCompass,
-            ),
+            _Note(icon: LucideIcons.rotate3d, text: l10n.calibrateCompass),
           const SizedBox(height: AppSpacing.md),
           AppCard(
             child: Row(

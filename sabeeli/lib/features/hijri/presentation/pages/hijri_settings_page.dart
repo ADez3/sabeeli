@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/hijri/hijri_date.dart';
 import '../../../../core/layout/breakpoints.dart';
@@ -102,7 +103,7 @@ class HijriSettingsPage extends StatelessWidget {
                     onPressed: settings.dayOffset > -2
                         ? () => cubit.setDayOffset(settings.dayOffset - 1)
                         : null,
-                    icon: const Icon(Icons.remove_rounded),
+                    icon: const Icon(LucideIcons.minus),
                   ),
                   Expanded(
                     child: Text(
@@ -115,7 +116,7 @@ class HijriSettingsPage extends StatelessWidget {
                     onPressed: settings.dayOffset < 2
                         ? () => cubit.setDayOffset(settings.dayOffset + 1)
                         : null,
-                    icon: const Icon(Icons.add_rounded),
+                    icon: const Icon(LucideIcons.plus),
                   ),
                 ],
               ),
@@ -128,7 +129,7 @@ class HijriSettingsPage extends StatelessWidget {
             if (settings.monthOverrides.isNotEmpty || settings.dayOffset != 0)
               TextButton.icon(
                 onPressed: cubit.resetAll,
-                icon: const Icon(Icons.restart_alt_rounded),
+                icon: const Icon(LucideIcons.rotateCcw),
                 label: Text(l10n.hijriResetAll),
               ),
           ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/layout/breakpoints.dart';
@@ -72,7 +73,7 @@ class _AzkarReaderPageState extends State<AzkarReaderPage> {
               actions: [
                 IconButton(
                   tooltip: l10n.restart,
-                  icon: const Icon(Icons.restart_alt_rounded),
+                  icon: const Icon(LucideIcons.rotateCcw),
                   onPressed: context.read<AzkarSessionCubit>().restart,
                 ),
               ],
@@ -221,7 +222,7 @@ class _DhikrCard extends StatelessWidget {
                     tooltip: l10n.source,
                     visualDensity: VisualDensity.compact,
                     icon: Icon(
-                      Icons.info_outline_rounded,
+                      LucideIcons.info,
                       color: colors.textMuted,
                       size: 20,
                     ),
@@ -251,7 +252,7 @@ class _DhikrCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(26),
                     ),
                     child: done
-                        ? Icon(Icons.check_rounded, color: colors.onPrimary)
+                        ? Icon(LucideIcons.check, color: colors.onPrimary)
                         : Text(
                             context.digits(left),
                             style: text.titleLarge?.copyWith(
@@ -313,7 +314,7 @@ class _DoneBanner extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
     child: MessageView(
-      icon: Icons.favorite_rounded,
+      icon: LucideIcons.heart,
       message: context.l10n.azkarDone,
       actionLabel: context.l10n.restart,
       onAction: onRestart,

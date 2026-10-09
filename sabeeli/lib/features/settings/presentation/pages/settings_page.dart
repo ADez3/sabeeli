@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/layout/breakpoints.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -34,17 +35,17 @@ class SettingsPage extends StatelessWidget {
               segments: [
                 ButtonSegment(
                   value: ThemeMode.dark,
-                  icon: const Icon(Icons.dark_mode_outlined),
+                  icon: const Icon(LucideIcons.moon),
                   label: Text(l10n.themeDark),
                 ),
                 ButtonSegment(
                   value: ThemeMode.light,
-                  icon: const Icon(Icons.light_mode_outlined),
+                  icon: const Icon(LucideIcons.sun),
                   label: Text(l10n.themeLight),
                 ),
                 ButtonSegment(
                   value: ThemeMode.system,
-                  icon: const Icon(Icons.brightness_auto_outlined),
+                  icon: const Icon(LucideIcons.sunMoon),
                   label: Text(l10n.themeSystem),
                 ),
               ],

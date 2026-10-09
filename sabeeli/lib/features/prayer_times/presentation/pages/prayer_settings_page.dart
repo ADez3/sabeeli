@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/utils/formatters.dart';
 import '../../../../core/astronomy/calculation_method.dart';
@@ -43,7 +44,7 @@ class PrayerSettingsPage extends StatelessWidget {
               child: Column(
                 children: [
                   ListTile(
-                    leading: const Icon(Icons.public_rounded),
+                    leading: const Icon(LucideIcons.globe),
                     title: Text(l10n.calculationMethod),
                     subtitle: Text(
                       l10n.methodName(calc.method),
@@ -52,7 +53,7 @@ class PrayerSettingsPage extends StatelessWidget {
                     onTap: () => _pickMethod(context, calc.method),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.wb_sunny_outlined),
+                    leading: const Icon(LucideIcons.sun),
                     title: Text(l10n.asrMethod),
                     subtitle: Padding(
                       padding: const EdgeInsets.only(top: AppSpacing.sm),
@@ -78,7 +79,7 @@ class PrayerSettingsPage extends StatelessWidget {
                     ),
                   ),
                   ListTile(
-                    leading: const Icon(Icons.public_off_outlined),
+                    leading: const Icon(LucideIcons.globeLock),
                     title: Text(l10n.highLatitudeRule),
                     subtitle: Text(
                       l10n.highLatitudeName(calc.highLatitudeRule),
@@ -128,7 +129,7 @@ class PrayerSettingsPage extends StatelessWidget {
                     endIndent: AppSpacing.lg,
                   ),
                   ListTile(
-                    leading: const Icon(Icons.alarm_rounded),
+                    leading: const Icon(LucideIcons.alarmClock),
                     title: Text(l10n.reminderBefore),
                     trailing: DropdownButton<int>(
                       value: settings.reminderMinutes,
@@ -305,7 +306,7 @@ class _AdjustmentRow extends StatelessWidget {
           ),
           IconButton(
             onPressed: value > -30 ? () => onChanged(value - 1) : null,
-            icon: const Icon(Icons.remove_circle_outline_rounded),
+            icon: const Icon(LucideIcons.circleMinus),
           ),
           SizedBox(
             width: 64,
@@ -322,7 +323,7 @@ class _AdjustmentRow extends StatelessWidget {
           ),
           IconButton(
             onPressed: value < 30 ? () => onChanged(value + 1) : null,
-            icon: const Icon(Icons.add_circle_outline_rounded),
+            icon: const Icon(LucideIcons.circlePlus),
           ),
         ],
       ),

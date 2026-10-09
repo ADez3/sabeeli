@@ -17,6 +17,10 @@ enum WindowSize {
 
 extension WindowSizeX on BuildContext {
   WindowSize get windowSize => WindowSize.of(this);
+
+  /// Bottom padding for a tab's scrollable content. Under the floating navigation
+  /// bar the shell reports the bar's height as bottom padding, so this clears it.
+  double get navBarClearance => MediaQuery.paddingOf(this).bottom + 24;
 }
 
 /// Centres content and caps its width, so a phone layout does not stretch into

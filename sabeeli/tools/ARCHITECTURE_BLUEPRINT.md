@@ -35,6 +35,7 @@ from free public CDNs.
 | `flutter_localizations`, `intl` | Flutter SDK l10n. |
 | `shared_preferences` | Flutter-team key/value storage for settings, bookmarks and last read. |
 | `path_provider` | Flutter-team; where downloaded translations are cached. |
+| `lucide_icons_flutter` | A consistent outline icon set. |
 | `flutter_local_notifications` (+ `timezone`) | Exact alarms, channels, custom sounds and reschedule-on-boot across Android and iOS. |
 | `geolocator` | Location permissions and fixes across OS versions. |
 

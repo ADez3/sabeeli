@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/layout/breakpoints.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -121,7 +122,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
         actions: [
           IconButton(
             tooltip: l10n.readerSettings,
-            icon: const Icon(Icons.text_fields_rounded),
+            icon: const Icon(LucideIcons.aLargeSmall),
             onPressed: () => showReaderSettings(context),
           ),
         ],

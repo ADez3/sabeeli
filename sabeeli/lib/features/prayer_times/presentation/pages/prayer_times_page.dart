@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/astronomy/prayer.dart';
 import '../../../../core/astronomy/prayer_calculator.dart';
@@ -17,7 +18,7 @@ import '../../../location/presentation/cubit/location_cubit.dart';
 import '../../domain/entities/prayer_settings.dart';
 import '../cubit/prayer_times_cubit.dart';
 import '../widgets/location_chip.dart';
-import '../widgets/next_prayer_card.dart';
+import '../widgets/sky_hero_card.dart';
 import '../widgets/prayer_labels.dart';
 import '../widgets/set_location_card.dart';
 
@@ -46,7 +47,7 @@ class _PrayerTimesPageState extends State<PrayerTimesPage> {
         actions: [
           IconButton(
             tooltip: l10n.settings,
-            icon: const Icon(Icons.tune_rounded),
+            icon: const Icon(LucideIcons.slidersHorizontal),
             onPressed: () => context.pushNamed(AppRoutes.prayerSettingsName),
           ),
         ],
@@ -54,11 +55,11 @@ class _PrayerTimesPageState extends State<PrayerTimesPage> {
       body: !hasLocation
           ? const ContentWidth(child: SetLocationCard(expanded: true))
           : ListView(
-              padding: const EdgeInsets.fromLTRB(
+              padding: EdgeInsets.fromLTRB(
                 AppSpacing.lg,
                 AppSpacing.sm,
                 AppSpacing.lg,
-                AppSpacing.xxl,
+                context.navBarClearance,
               ),
               children: [
                 ContentWidth(
@@ -70,7 +71,7 @@ class _PrayerTimesPageState extends State<PrayerTimesPage> {
                         child: LocationChip(),
                       ),
                       const SizedBox(height: AppSpacing.md),
-                      const NextPrayerCard(),
+                      const SkyHeroCard(showTimeline: false),
                       const _PermissionBanner(),
                       const SizedBox(height: AppSpacing.lg),
                       _DayPicker(
@@ -125,7 +126,7 @@ class _DayPicker extends StatelessWidget {
         IconButton(
           onPressed: () => onChanged(offset - 1),
           icon: Icon(
-            isRtl ? Icons.chevron_right_rounded : Icons.chevron_left_rounded,
+            isRtl ? LucideIcons.chevronRight : LucideIcons.chevronLeft,
           ),
         ),
         Expanded(
@@ -147,7 +148,7 @@ class _DayPicker extends StatelessWidget {
         IconButton(
           onPressed: () => onChanged(offset + 1),
           icon: Icon(
-            isRtl ? Icons.chevron_left_rounded : Icons.chevron_right_rounded,
+            isRtl ? LucideIcons.chevronLeft : LucideIcons.chevronRight,
           ),
         ),
       ],
@@ -329,7 +330,7 @@ class _PermissionBanner extends StatelessWidget {
         color: colors.accent.withValues(alpha: 0.08),
         child: Row(
           children: [
-            Icon(Icons.notifications_off_outlined, color: colors.accent),
+            Icon(LucideIcons.bellOff, color: colors.accent),
             const SizedBox(width: AppSpacing.md),
             Expanded(
               child: Text(

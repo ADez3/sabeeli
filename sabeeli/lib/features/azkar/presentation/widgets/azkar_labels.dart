@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../l10n/l10n.dart';
 import '../../domain/entities/azkar_entities.dart';
@@ -21,24 +22,25 @@ extension AzkarLabels on BuildContext {
 }
 
 IconData azkarIcon(String? key) => switch (key) {
-  'morning' => Icons.wb_sunny_rounded,
-  'evening' => Icons.nights_stay_rounded,
-  'after_prayer' => Icons.mosque_rounded,
-  'sleep' => Icons.bedtime_rounded,
-  'waking' => Icons.alarm_on_rounded,
-  'travel' ||
-  'riding' ||
-  'returning_from_travel' => Icons.flight_takeoff_rounded,
-  'food' || 'after_eating' || 'breaking_fast' => Icons.restaurant_rounded,
-  'entering_home' || 'leaving_home' => Icons.home_rounded,
+  'morning' => LucideIcons.sun,
+  'evening' => LucideIcons.moonStar,
+  'after_prayer' => LucideIcons.landmark,
+  'sleep' => LucideIcons.bed,
+  'waking' => LucideIcons.alarmClockCheck,
+  'travel' || 'riding' || 'returning_from_travel' => LucideIcons.plane,
+  'food' || 'after_eating' || 'breaking_fast' => LucideIcons.utensils,
+  'entering_home' || 'leaving_home' => LucideIcons.house,
   'mosque_entering' ||
   'mosque_leaving' ||
-  'going_to_mosque' => Icons.mosque_outlined,
-  'wudu' || 'wudu_after' => Icons.water_drop_outlined,
-  'distress' || 'worry_grief' || 'calamity' || 'anger' => Icons.healing_rounded,
-  'rain' || 'rain_seeking' || 'thunder' || 'wind' => Icons.cloud_outlined,
-  'istighfar' || 'after_sin' => Icons.favorite_border_rounded,
-  _ => Icons.auto_awesome_outlined,
+  'going_to_mosque' => LucideIcons.landmark,
+  'wudu' || 'wudu_after' => LucideIcons.droplet,
+  'distress' ||
+  'worry_grief' ||
+  'calamity' ||
+  'anger' => LucideIcons.heartHandshake,
+  'rain' || 'rain_seeking' || 'thunder' || 'wind' => LucideIcons.cloud,
+  'istighfar' || 'after_sin' => LucideIcons.heart,
+  _ => LucideIcons.sparkles,
 };
 
 /// The tile to suggest on the home screen at [now]: morning azkar from Fajr until

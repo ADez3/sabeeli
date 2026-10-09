@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/utils/formatters.dart';
 import '../../../../core/router/app_routes.dart';
@@ -11,6 +12,7 @@ import '../../../../core/widgets/app_card.dart';
 import '../../../../l10n/l10n.dart';
 import '../cubit/quran_cubit.dart';
 import 'surah_labels.dart';
+import '../../../../core/theme/app_icons.dart';
 
 /// Where the reader stopped, one tap from resuming. Shown on Home and the Quran tab.
 class ContinueReadingCard extends StatelessWidget {
@@ -38,7 +40,7 @@ class ContinueReadingCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const IconBadge(Icons.auto_stories_rounded),
+          const IconBadge(LucideIcons.bookOpenText),
           const SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
@@ -64,7 +66,7 @@ class ContinueReadingCard extends StatelessWidget {
               ),
             ),
           const SizedBox(width: AppSpacing.sm),
-          Icon(Icons.arrow_forward_rounded, color: colors.textMuted, size: 20),
+          Icon(context.forwardArrow, color: colors.textMuted, size: 20),
         ],
       ),
     );

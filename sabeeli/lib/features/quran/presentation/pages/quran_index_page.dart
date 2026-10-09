@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/layout/breakpoints.dart';
 import '../../../../core/router/app_routes.dart';
@@ -134,7 +135,7 @@ class _SurahList extends StatelessWidget {
               onChanged: onQuery,
               decoration: InputDecoration(
                 hintText: l10n.searchSurah,
-                prefixIcon: const Icon(Icons.search_rounded),
+                prefixIcon: const Icon(LucideIcons.search),
                 isDense: true,
                 filled: true,
                 fillColor: colors.surface,
@@ -156,7 +157,7 @@ class _SurahList extends StatelessWidget {
               const Divider(indent: 72, endIndent: AppSpacing.lg),
           itemBuilder: (context, i) => _SurahTile(surah: surahs[i]),
         ),
-        const SliverToBoxAdapter(child: SizedBox(height: AppSpacing.xxl)),
+        SliverToBoxAdapter(child: SizedBox(height: context.navBarClearance)),
       ],
     );
   }
@@ -180,7 +181,7 @@ class _SurahTile extends StatelessWidget {
         ),
         child: Row(
           children: [
-            StarNumber(context.digits(surah.number)),
+            NumberBadge(context.digits(surah.number)),
             const SizedBox(width: AppSpacing.lg),
             Expanded(
               child: Column(
@@ -222,7 +223,10 @@ class _JuzList extends StatelessWidget {
     final colors = context.colors;
     final l10n = context.l10n;
     return ListView.separated(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+      padding: EdgeInsets.only(
+        top: AppSpacing.md,
+        bottom: context.navBarClearance,
+      ),
       itemCount: data.juzStarts.length,
       separatorBuilder: (_, _) =>
           const Divider(indent: 72, endIndent: AppSpacing.lg),
@@ -239,7 +243,7 @@ class _JuzList extends StatelessWidget {
             ),
             child: Row(
               children: [
-                StarNumber(context.digits(i + 1)),
+                NumberBadge(context.digits(i + 1)),
                 const SizedBox(width: AppSpacing.lg),
                 Expanded(
                   child: Column(
@@ -288,13 +292,15 @@ class _BookmarkList extends StatelessWidget {
     final l10n = context.l10n;
     final colors = context.colors;
     if (bookmarks.isEmpty) {
-      return MessageView(
-        icon: Icons.bookmark_border_rounded,
-        message: l10n.noBookmarks,
-      );
+      return MessageView(icon: LucideIcons.bookmark, message: l10n.noBookmarks);
     }
     return ListView.separated(
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      padding: EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.lg,
+        AppSpacing.lg,
+        context.navBarClearance,
+      ),
       itemCount: bookmarks.length,
       separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
       itemBuilder: (context, i) {
@@ -307,7 +313,11 @@ class _BookmarkList extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Icon(Icons.bookmark_rounded, color: colors.accent, size: 20),
+                  Icon(
+                    LucideIcons.bookmarkCheck,
+                    color: colors.accent,
+                    size: 20,
+                  ),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Text(
@@ -319,7 +329,7 @@ class _BookmarkList extends StatelessWidget {
                   ),
                   IconButton(
                     tooltip: l10n.removeBookmark,
-                    icon: const Icon(Icons.close_rounded, size: 18),
+                    icon: const Icon(LucideIcons.x, size: 18),
                     onPressed: () =>
                         context.read<QuranCubit>().toggleBookmark(b.ref),
                   ),

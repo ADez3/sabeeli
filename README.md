@@ -49,7 +49,10 @@ No ads. No account. No tracking. Your location never leaves your device.
   - Western (123), Arabic (١٢٣) or Persian (۱۲۳), chosen automatically from your region, so Morocco gets Western digits and Egypt Arabic ones.
   - The choice applies everywhere, ayah numbers in the mushaf included.
 - **Languages:** العربية, English, Français, اردو, Bahasa Indonesia, Türkçe, with full right-to-left support.
-- **Design:** dark by default with a light mode, and a layout that adapts to phones, tablets and desktop.
+- **Design:**
+  - The home screen takes the colour of the sky for the current prayer period, with the day's prayers along a sun path.
+  - A floating glass navigation bar.
+  - Dark by default with a light mode, and a layout that adapts to phones, tablets and desktop.
 
 ## Building
 
