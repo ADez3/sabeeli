@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../../core/theme/app_colors.dart';
 
@@ -10,8 +11,8 @@ class GlassNavItem {
   final String label;
 }
 
-/// A floating, frosted-glass bottom bar. The selected tab grows into a pill with
-/// its label; the others show only their icon.
+/// A compact frosted-glass capsule floating above the content. The active tab is
+/// marked by a solid disc that slides between the icons.
 class GlassNavBar extends StatelessWidget {
   const GlassNavBar({
     super.key,
@@ -24,54 +25,97 @@ class GlassNavBar extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onSelected;
 
-  static const height = 64.0;
-  static const margin = 16.0;
+  static const _slot = 58.0;
+  static const _height = 62.0;
+  static const _inset = 7.0;
+  static const _disc = _height - _inset * 2;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
     final dark = Theme.of(context).brightness == Brightness.dark;
+    final width = _slot * items.length + _inset * 2;
+
     return SafeArea(
-      minimum: const EdgeInsets.fromLTRB(margin, 0, margin, margin),
+      minimum: const EdgeInsets.only(bottom: 18),
       child: Center(
         heightFactor: 1,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 520),
+        child: DecoratedBox(
+          // The shadow sits outside the clip so the capsule looks lifted.
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(_height / 2),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: dark ? 0.45 : 0.14),
+                blurRadius: 30,
+                offset: const Offset(0, 12),
+              ),
+            ],
+          ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(height / 2),
+            borderRadius: BorderRadius.circular(_height / 2),
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+              filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
               child: Container(
-                height: height,
-                padding: const EdgeInsets.symmetric(horizontal: 6),
+                width: width,
+                height: _height,
                 decoration: BoxDecoration(
-                  color: colors.surface.withValues(alpha: dark ? 0.55 : 0.62),
-                  borderRadius: BorderRadius.circular(height / 2),
+                  borderRadius: BorderRadius.circular(_height / 2),
+                  color: dark
+                      ? colors.surfaceHigh.withValues(alpha: 0.62)
+                      : Colors.white.withValues(alpha: 0.72),
+                ),
+                // The hairline is drawn on top so it takes no layout space.
+                foregroundDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(_height / 2),
                   border: Border.all(
-                    color: (dark ? Colors.white : Colors.black).withValues(
-                      alpha: 0.08,
-                    ),
-                  ),
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.white.withValues(alpha: dark ? 0.06 : 0.35),
-                      Colors.white.withValues(alpha: 0),
-                    ],
+                    color: dark
+                        ? Colors.white.withValues(alpha: 0.09)
+                        : Colors.black.withValues(alpha: 0.06),
+                    width: 0.8,
                   ),
                 ),
-                child: Row(
+                child: Stack(
                   children: [
-                    for (final (i, item) in items.indexed)
-                      Expanded(
-                        flex: i == selectedIndex ? 2 : 1,
-                        child: _NavButton(
-                          item: item,
-                          selected: i == selectedIndex,
-                          onTap: () => onSelected(i),
+                    AnimatedPositionedDirectional(
+                      duration: const Duration(milliseconds: 380),
+                      curve: Curves.easeOutBack,
+                      top: _inset,
+                      start:
+                          _inset + selectedIndex * _slot + (_slot - _disc) / 2,
+                      child: Container(
+                        width: _disc,
+                        height: _disc,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: colors.primary,
+                          boxShadow: [
+                            BoxShadow(
+                              color: colors.primary.withValues(alpha: 0.35),
+                              blurRadius: 14,
+                            ),
+                          ],
                         ),
                       ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: _inset),
+                      child: Row(
+                        children: [
+                          for (final (i, item) in items.indexed)
+                            _NavIcon(
+                              item: item,
+                              selected: i == selectedIndex,
+                              onTap: () {
+                                if (i != selectedIndex) {
+                                  HapticFeedback.selectionClick();
+                                }
+                                onSelected(i);
+                              },
+                            ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -83,8 +127,8 @@ class GlassNavBar extends StatelessWidget {
   }
 }
 
-class _NavButton extends StatelessWidget {
-  const _NavButton({
+class _NavIcon extends StatelessWidget {
+  const _NavIcon({
     required this.item,
     required this.selected,
     required this.onTap,
@@ -97,47 +141,29 @@ class _NavButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    return Semantics(
-      selected: selected,
-      button: true,
-      label: item.label,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 250),
-          curve: Curves.easeOutCubic,
-          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
-          decoration: BoxDecoration(
-            color: selected
-                ? colors.primary.withValues(alpha: 0.16)
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(24),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                item.icon,
-                size: 21,
-                color: selected ? colors.primary : colors.textMuted,
-              ),
-              if (selected) ...[
-                const SizedBox(width: 6),
-                Flexible(
-                  child: Text(
-                    item.label,
-                    maxLines: 1,
-                    overflow: TextOverflow.fade,
-                    softWrap: false,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: colors.primary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+    return Tooltip(
+      message: item.label,
+      child: Semantics(
+        selected: selected,
+        button: true,
+        label: item.label,
+        excludeSemantics: true,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: onTap,
+          child: SizedBox(
+            width: GlassNavBar._slot,
+            height: GlassNavBar._height,
+            child: Center(
+              child: TweenAnimationBuilder<Color?>(
+                duration: const Duration(milliseconds: 250),
+                tween: ColorTween(
+                  end: selected ? colors.onPrimary : colors.textMuted,
                 ),
-              ],
-            ],
+                builder: (_, color, _) =>
+                    Icon(item.icon, size: 22, color: color),
+              ),
+            ),
           ),
         ),
       ),

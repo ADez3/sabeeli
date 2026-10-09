@@ -51,7 +51,7 @@ No ads. No account. No tracking. Your location never leaves your device.
 - **Languages:** العربية, English, Français, اردو, Bahasa Indonesia, Türkçe, with full right-to-left support.
 - **Design:**
   - The home screen takes the colour of the sky for the current prayer period, with the day's prayers along a sun path.
-  - A floating glass navigation bar.
+  - A compact floating glass navigation capsule with a sliding active indicator.
   - Dark by default with a light mode, and a layout that adapts to phones, tablets and desktop.
 
 ## Building
