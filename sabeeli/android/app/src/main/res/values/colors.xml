@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AppPalette.night: the app is dark-first, so the launch screen is too. -->
+    <color name="sabeeli_night">#081012</color>
+</resources>

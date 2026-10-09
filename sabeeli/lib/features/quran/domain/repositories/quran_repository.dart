@@ -1,0 +1,22 @@
+import '../../../../core/result/result.dart';
+import '../entities/quran_entities.dart';
+
+abstract interface class QuranRepository {
+  Future<Result<QuranData>> load();
+
+  /// Every edition that can be shown: the bundled ones first, then the catalogue.
+  Future<Result<List<QuranEdition>>> editions();
+
+  /// The text of [edition] for [ref], or null when it is not downloaded yet.
+  Future<Result<String?>> editionText(QuranEdition edition, AyahRef ref);
+  Future<Result<void>> downloadEdition(QuranEdition edition);
+
+  Future<Result<List<Bookmark>>> bookmarks();
+  Future<Result<List<Bookmark>>> toggleBookmark(AyahRef ref);
+
+  Future<Result<ReadingPosition?>> position();
+  Future<Result<void>> savePosition(ReadingPosition position);
+
+  Future<Result<ReaderPreferences>> preferences();
+  Future<Result<void>> savePreferences(ReaderPreferences preferences);
+}

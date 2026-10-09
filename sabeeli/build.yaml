@@ -1,0 +1,8 @@
+# Only the composition root carries @InjectableInit, so the DI generator is scoped to
+# it instead of analysing every file in the package.
+targets:
+  $default:
+    builders:
+      injectable_generator:injectable_config_builder:
+        generate_for:
+          - lib/core/di/injection.dart
