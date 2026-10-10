@@ -37,3 +37,9 @@ Reproduce with `tool/data/fetch_raw.sh` followed by the `tool/data/build_*.py` s
 | `fonts/IBMPlexSansArabic-{Regular,Medium,SemiBold,Bold}.ttf` | https://github.com/google/fonts/tree/main/ofl/ibmplexsansarabic | SIL Open Font License 1.1, see `fonts/OFL-IBMPlexSansArabic.txt` (Copyright 2017 IBM Corp., Reserved Font Name "Plex") |
 | `fonts/Amiri-{Regular,Bold}.ttf` | https://github.com/google/fonts/tree/main/ofl/amiri | SIL Open Font License 1.1, see `fonts/OFL-Amiri.txt` (Copyright 2010-2022 The Amiri Project Authors) |
 | `fonts/UthmanicHafs_V18.ttf` | see Qur'an section | KFGQPC EULA |
+
+## Geography
+
+| File | Source | License |
+|---|---|---|
+| `geo/land_mask.json` (which 1° cells are land, for the Qibla globe) | Built by `tool/data/build_land_mask.py` from Natural Earth 1:110m land, https://www.naturalearthdata.com/ | Public domain |

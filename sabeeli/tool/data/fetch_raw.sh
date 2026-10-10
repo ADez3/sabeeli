@@ -2,7 +2,7 @@
 # Download every raw input used by the build scripts into tool/data/raw/.
 # Then run (from tool/data):
 #   python build_quran.py && python fetch_tafsir_translation.py && python build_translation_catalog.py
-#   python build_azkar.py && python build_hijri.py
+#   python build_azkar.py && python build_hijri.py && python build_land_mask.py
 # Fonts are copied directly (see the bottom of this script).
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -39,3 +39,6 @@ for w in Regular Medium SemiBold Bold; do
 curl -sSL -o "$A/fonts/OFL-IBMPlexSansArabic.txt" "$G/ibmplexsansarabic/OFL.txt"
 for w in Regular Bold; do curl -sSL -o "$A/fonts/Amiri-$w.ttf" "$G/amiri/Amiri-$w.ttf"; done
 curl -sSL -o "$A/fonts/OFL-Amiri.txt" "$G/amiri/OFL.txt"
+# Land outlines for the Qibla globe (Natural Earth, public domain)
+mkdir -p "$R/geo"
+curl -sSL -o "$R/geo/ne_110m_land.geojson" https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_land.geojson

@@ -109,6 +109,11 @@
   "calibrateCompass": "Akurasi kompas rendah. Gerakkan ponsel membentuk angka delapan untuk kalibrasi.",
   "compassUnavailable": "Perangkat ini tidak memiliki kompas. Gunakan arah di bawah dengan kompas fisik.",
   "qiblaNeedsLocation": "Atur lokasi Anda untuk menemukan arah kiblat.",
+  "you": "Anda",
+  "makkah": "Makkah",
+  "qiblaGreatCircle": "Kiblat mengikuti jalur terpendek di atas Bumi, bukan garis lurus pada peta datar.",
+  "globeView": "Bola dunia",
+  "compassView": "Kompas",
 
   "quran": "Al-Qur'an Al-Karim",
   "surahs": "Surah",

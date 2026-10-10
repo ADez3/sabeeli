@@ -60,10 +60,14 @@ import '../../features/prayer_times/presentation/cubit/prayer_times_cubit.dart'
     as _i1041;
 import '../../features/qibla/data/datasources/compass_data_source.dart'
     as _i173;
+import '../../features/qibla/data/datasources/land_mask_data_source.dart'
+    as _i570;
 import '../../features/qibla/data/repositories/qibla_repository_impl.dart'
     as _i232;
 import '../../features/qibla/domain/repositories/qibla_repository.dart'
     as _i994;
+import '../../features/qibla/domain/usecases/get_land_mask_usecase.dart'
+    as _i295;
 import '../../features/qibla/domain/usecases/watch_compass_usecase.dart'
     as _i542;
 import '../../features/qibla/presentation/cubit/qibla_cubit.dart' as _i614;
@@ -127,6 +131,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i148.DeviceLocationDataSource(),
     );
     gh.lazySingleton<_i173.CompassDataSource>(() => _i173.CompassDataSource());
+    gh.lazySingleton<_i570.LandMaskDataSource>(
+      () => _i570.LandMaskDataSource(),
+    );
     gh.lazySingleton<_i245.QuranAssetDataSource>(
       () => _i245.QuranAssetDataSource(),
     );
@@ -136,8 +143,23 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i61.TranslationRemoteDataSource>(
       () => _i61.TranslationRemoteDataSource(gh<_i932.HttpJson>()),
     );
+    gh.lazySingleton<_i994.QiblaRepository>(
+      () => _i232.QiblaRepositoryImpl(
+        gh<_i173.CompassDataSource>(),
+        gh<_i570.LandMaskDataSource>(),
+      ),
+    );
+    gh.factory<_i295.GetLandMaskUseCase>(
+      () => _i295.GetLandMaskUseCase(gh<_i994.QiblaRepository>()),
+    );
+    gh.factory<_i542.WatchCompassUseCase>(
+      () => _i542.WatchCompassUseCase(gh<_i994.QiblaRepository>()),
+    );
     gh.lazySingleton<_i892.KeyValueStore>(
       () => _i892.KeyValueStore(gh<_i460.SharedPreferences>()),
+    );
+    gh.factory<_i614.QiblaCubit>(
+      () => _i614.QiblaCubit(gh<_i542.WatchCompassUseCase>()),
     );
     gh.lazySingleton<_i598.AzkarRepository>(
       () => _i3.AzkarRepositoryImpl(gh<_i5.AzkarAssetDataSource>()),
@@ -146,12 +168,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i431.PrayerNotificationDataSource(
         gh<_i163.FlutterLocalNotificationsPlugin>(),
       ),
-    );
-    gh.lazySingleton<_i994.QiblaRepository>(
-      () => _i232.QiblaRepositoryImpl(gh<_i173.CompassDataSource>()),
-    );
-    gh.factory<_i542.WatchCompassUseCase>(
-      () => _i542.WatchCompassUseCase(gh<_i994.QiblaRepository>()),
     );
     gh.lazySingleton<_i544.HijriLocalDataSource>(
       () => _i544.HijriLocalDataSource(gh<_i892.KeyValueStore>()),
@@ -173,9 +189,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i164.TasbihRepository>(
       () => _i349.TasbihRepositoryImpl(gh<_i885.TasbihLocalDataSource>()),
-    );
-    gh.factory<_i614.QiblaCubit>(
-      () => _i614.QiblaCubit(gh<_i542.WatchCompassUseCase>()),
     );
     gh.lazySingleton<_i498.QuranRepository>(
       () => _i82.QuranRepositoryImpl(

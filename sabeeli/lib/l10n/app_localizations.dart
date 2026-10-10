@@ -712,6 +712,36 @@ abstract class AppLocalizations {
   /// **'Set your location to find the Qibla.'**
   String get qiblaNeedsLocation;
 
+  /// No description provided for @you.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get you;
+
+  /// No description provided for @makkah.
+  ///
+  /// In en, this message translates to:
+  /// **'Makkah'**
+  String get makkah;
+
+  /// No description provided for @qiblaGreatCircle.
+  ///
+  /// In en, this message translates to:
+  /// **'The Qibla follows the shortest path over the Earth, not a straight line on a flat map.'**
+  String get qiblaGreatCircle;
+
+  /// No description provided for @globeView.
+  ///
+  /// In en, this message translates to:
+  /// **'Globe'**
+  String get globeView;
+
+  /// No description provided for @compassView.
+  ///
+  /// In en, this message translates to:
+  /// **'Compass'**
+  String get compassView;
+
   /// No description provided for @quran.
   ///
   /// In en, this message translates to:

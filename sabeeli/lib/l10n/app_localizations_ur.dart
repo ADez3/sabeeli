@@ -343,6 +343,22 @@ class AppLocalizationsUr extends AppLocalizations {
       'قبلہ معلوم کرنے کے لیے اپنا مقام منتخب کریں۔';
 
   @override
+  String get you => 'آپ';
+
+  @override
+  String get makkah => 'مکہ مکرمہ';
+
+  @override
+  String get qiblaGreatCircle =>
+      'قبلہ زمین پر سب سے چھوٹے راستے کی سمت ہے، سیدھے نقشے کی لکیر کی نہیں۔';
+
+  @override
+  String get globeView => 'گلوب';
+
+  @override
+  String get compassView => 'قطب نما';
+
+  @override
   String get quran => 'قرآن مجید';
 
   @override

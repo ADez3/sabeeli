@@ -25,15 +25,20 @@ No ads. No account. No tracking. Your location never leaves your device.
   <img src="docs/screenshots/sky_moon.png" width="200" alt="The sky at night with the moon">
 </p>
 <p align="center">
-  <img src="docs/screenshots/qibla.png" width="200" alt="Qibla">
+  <img src="docs/screenshots/quran_sky.png" width="200" alt="The Quran as a night sky of 114 surahs">
+  <img src="docs/screenshots/surah_opening.png" width="200" alt="A surah's opening">
+  <img src="docs/screenshots/qibla_globe.png" width="200" alt="The Qibla path on a globe">
+  <img src="docs/screenshots/hijri.png" width="200" alt="Moon-phase Hijri calendar">
+</p>
+<p align="center">
+  <img src="docs/screenshots/qibla.png" width="200" alt="Qibla compass">
+  <img src="docs/screenshots/tasbih.png" width="200" alt="Misbaha">
   <img src="docs/screenshots/azkar_reader.png" width="200" alt="Azkar">
-  <img src="docs/screenshots/tasbih.png" width="200" alt="Tasbih">
-  <img src="docs/screenshots/hijri.png" width="200" alt="Hijri calendar">
+  <img src="docs/screenshots/quran.png" width="200" alt="Surah list">
 </p>
 <p align="center">
   <img src="docs/screenshots/home_ar.png" width="200" alt="Home in Arabic">
   <img src="docs/screenshots/reader_ar_light.png" width="200" alt="Quran reader, light mode">
-  <img src="docs/screenshots/quran.png" width="200" alt="Surah index">
   <img src="docs/screenshots/azkar.png" width="200" alt="Azkar categories">
 </p>
 
@@ -61,6 +66,10 @@ No ads. No account. No tracking. Your location never leaves your device.
   - Home is the sky above you right now, drawn in code from real astronomy: the sun and the moon at their true positions, the moon in its real phase, stars and shooting stars at night, and dunes with a mosque on the horizon.
   - The layers move with the tilt of the phone.
   - Swipe up to dive into **your day**: the prayers along a timeline coloured by the sky of every hour, with a marker for the present moment.
+- **The Quran as a night sky:** the 114 surahs as stars that brighten as you read them, with a magazine-style opening for every surah (calligraphy, revelation order, pages, juz, progress).
+- **A misbaha** of 33 beads you turn with your thumb, with haptic clicks.
+- **A Qibla globe** showing the great-circle path from you to the Kaaba, next to the live compass.
+- **A moon-phase Hijri calendar:** every day in the real phase of the moon, with the white days, the Eids, Arafah, Ashura and Ramadan marked.
 - **Design:** dark by default with a light mode, a floating glass navigation capsule, Lucide icons, and layouts that adapt to phones, tablets and desktop. Animations respect the system "reduce motion" setting.
 
 ## Building

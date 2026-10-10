@@ -341,6 +341,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get qiblaNeedsLocation => 'حدّد موقعك لمعرفة اتجاه القبلة.';
 
   @override
+  String get you => 'أنت';
+
+  @override
+  String get makkah => 'مكة المكرمة';
+
+  @override
+  String get qiblaGreatCircle =>
+      'تتجه القبلة على أقصر طريق فوق الأرض، لا على خط مستقيم في خريطة مسطحة.';
+
+  @override
+  String get globeView => 'الكرة الأرضية';
+
+  @override
+  String get compassView => 'البوصلة';
+
+  @override
   String get quran => 'القرآن الكريم';
 
   @override

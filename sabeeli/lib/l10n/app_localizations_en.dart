@@ -343,6 +343,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get qiblaNeedsLocation => 'Set your location to find the Qibla.';
 
   @override
+  String get you => 'You';
+
+  @override
+  String get makkah => 'Makkah';
+
+  @override
+  String get qiblaGreatCircle =>
+      'The Qibla follows the shortest path over the Earth, not a straight line on a flat map.';
+
+  @override
+  String get globeView => 'Globe';
+
+  @override
+  String get compassView => 'Compass';
+
+  @override
   String get quran => 'The Holy Quran';
 
   @override

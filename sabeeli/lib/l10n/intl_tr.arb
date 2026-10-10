@@ -109,6 +109,11 @@
   "calibrateCompass": "Pusula hassasiyeti düşük. Kalibre etmek için telefonunuzu sekiz çizerek hareket ettirin.",
   "compassUnavailable": "Bu cihazda pusula yok. Aşağıdaki açıyı gerçek bir pusulayla kullanın.",
   "qiblaNeedsLocation": "Kıbleyi bulmak için konumunuzu belirleyin.",
+  "you": "Siz",
+  "makkah": "Mekke",
+  "qiblaGreatCircle": "Kıble, düz bir haritadaki çizgiyi değil, Dünya üzerindeki en kısa yolu izler.",
+  "globeView": "Küre",
+  "compassView": "Pusula",
 
   "quran": "Kur'an-ı Kerim",
   "surahs": "Sureler",

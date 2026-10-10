@@ -120,6 +120,11 @@
   "calibrateCompass": "Compass accuracy is low. Move your phone in a figure-eight to calibrate.",
   "compassUnavailable": "This device has no compass. Use the bearing below with a physical compass.",
   "qiblaNeedsLocation": "Set your location to find the Qibla.",
+  "you": "You",
+  "makkah": "Makkah",
+  "qiblaGreatCircle": "The Qibla follows the shortest path over the Earth, not a straight line on a flat map.",
+  "globeView": "Globe",
+  "compassView": "Compass",
 
   "quran": "The Holy Quran",
   "surahs": "Surahs",

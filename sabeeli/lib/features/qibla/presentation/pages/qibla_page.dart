@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -13,23 +14,133 @@ import '../../../../core/widgets/app_card.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../location/presentation/cubit/location_cubit.dart';
 import '../../../prayer_times/presentation/widgets/set_location_card.dart';
+import '../../../../core/usecases/usecase.dart';
+import '../../domain/entities/land_mask.dart';
+import '../../domain/usecases/get_land_mask_usecase.dart';
 import '../cubit/qibla_cubit.dart';
+import '../widgets/qibla_globe.dart';
 
-class QiblaPage extends StatelessWidget {
+/// The Qibla: a live compass, or the globe showing the path to the Kaaba.
+class QiblaPage extends StatefulWidget {
   const QiblaPage({super.key});
 
   @override
+  State<QiblaPage> createState() => _QiblaPageState();
+}
+
+class _QiblaPageState extends State<QiblaPage> {
+  bool _globe = false;
+
+  @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final position = context.read<LocationCubit>().state.location?.coordinates;
     return BlocProvider(
       create: (_) => getIt<QiblaCubit>()..start(position),
       child: Scaffold(
-        appBar: AppBar(title: Text(context.l10n.qibla)),
+        appBar: AppBar(
+          title: Text(l10n.qibla),
+          actions: [
+            IconButton(
+              tooltip: _globe ? l10n.compassView : l10n.globeView,
+              icon: Icon(_globe ? LucideIcons.compass : LucideIcons.globe),
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                setState(() => _globe = !_globe);
+              },
+            ),
+          ],
+        ),
         body: BlocListener<LocationCubit, LocationState>(
           listenWhen: (a, b) => a.location != b.location,
           listener: (context, s) =>
               context.read<QiblaCubit>().start(s.location?.coordinates),
-          child: const _QiblaBody(),
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 350),
+            child: _globe
+                ? const _GlobeBody(key: ValueKey('globe'))
+                : const _QiblaBody(key: ValueKey('compass')),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _GlobeBody extends StatefulWidget {
+  const _GlobeBody({super.key});
+
+  @override
+  State<_GlobeBody> createState() => _GlobeBodyState();
+}
+
+class _GlobeBodyState extends State<_GlobeBody> {
+  late final Future<LandMask?> _mask = getIt<GetLandMaskUseCase>()(
+    const NoParams(),
+  ).then((r) => r.valueOrNull);
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final colors = context.colors;
+    final text = Theme.of(context).textTheme;
+    final location = context.select((LocationCubit c) => c.state.location);
+    final state = context.watch<QiblaCubit>().state;
+    if (location == null) {
+      return const ContentWidth(child: SetLocationCard(expanded: true));
+    }
+    return ContentWidth(
+      maxWidth: 560,
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        child: Column(
+          children: [
+            Expanded(
+              child: FutureBuilder<LandMask?>(
+                future: _mask,
+                builder: (context, snap) => snap.data == null
+                    ? const SizedBox.shrink()
+                    : QiblaGlobe(
+                        user: location.coordinates,
+                        mask: snap.data!,
+                        youLabel: l10n.you,
+                        makkahLabel: l10n.makkah,
+                      ),
+              ),
+            ),
+            Text(
+              l10n.qiblaGreatCircle,
+              textAlign: TextAlign.center,
+              style: text.bodySmall?.copyWith(
+                color: colors.textMuted,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            AppCard(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _Stat(
+                      label: l10n.qiblaDirection,
+                      value: l10n.degreesFromNorth(
+                        context.formatNumber(state.bearing ?? 0, decimals: 1),
+                      ),
+                    ),
+                  ),
+                  Container(width: 1, height: 36, color: colors.outline),
+                  Expanded(
+                    child: _Stat(
+                      label: l10n.location,
+                      value: l10n.distanceToKaaba(
+                        context.formatNumber(state.distanceKm ?? 0),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -37,7 +148,7 @@ class QiblaPage extends StatelessWidget {
 }
 
 class _QiblaBody extends StatelessWidget {
-  const _QiblaBody();
+  const _QiblaBody({super.key});
 
   @override
   Widget build(BuildContext context) {

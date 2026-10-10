@@ -109,6 +109,11 @@
   "calibrateCompass": "La précision de la boussole est faible. Décrivez un huit avec votre téléphone pour l'étalonner.",
   "compassUnavailable": "Cet appareil n'a pas de boussole. Utilisez l'orientation ci-dessous avec une boussole physique.",
   "qiblaNeedsLocation": "Définissez votre localisation pour trouver la Qibla.",
+  "you": "Vous",
+  "makkah": "La Mecque",
+  "qiblaGreatCircle": "La qibla suit le chemin le plus court sur la Terre, pas une ligne droite sur une carte plane.",
+  "globeView": "Globe",
+  "compassView": "Boussole",
 
   "quran": "Le Saint Coran",
   "surahs": "Sourates",

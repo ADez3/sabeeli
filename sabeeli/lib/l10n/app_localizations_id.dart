@@ -343,6 +343,22 @@ class AppLocalizationsId extends AppLocalizations {
       'Atur lokasi Anda untuk menemukan arah kiblat.';
 
   @override
+  String get you => 'Anda';
+
+  @override
+  String get makkah => 'Makkah';
+
+  @override
+  String get qiblaGreatCircle =>
+      'Kiblat mengikuti jalur terpendek di atas Bumi, bukan garis lurus pada peta datar.';
+
+  @override
+  String get globeView => 'Bola dunia';
+
+  @override
+  String get compassView => 'Kompas';
+
+  @override
   String get quran => 'Al-Qur\'an Al-Karim';
 
   @override

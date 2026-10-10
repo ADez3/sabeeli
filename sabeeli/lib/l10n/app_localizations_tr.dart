@@ -342,6 +342,22 @@ class AppLocalizationsTr extends AppLocalizations {
   String get qiblaNeedsLocation => 'Kıbleyi bulmak için konumunuzu belirleyin.';
 
   @override
+  String get you => 'Siz';
+
+  @override
+  String get makkah => 'Mekke';
+
+  @override
+  String get qiblaGreatCircle =>
+      'Kıble, düz bir haritadaki çizgiyi değil, Dünya üzerindeki en kısa yolu izler.';
+
+  @override
+  String get globeView => 'Küre';
+
+  @override
+  String get compassView => 'Pusula';
+
+  @override
   String get quran => 'Kur\'an-ı Kerim';
 
   @override

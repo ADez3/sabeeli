@@ -83,6 +83,7 @@ flutter:
     - assets/quran/tafsir/
     - assets/azkar/
     - assets/hijri/
+    - assets/geo/
 
   fonts:
     - family: IBMPlexSansArabic
