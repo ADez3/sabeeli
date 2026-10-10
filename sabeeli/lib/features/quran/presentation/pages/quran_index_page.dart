@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -8,15 +9,19 @@ import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_fonts.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_icons.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../../core/widgets/app_card.dart';
+import '../../../../core/widgets/glass_panel.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/entities/quran_entities.dart';
 import '../cubit/quran_cubit.dart';
 import '../widgets/continue_reading_card.dart';
 import '../widgets/quran_ornaments.dart';
+import '../widgets/quran_sky/quran_sky.dart';
 import '../widgets/surah_labels.dart';
 
+/// The Quran tab: a night sky of the 114 surahs by default, or the classic lists.
 class QuranIndexPage extends StatefulWidget {
   const QuranIndexPage({super.key});
 
@@ -26,6 +31,8 @@ class QuranIndexPage extends StatefulWidget {
 
 class _QuranIndexPageState extends State<QuranIndexPage> {
   String _query = '';
+  bool _sky = true;
+  int? _selected;
 
   @override
   void initState() {
@@ -33,17 +40,145 @@ class _QuranIndexPageState extends State<QuranIndexPage> {
     context.read<QuranCubit>().load();
   }
 
+  void _setMode(bool sky) {
+    if (sky == _sky) return;
+    HapticFeedback.selectionClick();
+    setState(() => _sky = sky);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     final state = context.watch<QuranCubit>().state;
     final data = state.data;
+    if (data == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 350),
+      child: _sky
+          ? _skyMode(context, state, data)
+          : _listMode(context, state, data),
+    );
+  }
 
+  Widget _skyMode(BuildContext context, QuranState state, QuranData data) {
+    final l10n = context.l10n;
+    final text = Theme.of(context).textTheme;
+    final percent = (state.readPages.length / QuranData.pageCount * 100)
+        .floor();
+    final selected = _selected;
+
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      key: const ValueKey('sky'),
+      value: SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.transparent,
+      ),
+      child: Scaffold(
+        backgroundColor: const Color(0xFF04050D),
+        body: Stack(
+          children: [
+            Positioned.fill(
+              child: QuranSky(
+                data: data,
+                readPages: state.readPages,
+                current: state.position?.ref.surah,
+                selected: selected,
+                onSelected: (s) => setState(() => _selected = s),
+              ),
+            ),
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.xl,
+                  AppSpacing.md,
+                  AppSpacing.lg,
+                  0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            l10n.quran,
+                            style: text.headlineSmall?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        _ModeToggle(sky: true, onChanged: _setMode),
+                      ],
+                    ),
+                    const SizedBox(height: AppSpacing.xs),
+                    Text(
+                      context.digits(l10n.khatmahProgress(percent)),
+                      style: text.bodyMedium?.copyWith(
+                        color: const Color(0xFFF4B860),
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.xs),
+                    Text(
+                      l10n.skyHint,
+                      style: text.bodySmall?.copyWith(color: Colors.white54),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              left: AppSpacing.lg,
+              right: AppSpacing.lg,
+              bottom: context.navBarClearance - AppSpacing.md,
+              child: ContentWidth(
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 280),
+                  transitionBuilder: (child, a) => FadeTransition(
+                    opacity: a,
+                    child: SlideTransition(
+                      position: Tween(
+                        begin: const Offset(0, 0.15),
+                        end: Offset.zero,
+                      ).animate(a),
+                      child: child,
+                    ),
+                  ),
+                  child: selected == null
+                      ? _GlassContinue(
+                          key: const ValueKey('continue'),
+                          state: state,
+                          data: data,
+                        )
+                      : _SurahPreview(
+                          key: ValueKey(selected),
+                          surah: data.surah(selected),
+                          progress: data.surahProgress(
+                            selected,
+                            state.readPages,
+                          ),
+                        ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _listMode(BuildContext context, QuranState state, QuranData data) {
+    final l10n = context.l10n;
     return DefaultTabController(
+      key: const ValueKey('list'),
       length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: Text(l10n.quran),
+          actions: [
+            _ModeToggle(sky: false, onChanged: _setMode),
+            const SizedBox(width: AppSpacing.md),
+          ],
           bottom: TabBar(
             tabs: [
               Tab(text: l10n.surahs),
@@ -52,21 +187,218 @@ class _QuranIndexPageState extends State<QuranIndexPage> {
             ],
           ),
         ),
-        body: data == null
-            ? const Center(child: CircularProgressIndicator())
-            : ContentWidth(
-                child: TabBarView(
-                  children: [
-                    _SurahList(
-                      data: data,
-                      query: _query,
-                      onQuery: (q) => setState(() => _query = q),
+        body: ContentWidth(
+          child: TabBarView(
+            children: [
+              _SurahList(
+                data: data,
+                query: _query,
+                onQuery: (q) => setState(() => _query = q),
+              ),
+              _JuzList(data: data),
+              _BookmarkList(data: data, bookmarks: state.bookmarks),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Sky / List switch: two icons in a small pill.
+class _ModeToggle extends StatelessWidget {
+  const _ModeToggle({required this.sky, required this.onChanged});
+
+  final bool sky;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final onSky = sky;
+    final fg = onSky ? Colors.white : context.colors.text;
+    Widget option(bool value, IconData icon, String label) {
+      final active = value == sky;
+      return Tooltip(
+        message: label,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: () => onChanged(value),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: active ? fg.withValues(alpha: 0.16) : Colors.transparent,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Icon(
+              icon,
+              size: 18,
+              color: active ? fg : fg.withValues(alpha: 0.5),
+            ),
+          ),
+        ),
+      );
+    }
+
+    final row = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        option(true, LucideIcons.sparkles, l10n.skyView),
+        option(false, LucideIcons.listOrdered, l10n.listView),
+      ],
+    );
+    return onSky
+        ? GlassPanel(radius: 20, padding: const EdgeInsets.all(3), child: row)
+        : DecoratedBox(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: context.colors.outline),
+            ),
+            child: Padding(padding: const EdgeInsets.all(3), child: row),
+          );
+  }
+}
+
+class _GlassContinue extends StatelessWidget {
+  const _GlassContinue({super.key, required this.state, required this.data});
+
+  final QuranState state;
+  final QuranData data;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final text = Theme.of(context).textTheme;
+    final position = state.position;
+    final surah = data.surah(position?.ref.surah ?? 1);
+    return GlassPanel(
+      onTap: () => context.pushNamed(
+        AppRoutes.quranPageName,
+        pathParameters: {'page': '${position?.page ?? 1}'},
+      ),
+      child: Row(
+        children: [
+          const Icon(LucideIcons.bookOpenText, color: Colors.white, size: 20),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  position == null ? l10n.startReading : l10n.continueReading,
+                  style: text.titleSmall?.copyWith(color: Colors.white),
+                ),
+                if (position != null)
+                  Text(
+                    context.digits(
+                      l10n.surahAyah(
+                        context.surahName(surah),
+                        position.ref.ayah,
+                      ),
                     ),
-                    _JuzList(data: data),
-                    _BookmarkList(data: data, bookmarks: state.bookmarks),
+                    style: text.bodySmall?.copyWith(color: Colors.white70),
+                  ),
+              ],
+            ),
+          ),
+          Text(
+            surah.nameArabic,
+            textDirection: TextDirection.rtl,
+            style: const TextStyle(
+              fontFamily: AppFonts.display,
+              fontSize: 20,
+              color: Color(0xFFF4B860),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The selected star: its surah at a glance, and the way in.
+class _SurahPreview extends StatelessWidget {
+  const _SurahPreview({super.key, required this.surah, required this.progress});
+
+  final SurahInfo surah;
+  final double progress;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final text = Theme.of(context).textTheme;
+    void open() => context.pushNamed(
+      AppRoutes.quranIntroName,
+      pathParameters: {'surah': '${surah.number}'},
+    );
+    return GlassPanel(
+      onTap: open,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      context.surahName(surah),
+                      style: text.titleMedium?.copyWith(color: Colors.white),
+                    ),
+                    Text(
+                      context.surahSubtitle(surah),
+                      style: text.bodySmall?.copyWith(color: Colors.white70),
+                    ),
                   ],
                 ),
               ),
+              Text(
+                surah.nameArabic,
+                textDirection: TextDirection.rtl,
+                style: const TextStyle(
+                  fontFamily: AppFonts.display,
+                  fontSize: 26,
+                  color: Color(0xFFF4B860),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.md),
+          Row(
+            children: [
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(2),
+                  child: LinearProgressIndicator(
+                    value: progress,
+                    minHeight: 3,
+                    color: const Color(0xFFF4B860),
+                    backgroundColor: Colors.white12,
+                  ),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Text(
+                context.digits(l10n.surahProgress((progress * 100).floor())),
+                style: text.labelSmall?.copyWith(color: Colors.white70),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Text(
+                l10n.openSurah,
+                style: text.labelLarge?.copyWith(color: Colors.white),
+              ),
+              Icon(
+                context.isRtl
+                    ? LucideIcons.chevronLeft
+                    : LucideIcons.chevronRight,
+                color: Colors.white,
+                size: 18,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

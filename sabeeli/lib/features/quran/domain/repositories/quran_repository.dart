@@ -18,5 +18,10 @@ abstract interface class QuranRepository {
   Future<Result<void>> savePosition(ReadingPosition position);
 
   Future<Result<ReaderPreferences>> preferences();
+
+  Future<Result<Set<int>>> readPages();
+
+  /// Adds [page] to the pages read and returns the updated set.
+  Future<Result<Set<int>>> markPageRead(int page);
   Future<Result<void>> savePreferences(ReaderPreferences preferences);
 }

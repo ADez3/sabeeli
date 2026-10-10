@@ -928,6 +928,54 @@ abstract class AppLocalizations {
   /// **'Ayah of the day'**
   String get dailyAyah;
 
+  /// No description provided for @skyView.
+  ///
+  /// In en, this message translates to:
+  /// **'Sky'**
+  String get skyView;
+
+  /// No description provided for @listView.
+  ///
+  /// In en, this message translates to:
+  /// **'List'**
+  String get listView;
+
+  /// No description provided for @khatmahProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% of the Quran read'**
+  String khatmahProgress(int percent);
+
+  /// No description provided for @skyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Each star is a surah. It brightens as you read it.'**
+  String get skyHint;
+
+  /// No description provided for @revelationOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'Revealed {order} of 114'**
+  String revelationOrder(int order);
+
+  /// No description provided for @pagesRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Pages {from}–{to}'**
+  String pagesRange(int from, int to);
+
+  /// No description provided for @surahProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% read'**
+  String surahProgress(int percent);
+
+  /// No description provided for @openSurah.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get openSurah;
+
   /// No description provided for @azkar.
   ///
   /// In en, this message translates to:

@@ -33,6 +33,7 @@ class SurahInfo extends Equatable {
     required this.revelation,
     required this.ayahCount,
     required this.startPage,
+    required this.revelationOrder,
   });
 
   final int number;
@@ -42,6 +43,16 @@ class SurahInfo extends Equatable {
   final Revelation revelation;
   final int ayahCount;
   final int startPage;
+
+  /// Position in the order of revelation (Al-Alaq is 1), as in the Tanzil data.
+  final int revelationOrder;
+
+  /// The English meaning, unless it only repeats the transliterated name (Ya-Sin is
+  /// "Ya Sin").
+  String? get meaningIfDistinct {
+    String bare(String s) => s.toLowerCase().replaceAll(RegExp(r'[^a-z]'), '');
+    return bare(nameEnglish) == bare(nameTransliterated) ? null : nameEnglish;
+  }
 
   /// Every surah but Al-Fatihah (whose first ayah *is* the basmala) and At-Tawbah
   /// opens with a basmala that is not numbered as an ayah.
@@ -134,6 +145,23 @@ class QuranData {
     final start = flatIndex(pageStarts[page - 1]);
     final end = page < pageCount ? flatIndex(pageStarts[page]) : ayahTotal;
     return [for (var i = start; i < end; i++) fromFlatIndex(i)];
+  }
+
+  /// First and last mushaf page of a surah (a page can hold the end of one surah
+  /// and the start of the next).
+  (int, int) surahPages(int surah) {
+    final info = this.surah(surah);
+    return (info.startPage, pageOf(AyahRef(surah, info.ayahCount)));
+  }
+
+  /// Share of a surah's pages the reader has opened, 0…1.
+  double surahProgress(int surah, Set<int> readPages) {
+    final (first, last) = surahPages(surah);
+    var read = 0;
+    for (var p = first; p <= last; p++) {
+      if (readPages.contains(p)) read++;
+    }
+    return read / (last - first + 1);
   }
 
   SajdaInfo? sajdaAt(AyahRef ref) {

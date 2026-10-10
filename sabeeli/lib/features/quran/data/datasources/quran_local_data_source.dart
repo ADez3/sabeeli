@@ -12,6 +12,7 @@ class QuranLocalDataSource {
   static const _bookmarksKey = 'quran.bookmarks';
   static const _positionKey = 'quran.position';
   static const _prefsKey = 'quran.prefs';
+  static const _readPagesKey = 'quran.readPages';
 
   List<Bookmark> bookmarks() => [
     for (final j
@@ -49,6 +50,15 @@ class QuranLocalDataSource {
     'p': p.page,
     't': p.updatedAt.millisecondsSinceEpoch,
   });
+
+  /// Pages the reader has settled on at least once: the light of the Quran sky.
+  Set<int> readPages() => {
+    for (final p in _store.getJsonList(_readPagesKey) ?? const [])
+      (p as num).toInt(),
+  };
+
+  Future<void> saveReadPages(Set<int> pages) =>
+      _store.setJson(_readPagesKey, pages.toList()..sort());
 
   ReaderPreferences preferences() {
     final j = _store.getJson(_prefsKey);

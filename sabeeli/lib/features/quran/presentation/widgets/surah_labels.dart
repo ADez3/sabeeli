@@ -14,7 +14,7 @@ extension SurahLabels on BuildContext {
   String surahSubtitle(SurahInfo surah) {
     final l10n = this.l10n;
     final parts = [
-      if (languageCode == 'en') surah.nameEnglish,
+      if (languageCode == 'en') ?surah.meaningIfDistinct,
       surah.revelation == Revelation.meccan ? l10n.meccan : l10n.medinan,
       digits(l10n.ayahCount(surah.ayahCount)),
     ];

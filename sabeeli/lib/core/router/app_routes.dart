@@ -11,6 +11,10 @@ abstract final class AppRoutes {
   static const quranSurah = ':surah';
   static const quranSurahName = 'quranSurah';
 
+  /// `/quran/intro/:surah`: the surah's opening, reached from its star.
+  static const quranIntro = 'intro/:surah';
+  static const quranIntroName = 'quranIntro';
+
   /// `/quran/page/:page`.
   static const quranPage = 'page/:page';
   static const quranPageName = 'quranPage';

@@ -466,6 +466,39 @@ class AppLocalizationsId extends AppLocalizations {
   String get dailyAyah => 'Ayat hari ini';
 
   @override
+  String get skyView => 'Langit';
+
+  @override
+  String get listView => 'Daftar';
+
+  @override
+  String khatmahProgress(int percent) {
+    return '$percent% Al-Qur\'an telah dibaca';
+  }
+
+  @override
+  String get skyHint =>
+      'Setiap bintang adalah satu surah. Ia makin terang saat kamu membacanya.';
+
+  @override
+  String revelationOrder(int order) {
+    return 'Turun ke-$order dari 114';
+  }
+
+  @override
+  String pagesRange(int from, int to) {
+    return 'Halaman $from–$to';
+  }
+
+  @override
+  String surahProgress(int percent) {
+    return '$percent% dibaca';
+  }
+
+  @override
+  String get openSurah => 'Buka';
+
+  @override
   String get azkar => 'Zikir';
 
   @override

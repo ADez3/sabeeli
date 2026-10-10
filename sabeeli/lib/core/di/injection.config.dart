@@ -258,6 +258,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i34.SaveReaderPreferencesUseCase>(
       () => _i34.SaveReaderPreferencesUseCase(gh<_i498.QuranRepository>()),
     );
+    gh.factory<_i34.GetReadPagesUseCase>(
+      () => _i34.GetReadPagesUseCase(gh<_i498.QuranRepository>()),
+    );
+    gh.factory<_i34.MarkPageReadUseCase>(
+      () => _i34.MarkPageReadUseCase(gh<_i498.QuranRepository>()),
+    );
     gh.factory<_i279.LoadAppSettingsUseCase>(
       () => _i279.LoadAppSettingsUseCase(gh<_i674.SettingsRepository>()),
     );
@@ -299,6 +305,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i34.SaveReadingPositionUseCase>(),
         gh<_i34.GetReaderPreferencesUseCase>(),
         gh<_i34.SaveReaderPreferencesUseCase>(),
+        gh<_i34.GetReadPagesUseCase>(),
+        gh<_i34.MarkPageReadUseCase>(),
       ),
     );
     gh.lazySingleton<_i287.HijriCubit>(

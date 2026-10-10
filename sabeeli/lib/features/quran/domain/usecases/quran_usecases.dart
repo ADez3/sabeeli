@@ -114,3 +114,21 @@ class SaveReaderPreferencesUseCase implements UseCase<void, ReaderPreferences> {
   Future<Result<void>> call(ReaderPreferences params) =>
       _repository.savePreferences(params);
 }
+
+@injectable
+class GetReadPagesUseCase implements UseCase<Set<int>, NoParams> {
+  const GetReadPagesUseCase(this._repository);
+  final QuranRepository _repository;
+
+  @override
+  Future<Result<Set<int>>> call(NoParams params) => _repository.readPages();
+}
+
+@injectable
+class MarkPageReadUseCase implements UseCase<Set<int>, int> {
+  const MarkPageReadUseCase(this._repository);
+  final QuranRepository _repository;
+
+  @override
+  Future<Result<Set<int>>> call(int params) => _repository.markPageRead(params);
+}

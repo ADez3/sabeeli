@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/azkar/presentation/pages/azkar_categories_page.dart';
@@ -12,6 +12,7 @@ import '../../features/qibla/presentation/pages/qibla_page.dart';
 import '../../features/quran/domain/entities/quran_entities.dart';
 import '../../features/quran/presentation/pages/quran_index_page.dart';
 import '../../features/quran/presentation/pages/quran_reader_page.dart';
+import '../../features/quran/presentation/pages/surah_opening_page.dart';
 import '../../features/settings/presentation/pages/about_page.dart';
 import '../../features/settings/presentation/pages/more_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
@@ -47,6 +48,35 @@ final appRouter = GoRouter(
               name: AppRoutes.quranName,
               builder: (_, _) => const QuranIndexPage(),
               routes: [
+                GoRoute(
+                  path: AppRoutes.quranIntro,
+                  name: AppRoutes.quranIntroName,
+                  parentNavigatorKey: rootNavigatorKey,
+                  // Opening a star: the page fades in from a slight zoom.
+                  pageBuilder: (_, state) => CustomTransitionPage(
+                    key: state.pageKey,
+                    transitionDuration: const Duration(milliseconds: 450),
+                    child: SurahOpeningPage(
+                      surah:
+                          (int.tryParse(state.pathParameters['surah'] ?? '') ??
+                                  1)
+                              .clamp(1, 114),
+                    ),
+                    transitionsBuilder: (_, animation, _, child) =>
+                        FadeTransition(
+                          opacity: animation,
+                          child: ScaleTransition(
+                            scale: Tween(begin: 1.08, end: 1.0).animate(
+                              CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.easeOutCubic,
+                              ),
+                            ),
+                            child: child,
+                          ),
+                        ),
+                  ),
+                ),
                 GoRoute(
                   path: AppRoutes.quranPage,
                   name: AppRoutes.quranPageName,

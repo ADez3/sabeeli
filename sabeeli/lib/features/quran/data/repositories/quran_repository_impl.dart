@@ -66,6 +66,17 @@ class QuranRepositoryImpl implements QuranRepository {
       _guard(() => _local.savePosition(position));
 
   @override
+  Future<Result<Set<int>>> readPages() =>
+      _guard(() async => _local.readPages());
+
+  @override
+  Future<Result<Set<int>>> markPageRead(int page) => _guard(() async {
+    final pages = _local.readPages();
+    if (pages.add(page)) await _local.saveReadPages(pages);
+    return pages;
+  });
+
+  @override
   Future<Result<ReaderPreferences>> preferences() =>
       _guard(() async => _local.preferences());
 

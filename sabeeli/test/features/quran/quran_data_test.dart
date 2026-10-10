@@ -30,6 +30,7 @@ QuranData loadQuran() {
               : Revelation.meccan,
           ayahCount: s['ayahs'] as int,
           startPage: s['page'] as int,
+          revelationOrder: s['order'] as int,
         ),
     ],
     juzStarts: (meta['juz'] as List).map(ref).toList(),
@@ -83,6 +84,15 @@ void main() {
         reason: 'surah ${s.number}',
       );
     }
+  });
+
+  test('surah page ranges and reading progress', () {
+    expect(data.surahPages(1), (1, 1));
+    expect(data.surahPages(2), (2, 49));
+    expect(data.surahPages(114), (604, 604));
+    expect(data.surahProgress(2, {for (var p = 2; p <= 49; p++) p}), 1.0);
+    expect(data.surahProgress(2, {2}), closeTo(1 / 48, 1e-9));
+    expect(data.surahProgress(2, const {}), 0);
   });
 
   test('flat index round-trips', () {

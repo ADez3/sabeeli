@@ -102,6 +102,7 @@ class QuranAssetDataSource {
                 : Revelation.meccan,
             ayahCount: (s['ayahs'] as num).toInt(),
             startPage: (s['page'] as num).toInt(),
+            revelationOrder: (s['order'] as num).toInt(),
           ),
       ],
       juzStarts: (meta['juz'] as List<dynamic>).map(ref).toList(),

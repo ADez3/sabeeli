@@ -466,6 +466,38 @@ class AppLocalizationsUr extends AppLocalizations {
   String get dailyAyah => 'آج کی آیت';
 
   @override
+  String get skyView => 'آسمان';
+
+  @override
+  String get listView => 'فہرست';
+
+  @override
+  String khatmahProgress(int percent) {
+    return 'قرآن کا $percent٪ پڑھا گیا';
+  }
+
+  @override
+  String get skyHint => 'ہر ستارہ ایک سورت ہے، جتنا پڑھیں اتنا روشن ہوتا ہے۔';
+
+  @override
+  String revelationOrder(int order) {
+    return 'نزول کی ترتیب $order از 114';
+  }
+
+  @override
+  String pagesRange(int from, int to) {
+    return 'صفحات $from–$to';
+  }
+
+  @override
+  String surahProgress(int percent) {
+    return '$percent٪ پڑھا';
+  }
+
+  @override
+  String get openSurah => 'کھولیں';
+
+  @override
   String get azkar => 'اذکار';
 
   @override

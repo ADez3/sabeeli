@@ -290,9 +290,14 @@ class _DayLayout {
 
     // Each prayer sits below the previous one in proportion to the time between
     // them. The night hours at either end are compressed: they are mostly sleep.
-    final ys = <double>[top + 40 + minutes(start, times.fajr) * _pxPerMinute * 0.5];
+    final ys = <double>[
+      top + 40 + minutes(start, times.fajr) * _pxPerMinute * 0.5,
+    ];
     for (var i = 1; i < Prayer.values.length; i++) {
-      final gap = minutes(times.timeOf(Prayer.values[i - 1]), times.timeOf(Prayer.values[i]));
+      final gap = minutes(
+        times.timeOf(Prayer.values[i - 1]),
+        times.timeOf(Prayer.values[i]),
+      );
       ys.add(ys.last + (gap * _pxPerMinute).clamp(_minGap, double.infinity));
     }
     final endY = ys.last + 60 + minutes(times.isha, end) * _pxPerMinute * 0.5;

@@ -16,6 +16,7 @@ class QuranState extends Equatable {
     this.bookmarks = const [],
     this.position,
     this.preferences = const ReaderPreferences(),
+    this.readPages = const {},
     this.failure,
   });
 
@@ -24,6 +25,9 @@ class QuranState extends Equatable {
   final List<Bookmark> bookmarks;
   final ReadingPosition? position;
   final ReaderPreferences preferences;
+
+  /// Pages opened at least once, for the progress shown in the Quran sky.
+  final Set<int> readPages;
   final Failure? failure;
 
   bool isBookmarked(AyahRef ref) => bookmarks.any((b) => b.ref == ref);
@@ -34,6 +38,7 @@ class QuranState extends Equatable {
     List<Bookmark>? bookmarks,
     ReadingPosition? position,
     ReaderPreferences? preferences,
+    Set<int>? readPages,
     Failure? Function()? failure,
   }) => QuranState(
     status: status ?? this.status,
@@ -41,6 +46,7 @@ class QuranState extends Equatable {
     bookmarks: bookmarks ?? this.bookmarks,
     position: position ?? this.position,
     preferences: preferences ?? this.preferences,
+    readPages: readPages ?? this.readPages,
     failure: failure != null ? failure() : this.failure,
   );
 
@@ -51,6 +57,7 @@ class QuranState extends Equatable {
     bookmarks,
     position,
     preferences,
+    readPages,
     failure,
   ];
 }
@@ -67,6 +74,8 @@ class QuranCubit extends Cubit<QuranState> {
     this._savePosition,
     this._preferences,
     this._savePreferences,
+    this._readPages,
+    this._markPageRead,
   ) : super(const QuranState());
 
   final LoadQuranUseCase _load;
@@ -76,6 +85,8 @@ class QuranCubit extends Cubit<QuranState> {
   final SaveReadingPositionUseCase _savePosition;
   final GetReaderPreferencesUseCase _preferences;
   final SaveReaderPreferencesUseCase _savePreferences;
+  final GetReadPagesUseCase _readPages;
+  final MarkPageReadUseCase _markPageRead;
 
   Future<void> load() async {
     if (state.status == QuranStatus.loading ||
@@ -87,11 +98,13 @@ class QuranCubit extends Cubit<QuranState> {
         (await _bookmarks(const NoParams())).valueOrNull ?? const [];
     final position = (await _position(const NoParams())).valueOrNull;
     final preferences = (await _preferences(const NoParams())).valueOrNull;
+    final readPages = (await _readPages(const NoParams())).valueOrNull;
     emit(
       state.copyWith(
         bookmarks: bookmarks,
         position: position,
         preferences: preferences,
+        readPages: readPages,
       ),
     );
 
@@ -126,6 +139,11 @@ class QuranCubit extends Cubit<QuranState> {
     );
     emit(state.copyWith(position: position));
     await _savePosition(position);
+    // A page the reader settles on counts as read; it lights its surah's star.
+    if (page != null && !state.readPages.contains(page)) {
+      final result = await _markPageRead(page);
+      result.fold((_) {}, (pages) => emit(state.copyWith(readPages: pages)));
+    }
   }
 
   Future<void> setFontScale(double scale) => _setPreferences(

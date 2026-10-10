@@ -470,6 +470,39 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dailyAyah => 'Verset du jour';
 
   @override
+  String get skyView => 'Ciel';
+
+  @override
+  String get listView => 'Liste';
+
+  @override
+  String khatmahProgress(int percent) {
+    return '$percent % du Coran lu';
+  }
+
+  @override
+  String get skyHint =>
+      'Chaque étoile est une sourate. Elle brille davantage à mesure que vous la lisez.';
+
+  @override
+  String revelationOrder(int order) {
+    return 'Révélée ${order}e sur 114';
+  }
+
+  @override
+  String pagesRange(int from, int to) {
+    return 'Pages $from–$to';
+  }
+
+  @override
+  String surahProgress(int percent) {
+    return '$percent % lu';
+  }
+
+  @override
+  String get openSurah => 'Ouvrir';
+
+  @override
   String get azkar => 'Adhkar';
 
   @override
