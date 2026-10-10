@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -12,6 +10,7 @@ import '../../../../core/utils/formatters.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/entities/tasbih_state_data.dart';
 import '../cubit/tasbih_cubit.dart';
+import '../widgets/misbaha.dart';
 
 class TasbihPage extends StatelessWidget {
   const TasbihPage({super.key});
@@ -89,92 +88,46 @@ class _TasbihView extends StatelessWidget {
               ],
             ),
             Expanded(
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: cubit.increment,
-                child: Center(
-                  child: LayoutBuilder(
-                    builder: (context, c) {
-                      final size = math.min(
-                        math.min(c.maxWidth, c.maxHeight) - 32,
-                        340.0,
-                      );
-                      final progress = s.target == 0 ? 0.0 : s.count / s.target;
-                      return SizedBox.square(
-                        dimension: size,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            ClipOval(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  gradient: RadialGradient(
-                                    colors: [
-                                      colors.primary.withValues(alpha: 0.16),
-                                      colors.surface,
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox.square(
-                              dimension: size,
-                              child: TweenAnimationBuilder<double>(
-                                tween: Tween(end: progress),
-                                duration: const Duration(milliseconds: 220),
-                                builder: (_, value, _) =>
-                                    CircularProgressIndicator(
-                                      value: s.target == 0 ? 0 : value,
-                                      strokeWidth: 6,
-                                      strokeCap: StrokeCap.round,
-                                      color: colors.accent,
-                                      backgroundColor: colors.outline,
-                                    ),
-                              ),
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  s.dhikr.arabic,
-                                  textAlign: TextAlign.center,
-                                  textDirection: TextDirection.rtl,
-                                  style: TextStyle(
-                                    fontFamily: AppFonts.display,
-                                    fontSize: 24,
-                                    color: colors.text,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                AnimatedSwitcher(
-                                  duration: const Duration(milliseconds: 120),
-                                  transitionBuilder: (child, a) =>
-                                      ScaleTransition(scale: a, child: child),
-                                  child: Text(
-                                    context.digits(s.count),
-                                    key: ValueKey(s.count),
-                                    style: text.displayLarge?.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color: colors.text,
-                                      fontFeatures: const [
-                                        FontFeature.tabularFigures(),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                if (s.target > 0)
-                                  Text(
-                                    '/ ${context.digits(s.target)}',
-                                    style: text.titleMedium?.copyWith(
-                                      color: colors.textMuted,
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ],
+              child: Padding(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                child: Misbaha(
+                  onCount: cubit.increment,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        s.dhikr.arabic,
+                        textAlign: TextAlign.center,
+                        textDirection: TextDirection.rtl,
+                        style: TextStyle(
+                          fontFamily: AppFonts.display,
+                          fontSize: 22,
+                          color: colors.text,
+                          fontWeight: FontWeight.w700,
                         ),
-                      );
-                    },
+                      ),
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 120),
+                        transitionBuilder: (child, a) =>
+                            ScaleTransition(scale: a, child: child),
+                        child: Text(
+                          context.digits(s.count),
+                          key: ValueKey(s.count),
+                          style: text.displayMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: colors.text,
+                            fontFeatures: const [FontFeature.tabularFigures()],
+                          ),
+                        ),
+                      ),
+                      if (s.target > 0)
+                        Text(
+                          '/ ${context.digits(s.target)}',
+                          style: text.titleMedium?.copyWith(
+                            color: colors.textMuted,
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ),
