@@ -2,7 +2,7 @@
 # Download every raw input used by the build scripts into tool/data/raw/.
 # Then run (from tool/data):
 #   python build_quran.py && python fetch_tafsir_translation.py && python build_translation_catalog.py
-#   python build_azkar.py && python build_hijri.py && python build_land_mask.py
+#   python build_azkar.py && python build_hijri.py && python build_land_mask.py && python build_riwayat.py
 # Fonts are copied directly (see the bottom of this script).
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -42,3 +42,18 @@ curl -sSL -o "$A/fonts/OFL-Amiri.txt" "$G/amiri/OFL.txt"
 # Land outlines for the Qibla globe (Natural Earth, public domain)
 mkdir -p "$R/geo"
 curl -sSL -o "$R/geo/ne_110m_land.geojson" https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_land.geojson
+# Other riwayat: official KFGQPC v2.1 packages (then: python build_riwayat.py).
+# download.qurancomplex.gov.sa refuses direct connections, so the archived copies are used;
+# the checksums pin the exact files the assets were built from.
+W=http://web.archive.org/web/2025id_/https://download.qurancomplex.gov.sa/resources_dev
+riwayah() { # <id> <zip> <sha256> <font inside zip> <asset font name>
+  mkdir -p "$R/riwayat/$1"
+  curl -sSL -o "$R/riwayat/$1/$2" "$W/$2"
+  echo "$3  $R/riwayat/$1/$2" | sha256sum -c -
+  unzip -oq "$R/riwayat/$1/$2" -d "$R/riwayat/$1"
+  cp "$R/riwayat/$1/$4" "$A/fonts/$5"
+}
+riwayah warsh UthmanicWarsh_v2-1.zip d847a7e7002dfbed5d28db6684fd1d9c3d50b8bb63ad64cb38a46b9dad788b47 \
+  "UthmanicWarsh_v2-1 font/uthmanic_warsh_v21.ttf" UthmanicWarsh_V21.ttf
+riwayah qalun UthmanicQaloun_v2-1.zip 6988b782b4268c70a11bc807223fcf2b131a9879a48aad34eb65af523fcb144d \
+  "UthmanicQaloun_v2-1 font/uthmanic_qaloun_v21.ttf" UthmanicQaloun_V21.ttf
