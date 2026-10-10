@@ -18,25 +18,14 @@ OUT = 'assets/fonts'
 GF = 'https://raw.githubusercontent.com/google/fonts/main/ofl'
 
 FONTS = {
-    # Arabic and Latin UI text: one family, so mixed-script lines match.
+    # Arabic and Latin in one geometric family, so mixed lines match. The thin
+    # weights are for large figures (the countdown), the rest for text.
     'ReadexPro': {
         'url': f'{GF}/readexpro/ReadexPro%5BHEXP,wght%5D.ttf',
         'license': f'{GF}/readexpro/OFL.txt',
-        'instances': {w: {'wght': w, 'HEXP': 0} for w in (300, 400, 500, 600)},
-    },
-    # Latin display: titles and the big numbers' companions.
-    'Fraunces': {
-        'url': f'{GF}/fraunces/Fraunces%5BSOFT,WONK,opsz,wght%5D.ttf',
-        'license': f'{GF}/fraunces/OFL.txt',
         'instances': {
-            w: {'wght': w, 'opsz': 72, 'SOFT': 100, 'WONK': 0} for w in (300, 500)
+            w: {'wght': w, 'HEXP': 0} for w in (200, 300, 400, 500, 600)
         },
-    },
-    # Arabic display: geometric Kufi for titles.
-    'ReemKufi': {
-        'url': f'{GF}/reemkufi/ReemKufi%5Bwght%5D.ttf',
-        'license': f'{GF}/reemkufi/OFL.txt',
-        'instances': {w: {'wght': w} for w in (500, 700)},
     },
 }
 

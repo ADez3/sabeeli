@@ -14,7 +14,9 @@ import '../../../../core/theme/motion.dart';
 import '../../../../core/widgets/grain.dart';
 import '../../../azkar/presentation/cubit/azkar_cubit.dart';
 import '../../../location/presentation/cubit/location_cubit.dart';
+import '../../../feedback/presentation/widgets/shake_to_report.dart';
 import '../../../quran/presentation/cubit/quran_cubit.dart';
+import '../../../settings/presentation/cubit/settings_cubit.dart';
 import '../widgets/living_sky/living_sky.dart';
 import '../widgets/today/today_bento.dart';
 import '../widgets/today/today_hero.dart';
@@ -47,6 +49,15 @@ class _TodayPageState extends State<TodayPage>
     super.initState();
     context.read<QuranCubit>().load();
     context.read<AzkarCubit>().load();
+    // Once: this is a beta, and how to report what is wrong.
+    final settings = context.read<SettingsCubit>();
+    if (!settings.state.betaNoticeSeen) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!mounted) return;
+        await showBetaNotice(context);
+        settings.markBetaNoticeSeen();
+      });
+    }
   }
 
   @override
@@ -86,7 +97,8 @@ class _TodayPageState extends State<TodayPage>
     final location = context.select((LocationCubit c) => c.state.location);
     final where = location?.coordinates ?? _defaultSky;
     final size = MediaQuery.sizeOf(context);
-    final heroHeight = math.max(size.height * 0.82, 560.0);
+    // Enough sky to feel it, without pushing the tiles off the first screen.
+    final heroHeight = math.max(size.height * 0.7, 540.0);
     final dark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(

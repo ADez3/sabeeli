@@ -17,6 +17,8 @@ class QuranState extends Equatable {
     this.position,
     this.preferences = const ReaderPreferences(),
     this.readPages = const {},
+    this.readDays = const {},
+    this.plan,
     this.failure,
   });
 
@@ -28,7 +30,21 @@ class QuranState extends Equatable {
 
   /// Pages opened at least once, for the progress shown in the Quran sky.
   final Set<int> readPages;
+
+  /// Local dates on which a page was read, for the weekly line.
+  final Set<DateTime> readDays;
+
+  /// The khatmah plan in progress, if any.
+  final KhatmahPlan? plan;
   final Failure? failure;
+
+  /// Days read among the last seven, today included.
+  int readDaysThisWeek(DateTime now) {
+    final today = DateTime(now.year, now.month, now.day);
+    return readDays
+        .where((d) => !d.isAfter(today) && today.difference(d).inDays < 7)
+        .length;
+  }
 
   bool isBookmarked(AyahRef ref) => bookmarks.any((b) => b.ref == ref);
 
@@ -39,6 +55,8 @@ class QuranState extends Equatable {
     ReadingPosition? Function()? position,
     ReaderPreferences? preferences,
     Set<int>? readPages,
+    Set<DateTime>? readDays,
+    KhatmahPlan? Function()? plan,
     Failure? Function()? failure,
   }) => QuranState(
     status: status ?? this.status,
@@ -47,6 +65,8 @@ class QuranState extends Equatable {
     position: position != null ? position() : this.position,
     preferences: preferences ?? this.preferences,
     readPages: readPages ?? this.readPages,
+    readDays: readDays ?? this.readDays,
+    plan: plan != null ? plan() : this.plan,
     failure: failure != null ? failure() : this.failure,
   );
 
@@ -58,6 +78,8 @@ class QuranState extends Equatable {
     position,
     preferences,
     readPages,
+    readDays,
+    plan,
     failure,
   ];
 }
@@ -76,6 +98,9 @@ class QuranCubit extends Cubit<QuranState> {
     this._savePreferences,
     this._readPages,
     this._markPageRead,
+    this._readDays,
+    this._plan,
+    this._savePlan,
   ) : super(const QuranState());
 
   final LoadQuranUseCase _load;
@@ -87,6 +112,9 @@ class QuranCubit extends Cubit<QuranState> {
   final SaveReaderPreferencesUseCase _savePreferences;
   final GetReadPagesUseCase _readPages;
   final MarkPageReadUseCase _markPageRead;
+  final GetReadDaysUseCase _readDays;
+  final GetKhatmahPlanUseCase _plan;
+  final SaveKhatmahPlanUseCase _savePlan;
 
   /// The device's region (or the location's country): picks the riwayah until
   /// the user chooses one. Set by the shell's AppSync.
@@ -125,6 +153,8 @@ class QuranCubit extends Cubit<QuranState> {
         (await _bookmarks(const NoParams())).valueOrNull ?? const [];
     final position = (await _position(const NoParams())).valueOrNull;
     final readPages = (await _readPages(const NoParams())).valueOrNull;
+    final readDays = (await _readDays(const NoParams())).valueOrNull;
+    final plan = (await _plan(const NoParams())).valueOrNull;
     emit(
       state.copyWith(
         status: QuranStatus.ready,
@@ -132,6 +162,8 @@ class QuranCubit extends Cubit<QuranState> {
         bookmarks: bookmarks,
         position: () => position,
         readPages: readPages,
+        readDays: readDays,
+        plan: () => plan,
         failure: () => null,
       ),
     );
@@ -171,15 +203,36 @@ class QuranCubit extends Cubit<QuranState> {
     emit(state.copyWith(position: () => position));
     await _savePosition(position);
     // A page the reader settles on counts as read; it lights its surah's star.
-    if (page != null && !state.readPages.contains(page)) {
-      final result = await _markPageRead(page);
-      result.fold((_) {}, (pages) => emit(state.copyWith(readPages: pages)));
+    if (page != null) {
+      final now = DateTime.now();
+      final today = DateTime(now.year, now.month, now.day);
+      if (!state.readPages.contains(page) || !state.readDays.contains(today)) {
+        final result = await _markPageRead(page);
+        result.fold(
+          (_) {},
+          (pages) => emit(
+            state.copyWith(
+              readPages: pages,
+              readDays: {...state.readDays, today},
+            ),
+          ),
+        );
+      }
     }
   }
 
   Future<void> setFontScale(double scale) => _setPreferences(
     state.preferences.copyWith(fontScale: scale.clamp(0.8, 1.8)),
   );
+
+  /// Starts a khatmah plan today, or ends the current one with null.
+  Future<void> setPlan(KhatmahPlan? plan) async {
+    emit(state.copyWith(plan: () => plan));
+    await _savePlan(plan);
+  }
+
+  Future<void> setReaderTheme(ReaderTheme theme) =>
+      _setPreferences(state.preferences.copyWith(theme: theme));
 
   Future<void> setTranslation(String? id) =>
       _setPreferences(state.preferences.copyWith(translationId: () => id));

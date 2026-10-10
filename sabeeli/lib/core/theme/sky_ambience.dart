@@ -69,12 +69,27 @@ class SkyAmbience extends StatefulWidget {
 class _SkyAmbienceState extends State<SkyAmbience> {
   late SkyNow _sky = _compute();
   Timer? _timer;
+  late final AppLifecycleListener _lifecycle;
 
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(minutes: 3), (_) => _update());
+    _start();
+    // No timer in the background; catch up on return.
+    _lifecycle = AppLifecycleListener(
+      onResume: () {
+        _update();
+        _start();
+      },
+      onHide: () {
+        _timer?.cancel();
+        _timer = null;
+      },
+    );
   }
+
+  void _start() =>
+      _timer ??= Timer.periodic(const Duration(minutes: 3), (_) => _update());
 
   @override
   void didUpdateWidget(SkyAmbience old) {
@@ -103,6 +118,7 @@ class _SkyAmbienceState extends State<SkyAmbience> {
 
   @override
   void dispose() {
+    _lifecycle.dispose();
     _timer?.cancel();
     super.dispose();
   }

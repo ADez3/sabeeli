@@ -4,6 +4,10 @@
 /// Four places, one per tab: Today (the sky, the day and settings), the Quran,
 /// Dhikr (adhkar, the misbaha, after-prayer) and the Qibla.
 abstract final class AppRoutes {
+  /// The first launch.
+  static const welcome = '/welcome';
+  static const welcomeName = 'welcome';
+
   static const today = '/today';
   static const todayName = 'today';
 
@@ -21,6 +25,8 @@ abstract final class AppRoutes {
   static const prayerSettingsName = 'prayerSettings';
   static const location = 'location';
   static const locationName = 'location';
+  static const reminders = 'reminders';
+  static const remindersName = 'reminders';
   static const about = 'about';
   static const aboutName = 'about';
 

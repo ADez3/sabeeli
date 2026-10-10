@@ -58,6 +58,7 @@ extension PrayerLabels on AppLocalizations {
   NotificationTexts notificationTexts({
     required int reminderMinutes,
     required Numerals numerals,
+    int? suhoorMinutes,
   }) => NotificationTexts(
     titles: {
       for (final p in Prayer.values) p: notificationTitle(prayerName(p)),
@@ -70,7 +71,38 @@ extension PrayerLabels on AppLocalizations {
     silentChannel: channelSilent,
     prayerChannel: channelPrayer,
     reminderChannel: channelReminder,
+    daily: {
+      for (final r in DailyReminder.values)
+        r: (dailyReminderName(r), dailyReminderBody(r)),
+    },
+    dailyChannel: channelDaily,
+    fastTitles: {for (final k in FastKind.values) k: fastTomorrow(fastName(k))},
+    fastBody: fastTomorrowBody,
+    suhoorTitle: suhoorTitle,
+    suhoorBody: numerals.apply(suhoorBody(suhoorMinutes ?? 0)),
   );
+
+  String fastName(FastKind k) => switch (k) {
+    FastKind.ramadan => fastRamadan,
+    FastKind.mondayThursday => fastMondayThursday,
+    FastKind.whiteDays => fastWhiteDays,
+    FastKind.arafah => fastArafah,
+    FastKind.ashura => fastAshura,
+  };
+
+  String dailyReminderName(DailyReminder r) => switch (r) {
+    DailyReminder.morningAzkar => dailyMorning,
+    DailyReminder.eveningAzkar => dailyEvening,
+    DailyReminder.sleepAzkar => dailySleep,
+    DailyReminder.quran => dailyQuran,
+  };
+
+  String dailyReminderBody(DailyReminder r) => switch (r) {
+    DailyReminder.morningAzkar => dailyMorningBody,
+    DailyReminder.eveningAzkar => dailyEveningBody,
+    DailyReminder.sleepAzkar => dailySleepBody,
+    DailyReminder.quran => dailyQuranBody,
+  };
 }
 
 IconData prayerIcon(Prayer prayer) => switch (prayer) {

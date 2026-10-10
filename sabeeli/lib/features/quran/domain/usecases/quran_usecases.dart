@@ -132,3 +132,31 @@ class MarkPageReadUseCase implements UseCase<Set<int>, int> {
   @override
   Future<Result<Set<int>>> call(int params) => _repository.markPageRead(params);
 }
+
+@injectable
+class GetReadDaysUseCase implements UseCase<Set<DateTime>, NoParams> {
+  const GetReadDaysUseCase(this._repository);
+  final QuranRepository _repository;
+
+  @override
+  Future<Result<Set<DateTime>>> call(NoParams params) => _repository.readDays();
+}
+
+@injectable
+class GetKhatmahPlanUseCase implements UseCase<KhatmahPlan?, NoParams> {
+  const GetKhatmahPlanUseCase(this._repository);
+  final QuranRepository _repository;
+
+  @override
+  Future<Result<KhatmahPlan?>> call(NoParams params) => _repository.plan();
+}
+
+/// Null ends the plan.
+@injectable
+class SaveKhatmahPlanUseCase implements UseCase<void, KhatmahPlan?> {
+  const SaveKhatmahPlanUseCase(this._repository);
+  final QuranRepository _repository;
+
+  @override
+  Future<Result<void>> call(KhatmahPlan? plan) => _repository.savePlan(plan);
+}

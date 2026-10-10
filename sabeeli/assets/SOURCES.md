@@ -48,9 +48,7 @@ These two riwayat do not count the basmala of al-Fatihah as an ayah (6214 ayahs 
 
 | File | Source | License |
 |---|---|---|
-| `fonts/ReadexPro-{300,400,500,600}.ttf` | Static instances cut by `tool/data/build_fonts.py` from the variable `ReadexPro[HEXP,wght].ttf` of https://github.com/google/fonts/tree/main/ofl/readexpro | SIL Open Font License 1.1, see `fonts/OFL-ReadexPro.txt` |
-| `fonts/Fraunces-{300,500}.ttf` | Static instances (opsz 72, SOFT 100) cut by `tool/data/build_fonts.py` from https://github.com/google/fonts/tree/main/ofl/fraunces | SIL Open Font License 1.1, see `fonts/OFL-Fraunces.txt` |
-| `fonts/ReemKufi-{500,700}.ttf` | Static instances cut by `tool/data/build_fonts.py` from https://github.com/google/fonts/tree/main/ofl/reemkufi | SIL Open Font License 1.1, see `fonts/OFL-ReemKufi.txt` |
+| `fonts/ReadexPro-{200,300,400,500,600}.ttf` | Static instances cut by `tool/data/build_fonts.py` from the variable `ReadexPro[HEXP,wght].ttf` of https://github.com/google/fonts/tree/main/ofl/readexpro | SIL Open Font License 1.1, see `fonts/OFL-ReadexPro.txt` |
 | `fonts/IBMPlexSansArabic-{Regular,Medium,SemiBold,Bold}.ttf` | https://github.com/google/fonts/tree/main/ofl/ibmplexsansarabic | SIL Open Font License 1.1, see `fonts/OFL-IBMPlexSansArabic.txt` (Copyright 2017 IBM Corp., Reserved Font Name "Plex") |
 | `fonts/Amiri-{Regular,Bold}.ttf` | https://github.com/google/fonts/tree/main/ofl/amiri | SIL Open Font License 1.1, see `fonts/OFL-Amiri.txt` (Copyright 2010-2022 The Amiri Project Authors) |
 | `fonts/UthmanicHafs_V18.ttf` | see Qur'an section | KFGQPC EULA |

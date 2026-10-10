@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/astronomy/coordinates.dart';
+import '../../../../core/hijri/hijri_calendar.dart';
 import '../../../../core/astronomy/prayer_calculator.dart';
 import '../../../../core/result/result.dart';
 import '../../../../core/usecases/usecase.dart';
@@ -31,14 +32,18 @@ class SchedulePrayerNotificationsParams extends Equatable {
     required this.coordinates,
     required this.settings,
     required this.texts,
+    this.hijri,
   });
 
   final Coordinates coordinates;
   final PrayerSettings settings;
   final NotificationTexts texts;
 
+  /// The user's Hijri calendar, for the fasting reminders; null without one.
+  final HijriCalendar? hijri;
+
   @override
-  List<Object?> get props => [coordinates, settings, texts];
+  List<Object?> get props => [coordinates, settings, texts, hijri];
 }
 
 @injectable
@@ -89,6 +94,7 @@ class SchedulePrayerNotificationsUseCase
         coordinates: params.coordinates,
         settings: params.settings,
         texts: params.texts,
+        hijri: params.hijri,
       );
 }
 

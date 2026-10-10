@@ -20,28 +20,40 @@ class LocationRepositoryImpl implements LocationRepository {
   Future<Result<SavedLocation?>> saved() => _guard(() async => _local.read());
 
   @override
-  Future<Result<SavedLocation>> locateDevice({required String language}) =>
-      _guard(() async {
-        final coordinates = await _device.current();
-        var location = SavedLocation(coordinates: coordinates);
-        final previous = _local.read();
-        try {
-          location = await _geocoding.reverse(coordinates, language: language);
-        } catch (_) {
-          // Naming the place is cosmetic. Offline, keep the previous name and country
-          // if the user has not moved far, so the method choice is not lost.
-          if (previous != null &&
-              previous.coordinates.distanceTo(coordinates) < 30) {
-            location = SavedLocation(
-              coordinates: coordinates,
-              name: previous.name,
-              countryCode: previous.countryCode,
-            );
-          }
-        }
-        await _local.write(location);
-        return location;
-      });
+  Future<Result<SavedLocation>> locateDevice({
+    required String language,
+  }) => _guard(() async {
+    final coordinates = await _device.current();
+    final previous = _local.read();
+    // A few hundred metres change prayer times by seconds. Keeping the saved
+    // place as it is avoids a geocoding request and rescheduling every
+    // notification whenever the fix wobbles.
+    if (previous != null &&
+        !previous.isManual &&
+        previous.name != null &&
+        previous.coordinates.distanceTo(coordinates) < _samePlaceKm) {
+      return previous;
+    }
+    var location = SavedLocation(coordinates: coordinates);
+    try {
+      location = await _geocoding.reverse(coordinates, language: language);
+    } catch (_) {
+      // Naming the place is cosmetic. Offline, keep the previous name and country
+      // if the user has not moved far, so the method choice is not lost.
+      if (previous != null &&
+          previous.coordinates.distanceTo(coordinates) < 30) {
+        location = SavedLocation(
+          coordinates: coordinates,
+          name: previous.name,
+          countryCode: previous.countryCode,
+        );
+      }
+    }
+    await _local.write(location);
+    return location;
+  });
+
+  static const _samePlaceKm = 2.0;
 
   @override
   Future<Result<List<SavedLocation>>> search(

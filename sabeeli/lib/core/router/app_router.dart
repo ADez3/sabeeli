@@ -2,23 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../astronomy/prayer.dart';
-import '../../features/azkar/presentation/pages/after_prayer_page.dart';
+import '../../features/azkar/presentation/pages/dhikr_session_page.dart';
 import '../../features/azkar/presentation/pages/dhikr_page.dart';
-import '../../features/azkar/presentation/pages/azkar_reader_page.dart';
 import '../../features/hijri/presentation/pages/hijri_settings_page.dart';
 import '../../features/home/presentation/pages/today_page.dart';
 import '../../features/location/presentation/pages/location_page.dart';
+import '../../features/onboarding/presentation/pages/welcome_page.dart';
 import '../../features/prayer_times/presentation/pages/prayer_settings_page.dart';
 import '../../features/prayer_times/presentation/pages/prayer_times_page.dart';
+import '../../features/prayer_times/presentation/pages/reminders_page.dart';
 import '../../features/qibla/presentation/pages/qibla_page.dart';
 import '../../features/quran/domain/entities/quran_entities.dart';
 import '../../features/quran/presentation/pages/quran_index_page.dart';
 import '../../features/quran/presentation/pages/quran_reader_page.dart';
 import '../../features/quran/presentation/pages/surah_opening_page.dart';
 import '../../features/settings/presentation/pages/about_page.dart';
+import '../../features/settings/presentation/cubit/settings_cubit.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/shell/presentation/pages/shell_page.dart';
 import '../../features/tasbih/presentation/pages/tasbih_page.dart';
+import '../di/injection.dart';
 import 'app_routes.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -28,8 +31,29 @@ final rootNavigatorKey = GlobalKey<NavigatorState>();
 final appRouter = GoRouter(
   navigatorKey: rootNavigatorKey,
   initialLocation: AppRoutes.today,
-  redirect: (context, state) => normalizeDeepLink(state.uri),
+  redirect: (context, state) {
+    final link = normalizeDeepLink(state.uri);
+    if (link != null) return link;
+    // The first launch starts with the welcome.
+    final onboarded = getIt<SettingsCubit>().state.onboarded;
+    // Its own sub-pages (the city search) stay reachable meanwhile.
+    final path = state.uri.path;
+    if (!onboarded &&
+        path != AppRoutes.welcome &&
+        !path.startsWith('${AppRoutes.welcome}/')) {
+      return AppRoutes.welcome;
+    }
+    return null;
+  },
   routes: [
+    GoRoute(
+      path: AppRoutes.welcome,
+      name: AppRoutes.welcomeName,
+      builder: (_, _) => const WelcomePage(),
+      routes: [
+        GoRoute(path: 'location', builder: (_, _) => const LocationPage()),
+      ],
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, shell) => ShellPage(navigationShell: shell),
       branches: [
@@ -87,6 +111,12 @@ final appRouter = GoRouter(
                       name: AppRoutes.locationName,
                       parentNavigatorKey: rootNavigatorKey,
                       builder: (_, _) => const LocationPage(),
+                    ),
+                    GoRoute(
+                      path: AppRoutes.reminders,
+                      name: AppRoutes.remindersName,
+                      parentNavigatorKey: rootNavigatorKey,
+                      builder: (_, _) => const RemindersPage(),
                     ),
                     GoRoute(
                       path: AppRoutes.about,

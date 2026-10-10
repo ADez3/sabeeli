@@ -289,7 +289,7 @@ abstract class AppLocalizations {
   /// No description provided for @setLocationHint.
   ///
   /// In en, this message translates to:
-  /// **'Prayer times and the Qibla are calculated from where you are. Your location never leaves your device.'**
+  /// **'Prayer times and the Qibla are calculated on your phone from where you are. Only a rounded position is sent to OpenStreetMap, to name your town.'**
   String get setLocationHint;
 
   /// No description provided for @useCurrentLocation.
@@ -1629,6 +1629,504 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The direction of the Kaaba from where you are'**
   String get qiblaSubtitle;
+
+  /// No description provided for @unitHours.
+  ///
+  /// In en, this message translates to:
+  /// **'h'**
+  String get unitHours;
+
+  /// No description provided for @unitMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'min'**
+  String get unitMinutes;
+
+  /// No description provided for @unitSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'s'**
+  String get unitSeconds;
+
+  /// No description provided for @pageColour.
+  ///
+  /// In en, this message translates to:
+  /// **'Page'**
+  String get pageColour;
+
+  /// No description provided for @pageAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto'**
+  String get pageAuto;
+
+  /// No description provided for @pageNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Night'**
+  String get pageNight;
+
+  /// No description provided for @pageSepia.
+  ///
+  /// In en, this message translates to:
+  /// **'Sepia'**
+  String get pageSepia;
+
+  /// No description provided for @pagePaper.
+  ///
+  /// In en, this message translates to:
+  /// **'Paper'**
+  String get pagePaper;
+
+  /// No description provided for @welcomeTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer, the Quran and remembrance, under the real sky above you. Free, private, and yours.'**
+  String get welcomeTagline;
+
+  /// No description provided for @welcomeBegin.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin'**
+  String get welcomeBegin;
+
+  /// No description provided for @welcomeNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get welcomeNext;
+
+  /// No description provided for @welcomeStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get welcomeStart;
+
+  /// No description provided for @welcomePlaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Where are you?'**
+  String get welcomePlaceTitle;
+
+  /// No description provided for @welcomeNotifyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'At each prayer'**
+  String get welcomeNotifyTitle;
+
+  /// No description provided for @welcomeNotifyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A gentle notification with your phone\'s own sound when each prayer time comes. Choose it prayer by prayer later.'**
+  String get welcomeNotifyBody;
+
+  /// No description provided for @welcomeNotifyAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow notifications'**
+  String get welcomeNotifyAllow;
+
+  /// No description provided for @welcomeNotifyOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are on'**
+  String get welcomeNotifyOn;
+
+  /// No description provided for @welcomeExactAlarms.
+  ///
+  /// In en, this message translates to:
+  /// **'Let them arrive on the minute'**
+  String get welcomeExactAlarms;
+
+  /// No description provided for @welcomeRiwayah.
+  ///
+  /// In en, this message translates to:
+  /// **'The Quran opens in {riwayah}. You can change it in Settings.'**
+  String welcomeRiwayah(String riwayah);
+
+  /// No description provided for @prepareSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Soon'**
+  String get prepareSoon;
+
+  /// No description provided for @prepareHint.
+  ///
+  /// In en, this message translates to:
+  /// **'time for wudu'**
+  String get prepareHint;
+
+  /// No description provided for @channelDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily reminders'**
+  String get channelDaily;
+
+  /// No description provided for @dailyReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily reminders'**
+  String get dailyReminders;
+
+  /// No description provided for @dailyMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning adhkar'**
+  String get dailyMorning;
+
+  /// No description provided for @dailyMorningBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A few minutes of remembrance to begin the day.'**
+  String get dailyMorningBody;
+
+  /// No description provided for @dailyEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening adhkar'**
+  String get dailyEvening;
+
+  /// No description provided for @dailyEveningBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The evening adhkar, as the day turns.'**
+  String get dailyEveningBody;
+
+  /// No description provided for @dailySleep.
+  ///
+  /// In en, this message translates to:
+  /// **'Adhkar before sleep'**
+  String get dailySleep;
+
+  /// No description provided for @dailySleepBody.
+  ///
+  /// In en, this message translates to:
+  /// **'End the day with remembrance.'**
+  String get dailySleepBody;
+
+  /// No description provided for @dailyQuran.
+  ///
+  /// In en, this message translates to:
+  /// **'Your daily reading'**
+  String get dailyQuran;
+
+  /// No description provided for @dailyQuranBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A page of the Quran is waiting for you.'**
+  String get dailyQuranBody;
+
+  /// No description provided for @dailyRemindersIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders for the adhkar and your daily reading, at the time you choose. They are optional: the same notification every day can become noise after a while, so turn on only the ones that truly help you, and turn them off whenever you like.'**
+  String get dailyRemindersIntro;
+
+  /// No description provided for @dailyRemindersOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get dailyRemindersOff;
+
+  /// No description provided for @dailyRemindersOn.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} on'**
+  String dailyRemindersOn(int count);
+
+  /// No description provided for @betaBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Beta'**
+  String get betaBadge;
+
+  /// No description provided for @betaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sabeeli is in beta'**
+  String get betaTitle;
+
+  /// No description provided for @betaBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The app is still young. Its texts, translations and the information it shows still need review by people of knowledge. If you notice anything wrong, even a small detail, please tell us: every report helps.'**
+  String get betaBody;
+
+  /// No description provided for @betaShakeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Shake your phone on any screen to report a problem, with a screenshot.'**
+  String get betaShakeHint;
+
+  /// No description provided for @betaUnderstood.
+  ///
+  /// In en, this message translates to:
+  /// **'I understand'**
+  String get betaUnderstood;
+
+  /// No description provided for @reportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a problem'**
+  String get reportTitle;
+
+  /// No description provided for @reportHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What is wrong? (optional)'**
+  String get reportHint;
+
+  /// No description provided for @reportSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send by email'**
+  String get reportSend;
+
+  /// No description provided for @reportAttach.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach the screenshot'**
+  String get reportAttach;
+
+  /// No description provided for @reportPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Your mail app opens with the report ready. Nothing is sent until you press send there.'**
+  String get reportPrivacy;
+
+  /// No description provided for @reportNoMail.
+  ///
+  /// In en, this message translates to:
+  /// **'No email app found on this phone'**
+  String get reportNoMail;
+
+  /// No description provided for @shakeToReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Shake to report a problem'**
+  String get shakeToReport;
+
+  /// No description provided for @khatmahPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Khatmah plan'**
+  String get khatmahPlan;
+
+  /// No description provided for @planAKhatmah.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan a khatmah'**
+  String get planAKhatmah;
+
+  /// No description provided for @khatmahDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days'**
+  String khatmahDays(int days);
+
+  /// No description provided for @khatmahDayOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Day {day} of {days}'**
+  String khatmahDayOf(int day, int days);
+
+  /// No description provided for @khatmahToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today: pages {from}–{to}'**
+  String khatmahToday(int from, int to);
+
+  /// No description provided for @khatmahLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 page left today} other{{count} pages left today}}'**
+  String khatmahLeft(int count);
+
+  /// No description provided for @khatmahDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Today’s portion is done'**
+  String get khatmahDone;
+
+  /// No description provided for @khatmahPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{About 1 page a day} other{About {count} pages a day}}'**
+  String khatmahPerDay(int count);
+
+  /// No description provided for @khatmahEnds.
+  ///
+  /// In en, this message translates to:
+  /// **'ends on {date}'**
+  String khatmahEnds(String date);
+
+  /// No description provided for @khatmahFromStart.
+  ///
+  /// In en, this message translates to:
+  /// **'From the beginning'**
+  String get khatmahFromStart;
+
+  /// No description provided for @khatmahFromHere.
+  ///
+  /// In en, this message translates to:
+  /// **'From page {page}'**
+  String khatmahFromHere(int page);
+
+  /// No description provided for @khatmahStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start the plan'**
+  String get khatmahStart;
+
+  /// No description provided for @khatmahEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'End the plan'**
+  String get khatmahEnd;
+
+  /// No description provided for @khatmahFinished.
+  ///
+  /// In en, this message translates to:
+  /// **'Khatmah completed. May Allah accept it.'**
+  String get khatmahFinished;
+
+  /// No description provided for @readOnDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Read on 1 of the last 7 days} other{Read on {count} of the last 7 days}}'**
+  String readOnDays(int count);
+
+  /// No description provided for @fastRamadan.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan'**
+  String get fastRamadan;
+
+  /// No description provided for @fastMondayThursday.
+  ///
+  /// In en, this message translates to:
+  /// **'Mondays and Thursdays'**
+  String get fastMondayThursday;
+
+  /// No description provided for @fastWhiteDays.
+  ///
+  /// In en, this message translates to:
+  /// **'The white days'**
+  String get fastWhiteDays;
+
+  /// No description provided for @fastArafah.
+  ///
+  /// In en, this message translates to:
+  /// **'The Day of Arafah'**
+  String get fastArafah;
+
+  /// No description provided for @fastAshura.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasu‘a and ‘Ashura'**
+  String get fastAshura;
+
+  /// No description provided for @fastTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow: {name}'**
+  String fastTomorrow(String name);
+
+  /// No description provided for @fastTomorrowBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A reminder for those who wish to fast. Suhoor before Fajr.'**
+  String get fastTomorrowBody;
+
+  /// No description provided for @suhoorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Suhoor'**
+  String get suhoorTitle;
+
+  /// No description provided for @suhoorBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes, plural, =1{Fajr in 1 minute} other{Fajr in {minutes} minutes}}'**
+  String suhoorBody(int minutes);
+
+  /// No description provided for @fastingReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Fasting'**
+  String get fastingReminders;
+
+  /// No description provided for @fastReminderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Voluntary fasts'**
+  String get fastReminderTitle;
+
+  /// No description provided for @fastReminderBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The evening before a sunnah fast.'**
+  String get fastReminderBody;
+
+  /// No description provided for @suhoorReminderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Suhoor in Ramadan'**
+  String get suhoorReminderTitle;
+
+  /// No description provided for @suhoorReminderBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Before Fajr, during Ramadan.'**
+  String get suhoorReminderBody;
+
+  /// No description provided for @iftarIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Iftar in'**
+  String get iftarIn;
+
+  /// No description provided for @suhoorEndsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Suhoor ends in'**
+  String get suhoorEndsIn;
+
+  /// No description provided for @ramadanDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan · day {day}'**
+  String ramadanDay(int day);
+
+  /// No description provided for @fastToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today: {name}'**
+  String fastToday(String name);
+
+  /// No description provided for @iftarAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Iftar {time}'**
+  String iftarAt(String time);
+
+  /// No description provided for @suhoorUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Suhoor until {time}'**
+  String suhoorUntil(String time);
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @sourceCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Source code (GPL-3.0)'**
+  String get sourceCode;
 }
 
 class _AppLocalizationsDelegate

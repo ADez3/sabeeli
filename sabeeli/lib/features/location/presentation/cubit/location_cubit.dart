@@ -65,12 +65,21 @@ class LocationCubit extends Cubit<LocationState> {
     );
   }
 
-  /// Refreshes from the GPS unless the user picked a city by hand. Called on start
-  /// and resume so a traveller's times follow them.
+  DateTime? _lastRefresh;
+
+  /// Refreshes from the device unless the user picked a city by hand. Called on
+  /// start and resume so a traveller's times follow them, at most every half
+  /// hour: opening the app often must not wake the location radio each time.
   Future<void> refreshIfAutomatic(String language) async {
     final current = state.location;
     if (current != null && current.isManual) return;
     if (current == null) return; // First launch waits for the user to opt in.
+    final last = _lastRefresh;
+    final now = DateTime.now();
+    if (last != null && now.difference(last) < const Duration(minutes: 30)) {
+      return;
+    }
+    _lastRefresh = now;
     await locate(language, silent: true);
   }
 

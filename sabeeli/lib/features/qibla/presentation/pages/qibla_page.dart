@@ -6,6 +6,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/layout/breakpoints.dart';
+import '../../../../core/platform/live_state.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/utils/formatters.dart';
@@ -30,15 +31,26 @@ class QiblaPage extends StatefulWidget {
   State<QiblaPage> createState() => _QiblaPageState();
 }
 
-class _QiblaPageState extends State<QiblaPage> {
+class _QiblaPageState extends State<QiblaPage> with LiveStateMixin {
   bool _globe = false;
+  late final QiblaCubit _cubit = getIt<QiblaCubit>()
+    ..start(context.read<LocationCubit>().state.location?.coordinates);
+
+  /// The tab stays alive in the background of the shell; the compass does not.
+  @override
+  void onLiveChanged(bool live) => live ? _cubit.resume() : _cubit.pause();
+
+  @override
+  void dispose() {
+    _cubit.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final position = context.read<LocationCubit>().state.location?.coordinates;
-    return BlocProvider(
-      create: (_) => getIt<QiblaCubit>()..start(position),
+    return BlocProvider.value(
+      value: _cubit,
       child: Scaffold(
         body: AmbientBackground(
           child: SafeArea(

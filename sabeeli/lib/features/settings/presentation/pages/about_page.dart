@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/utils/formatters.dart';
 import '../../../../core/layout/breakpoints.dart';
@@ -6,6 +7,9 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_fonts.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/app_card.dart';
+import '../../../../core/app_info.dart';
+import '../../../../core/platform/feedback_channels.dart';
+import '../../../feedback/presentation/widgets/shake_to_report.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../core/widgets/ambient_scaffold.dart';
 
@@ -52,7 +56,7 @@ class AboutPage extends StatelessWidget {
             Center(child: Text(l10n.appName, style: text.headlineSmall)),
             Center(
               child: Text(
-                context.digits(l10n.version('0.1.0')),
+                context.digits(l10n.version(AppInfo.version)),
                 style: text.bodySmall?.copyWith(color: colors.textMuted),
               ),
             ),
@@ -61,6 +65,46 @@ class AboutPage extends StatelessWidget {
               l10n.aboutText,
               textAlign: TextAlign.center,
               style: text.bodyLarge?.copyWith(height: 1.6),
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            AppCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.betaTitle,
+                    style: text.titleMedium?.copyWith(color: colors.accent),
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  Text(
+                    l10n.betaBody,
+                    style: text.bodyMedium?.copyWith(height: 1.6),
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  OutlinedButton.icon(
+                    onPressed: () => ShakeToReport.open(context),
+                    icon: const Icon(LucideIcons.messageSquareWarning),
+                    label: Text(l10n.reportTitle),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: AppSpacing.sm,
+              children: [
+                TextButton.icon(
+                  onPressed: () => ExternalUrl.open(AppInfo.privacyPolicyUrl),
+                  icon: const Icon(LucideIcons.shieldCheck, size: 18),
+                  label: Text(l10n.privacyPolicy),
+                ),
+                TextButton.icon(
+                  onPressed: () => ExternalUrl.open(AppInfo.sourceUrl),
+                  icon: const Icon(LucideIcons.code, size: 18),
+                  label: Text(l10n.sourceCode),
+                ),
+              ],
             ),
             SectionHeader(l10n.credits),
             AppCard(

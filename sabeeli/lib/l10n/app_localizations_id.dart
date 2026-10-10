@@ -109,7 +109,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get setLocationHint =>
-      'Jadwal salat dan arah kiblat dihitung berdasarkan lokasi Anda. Lokasi Anda tidak pernah keluar dari perangkat.';
+      'Waktu salat dan kiblat dihitung di ponsel Anda dari lokasi Anda. Hanya posisi yang dibulatkan yang dikirim ke OpenStreetMap, untuk menampilkan nama kota Anda.';
 
   @override
   String get useCurrentLocation => 'Gunakan lokasi saya saat ini';
@@ -874,4 +874,292 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get qiblaSubtitle => 'Arah Ka’bah dari tempat Anda';
+
+  @override
+  String get unitHours => 'j';
+
+  @override
+  String get unitMinutes => 'mnt';
+
+  @override
+  String get unitSeconds => 'dtk';
+
+  @override
+  String get pageColour => 'Halaman';
+
+  @override
+  String get pageAuto => 'Otomatis';
+
+  @override
+  String get pageNight => 'Malam';
+
+  @override
+  String get pageSepia => 'Sepia';
+
+  @override
+  String get pagePaper => 'Kertas';
+
+  @override
+  String get welcomeTagline =>
+      'Salat, Al-Qur’an, dan zikir, di bawah langit nyata di atas Anda. Gratis, privat, dan milik Anda.';
+
+  @override
+  String get welcomeBegin => 'Mulai';
+
+  @override
+  String get welcomeNext => 'Lanjut';
+
+  @override
+  String get welcomeStart => 'Ayo mulai';
+
+  @override
+  String get welcomePlaceTitle => 'Di mana Anda?';
+
+  @override
+  String get welcomeNotifyTitle => 'Di setiap salat';
+
+  @override
+  String get welcomeNotifyBody =>
+      'Notifikasi lembut dengan suara ponsel Anda saat waktu salat tiba. Atur per salat nanti.';
+
+  @override
+  String get welcomeNotifyAllow => 'Izinkan notifikasi';
+
+  @override
+  String get welcomeNotifyOn => 'Notifikasi aktif';
+
+  @override
+  String get welcomeExactAlarms => 'Terima tepat pada menitnya';
+
+  @override
+  String welcomeRiwayah(String riwayah) {
+    return 'Al-Qur’an dibuka dengan riwayat $riwayah. Bisa diubah di Pengaturan.';
+  }
+
+  @override
+  String get prepareSoon => 'Segera';
+
+  @override
+  String get prepareHint => 'waktunya berwudu';
+
+  @override
+  String get channelDaily => 'Pengingat harian';
+
+  @override
+  String get dailyReminders => 'Pengingat harian';
+
+  @override
+  String get dailyMorning => 'Zikir pagi';
+
+  @override
+  String get dailyMorningBody => 'Beberapa menit zikir untuk memulai hari.';
+
+  @override
+  String get dailyEvening => 'Zikir petang';
+
+  @override
+  String get dailyEveningBody => 'Zikir petang saat hari berganti.';
+
+  @override
+  String get dailySleep => 'Zikir sebelum tidur';
+
+  @override
+  String get dailySleepBody => 'Akhiri hari dengan zikir.';
+
+  @override
+  String get dailyQuran => 'Bacaan harianmu';
+
+  @override
+  String get dailyQuranBody => 'Satu halaman Al-Qur’an menantimu.';
+
+  @override
+  String get dailyRemindersIntro =>
+      'Pengingat untuk zikir dan bacaan harian, pada waktu pilihanmu. Semuanya opsional: notifikasi yang sama setiap hari bisa terasa mengganggu lama-lama, jadi aktifkan hanya yang benar-benar membantu, dan matikan kapan saja.';
+
+  @override
+  String get dailyRemindersOff => 'Mati';
+
+  @override
+  String dailyRemindersOn(int count) {
+    return '$count aktif';
+  }
+
+  @override
+  String get betaBadge => 'Beta';
+
+  @override
+  String get betaTitle => 'Sabeeli masih beta';
+
+  @override
+  String get betaBody =>
+      'Aplikasi ini masih muda. Teks, terjemahan, dan informasinya masih perlu ditinjau oleh para ahli ilmu. Jika menemukan kesalahan, sekecil apa pun, beri tahu kami: setiap laporan membantu.';
+
+  @override
+  String get betaShakeHint =>
+      'Goyangkan ponsel di layar mana pun untuk melaporkan masalah, beserta tangkapan layar.';
+
+  @override
+  String get betaUnderstood => 'Saya mengerti';
+
+  @override
+  String get reportTitle => 'Laporkan masalah';
+
+  @override
+  String get reportHint => 'Apa yang salah? (opsional)';
+
+  @override
+  String get reportSend => 'Kirim lewat email';
+
+  @override
+  String get reportAttach => 'Lampirkan tangkapan layar';
+
+  @override
+  String get reportPrivacy =>
+      'Aplikasi email terbuka dengan laporan siap. Tidak ada yang terkirim sampai Anda menekan kirim di sana.';
+
+  @override
+  String get reportNoMail => 'Tidak ada aplikasi email di ponsel ini';
+
+  @override
+  String get shakeToReport => 'Goyangkan untuk melaporkan masalah';
+
+  @override
+  String get khatmahPlan => 'Rencana khatam';
+
+  @override
+  String get planAKhatmah => 'Rencanakan khatam';
+
+  @override
+  String khatmahDays(int days) {
+    return '$days hari';
+  }
+
+  @override
+  String khatmahDayOf(int day, int days) {
+    return 'Hari $day dari $days';
+  }
+
+  @override
+  String khatmahToday(int from, int to) {
+    return 'Hari ini: halaman $from–$to';
+  }
+
+  @override
+  String khatmahLeft(int count) {
+    return '$count halaman lagi hari ini';
+  }
+
+  @override
+  String get khatmahDone => 'Bagian hari ini selesai';
+
+  @override
+  String khatmahPerDay(int count) {
+    return 'Sekitar $count halaman sehari';
+  }
+
+  @override
+  String khatmahEnds(String date) {
+    return 'selesai $date';
+  }
+
+  @override
+  String get khatmahFromStart => 'Dari awal';
+
+  @override
+  String khatmahFromHere(int page) {
+    return 'Dari halaman $page';
+  }
+
+  @override
+  String get khatmahStart => 'Mulai rencana';
+
+  @override
+  String get khatmahEnd => 'Akhiri rencana';
+
+  @override
+  String get khatmahFinished => 'Khatam selesai. Semoga Allah menerimanya.';
+
+  @override
+  String readOnDays(int count) {
+    return 'Membaca $count dari 7 hari terakhir';
+  }
+
+  @override
+  String get fastRamadan => 'Ramadan';
+
+  @override
+  String get fastMondayThursday => 'Puasa Senin dan Kamis';
+
+  @override
+  String get fastWhiteDays => 'Ayyamul bidh';
+
+  @override
+  String get fastArafah => 'Hari Arafah';
+
+  @override
+  String get fastAshura => 'Tasu‘a dan ‘Asyura';
+
+  @override
+  String fastTomorrow(String name) {
+    return 'Besok: $name';
+  }
+
+  @override
+  String get fastTomorrowBody =>
+      'Pengingat bagi yang ingin berpuasa. Sahur sebelum Subuh.';
+
+  @override
+  String get suhoorTitle => 'Sahur';
+
+  @override
+  String suhoorBody(int minutes) {
+    return 'Subuh dalam $minutes menit';
+  }
+
+  @override
+  String get fastingReminders => 'Puasa';
+
+  @override
+  String get fastReminderTitle => 'Puasa sunah';
+
+  @override
+  String get fastReminderBody => 'Malam sebelum puasa sunah.';
+
+  @override
+  String get suhoorReminderTitle => 'Sahur di bulan Ramadan';
+
+  @override
+  String get suhoorReminderBody => 'Sebelum Subuh, selama Ramadan.';
+
+  @override
+  String get iftarIn => 'Berbuka dalam';
+
+  @override
+  String get suhoorEndsIn => 'Sahur berakhir dalam';
+
+  @override
+  String ramadanDay(int day) {
+    return 'Ramadan · hari ke-$day';
+  }
+
+  @override
+  String fastToday(String name) {
+    return 'Hari ini: $name';
+  }
+
+  @override
+  String iftarAt(String time) {
+    return 'Berbuka $time';
+  }
+
+  @override
+  String suhoorUntil(String time) {
+    return 'Sahur sampai $time';
+  }
+
+  @override
+  String get privacyPolicy => 'Kebijakan privasi';
+
+  @override
+  String get sourceCode => 'Kode sumber (GPL-3.0)';
 }

@@ -6,17 +6,17 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../core/astronomy/prayer.dart';
 import '../../../quran/domain/entities/quran_entities.dart';
-import '../../domain/entities/after_prayer.dart';
+import '../../domain/entities/dhikr_step.dart';
 import '../../domain/entities/azkar_entities.dart';
 
 /// Hisn al-Muslim in Arabic, merged with its English translation by id.
 @lazySingleton
 class AzkarAssetDataSource {
   List<AzkarCategory>? _cache;
-  List<AfterPrayerStep>? _afterPrayer;
+  List<DhikrStep>? _afterPrayer;
 
   /// The guided after-prayer sequence (built by tool/data/build_after_prayer.py).
-  Future<List<AfterPrayerStep>> afterPrayer() async {
+  Future<List<DhikrStep>> afterPrayer() async {
     final cached = _afterPrayer;
     if (cached != null) return cached;
     final raw = await rootBundle.loadString('assets/azkar/after_prayer.json');
@@ -30,9 +30,9 @@ class AzkarAssetDataSource {
     return _afterPrayer = steps;
   }
 
-  static AfterPrayerStep _step(Map<String, dynamic> s) {
+  static DhikrStep _step(Map<String, dynamic> s) {
     final quran = (s['quran'] as List<dynamic>?)?.cast<int>();
-    return AfterPrayerStep(
+    return DhikrStep(
       id: s['id'] as String,
       arabic: s['arabic'] as String?,
       quranFrom: quran == null ? null : AyahRef(quran[0], quran[1]),

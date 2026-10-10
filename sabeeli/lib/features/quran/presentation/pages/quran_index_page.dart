@@ -21,6 +21,7 @@ import '../widgets/continue_reading_card.dart';
 import '../widgets/quran_ornaments.dart';
 import '../widgets/quran_sky/quran_sky.dart';
 import '../widgets/surah_labels.dart';
+import '../widgets/khatmah_sheet.dart';
 import '../widgets/quran_font.dart';
 
 /// The Quran tab: a night sky of the 114 surahs by default, or the classic lists.
@@ -84,6 +85,7 @@ class _QuranIndexPageState extends State<QuranIndexPage> {
                 data: data,
                 readPages: state.readPages,
                 current: state.position?.ref.surah,
+                today: state.todaysSurahs(DateTime.now()),
                 selected: selected,
                 onSelected: (s) => setState(() => _selected = s),
               ),
@@ -104,9 +106,8 @@ class _QuranIndexPageState extends State<QuranIndexPage> {
                         Expanded(
                           child: Text(
                             l10n.quran,
-                            style: text.headlineSmall?.copyWith(
+                            style: text.displaySmall?.copyWith(
                               color: Colors.white,
-                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
@@ -114,15 +115,16 @@ class _QuranIndexPageState extends State<QuranIndexPage> {
                       ],
                     ),
                     const SizedBox(height: AppSpacing.xs),
-                    Text(
-                      context.digits(l10n.khatmahProgress(percent)),
-                      style: text.bodyMedium?.copyWith(
-                        color: const Color(0xFFF4B860),
-                      ),
-                    ),
+                    _PlanLine(state: state, percent: percent),
                     const SizedBox(height: AppSpacing.xs),
                     Text(
-                      l10n.skyHint,
+                      state.readDaysThisWeek(DateTime.now()) > 0
+                          ? context.digits(
+                              l10n.readOnDays(
+                                state.readDaysThisWeek(DateTime.now()),
+                              ),
+                            )
+                          : l10n.skyHint,
                       style: text.bodySmall?.copyWith(color: Colors.white54),
                     ),
                   ],
@@ -208,6 +210,55 @@ class _QuranIndexPageState extends State<QuranIndexPage> {
 }
 
 /// Sky / List switch: two icons in a small pill.
+/// The khatmah plan in one tappable line, or an invitation to plan one.
+class _PlanLine extends StatelessWidget {
+  const _PlanLine({required this.state, required this.percent});
+
+  final QuranState state;
+  final int percent;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final text = Theme.of(context).textTheme;
+    const amber = Color(0xFFF4B860);
+    final plan = state.plan;
+    final now = DateTime.now();
+    final String line;
+    if (plan == null) {
+      line = '${l10n.khatmahProgress(percent)} · ${l10n.planAKhatmah}';
+    } else if (plan.dayOf(now) > plan.days &&
+        (state.position?.page ?? 0) >= QuranData.pageCount) {
+      line = l10n.khatmahFinished;
+    } else {
+      final left = state.pagesLeftToday(now);
+      line =
+          '${l10n.khatmahDayOf(plan.dayOf(now).clamp(1, plan.days), plan.days)} · '
+          '${left == 0 ? l10n.khatmahDone : l10n.khatmahLeft(left)}';
+    }
+    return InkWell(
+      borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
+      onTap: () => showKhatmahSheet(context),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 2),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: Text(
+                context.digits(line),
+                style: text.bodyMedium?.copyWith(color: amber),
+              ),
+            ),
+            const SizedBox(width: AppSpacing.xs),
+            const Icon(LucideIcons.chevronDown, size: 16, color: amber),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _ModeToggle extends StatelessWidget {
   const _ModeToggle({required this.sky, required this.onChanged});
 
@@ -220,7 +271,7 @@ class _ModeToggle extends StatelessWidget {
     onChanged: onChanged,
     onSky: sky,
     options: [
-      (true, LucideIcons.sparkles, context.l10n.skyView),
+      (true, LucideIcons.moonStar, context.l10n.skyView),
       (false, LucideIcons.listOrdered, context.l10n.listView),
     ],
   );

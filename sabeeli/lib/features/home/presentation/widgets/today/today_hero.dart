@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../../core/astronomy/prayer.dart';
+import '../../../../../core/platform/live_state.dart';
 import '../../../../../core/router/app_routes.dart';
 import '../../../../../core/theme/app_spacing.dart';
 import '../../../../../core/utils/formatters.dart';
@@ -111,7 +112,9 @@ class _TopBar extends StatelessWidget {
   }
 }
 
-/// "Asr in" and the time left, large, ticking every second.
+/// "Asr in" and the time left, large: hours and minutes, and seconds only in
+/// the last minute. The timer wakes when the shown value changes (once a
+/// minute) and not at all while the sky is out of sight.
 class _Countdown extends StatefulWidget {
   const _Countdown({required this.onTap});
 
@@ -121,34 +124,44 @@ class _Countdown extends StatefulWidget {
   State<_Countdown> createState() => _CountdownState();
 }
 
-class _CountdownState extends State<_Countdown> {
-  Timer? _ticker;
+class _CountdownState extends State<_Countdown> with LiveStateMixin {
+  Timer? _timer;
   DateTime _now = DateTime.now();
 
   @override
-  void initState() {
-    super.initState();
-    _ticker = Timer.periodic(const Duration(seconds: 1), (_) {
-      final now = DateTime.now();
-      setState(() => _now = now);
-      final today = context.read<PrayerTimesCubit>().state.today?.date;
-      if (today != null && (today.day != now.day || today.month != now.month)) {
-        context.read<PrayerTimesCubit>().refresh();
-      }
-    });
+  void onLiveChanged(bool live) {
+    _timer?.cancel();
+    _timer = null;
+    if (live) _tick();
+  }
+
+  void _tick() {
+    if (!mounted) return;
+    final now = DateTime.now();
+    final prayers = context.read<PrayerTimesCubit>();
+    final today = prayers.state.today?.date;
+    if (today != null && (today.day != now.day || today.month != now.month)) {
+      prayers.refresh();
+    }
+    setState(() => _now = now);
+    _timer = Timer(_untilNextChange(now), _tick);
+  }
+
+  /// Until the displayed value changes: the next whole minute left, or the next
+  /// second in the last minute.
+  Duration _untilNextChange(DateTime now) {
+    final next = context.read<PrayerTimesCubit>().state.nextAfter(now);
+    if (next == null) return const Duration(minutes: 1);
+    final left = next.time.difference(now).inMilliseconds;
+    if (left <= 0) return const Duration(seconds: 1);
+    final step = left <= 60000 ? 1000 : 60000;
+    return Duration(milliseconds: left % step + 20);
   }
 
   @override
   void dispose() {
-    _ticker?.cancel();
+    _timer?.cancel();
     super.dispose();
-  }
-
-  static String _clock(Duration d) {
-    String two(int n) => n.toString().padLeft(2, '0');
-    final h = d.inHours;
-    final ms = '${two(d.inMinutes % 60)}:${two(d.inSeconds % 60)}';
-    return h > 0 ? '$h:$ms' : ms;
   }
 
   @override
@@ -161,47 +174,91 @@ class _CountdownState extends State<_Countdown> {
     var left = next.time.difference(_now);
     if (left.isNegative) left = Duration.zero;
     final width = MediaQuery.sizeOf(context).width;
-    final big = (width * 0.2).clamp(64.0, 104.0);
+    final big = (width * 0.24).clamp(72.0, 120.0);
+    final number = text.displayLarge!.copyWith(
+      fontSize: big,
+      height: 1,
+      color: _onSky,
+      shadows: _skyShadow,
+    );
+    final unit = text.headlineSmall!.copyWith(
+      fontWeight: FontWeight.w300,
+      color: _onSkyMuted,
+      shadows: _skyShadow,
+    );
+
+    // (value, unit) pairs: "1 h 05 min", "42 min", "35 s".
+    final parts = <(String, String)>[
+      if (left.inSeconds < 60)
+        ('${left.inSeconds}', l10n.unitSeconds)
+      else ...[
+        if (left.inHours > 0) ('${left.inHours}', l10n.unitHours),
+        (
+          left.inHours > 0
+              ? (left.inMinutes % 60).toString().padLeft(2, '0')
+              : '${left.inMinutes}',
+          l10n.unitMinutes,
+        ),
+      ],
+    ];
 
     return GestureDetector(
       onTap: widget.onTap,
       behavior: HitTestBehavior.opaque,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (hijri != null)
+      child: Semantics(
+        label:
+            '${l10n.prayerName(next.prayer)}, '
+            '${l10n.timeUntil(context.formatDuration(left))}',
+        excludeSemantics: true,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (hijri != null)
+              Text(
+                context.formatHijri(hijri),
+                style: text.labelLarge?.copyWith(color: _onSkyMuted),
+              ),
+            const SizedBox(height: AppSpacing.sm),
             Text(
-              context.formatHijri(hijri),
-              style: text.labelLarge?.copyWith(color: _onSkyMuted),
+              switch ((hijri?.month == 9, next.prayer)) {
+                (true, Prayer.maghrib) => l10n.iftarIn,
+                (true, Prayer.fajr) => l10n.suhoorEndsIn,
+                _ => l10n.prayerIn(
+                  l10n.prayerName(next.prayer, on: next.time.toLocal()),
+                ),
+              },
+              style: text.headlineSmall?.copyWith(
+                fontWeight: FontWeight.w300,
+                color: _onSky,
+                shadows: _skyShadow,
+              ),
             ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            l10n.prayerIn(
-              l10n.prayerName(next.prayer, on: next.time.toLocal()),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                for (final (value, label) in parts) ...[
+                  RollingDigits(context.digits(value), style: number),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                      start: AppSpacing.xs,
+                      end: AppSpacing.md,
+                    ),
+                    child: Text(label, style: unit),
+                  ),
+                ],
+              ],
             ),
-            style: text.headlineSmall?.copyWith(
-              color: _onSky,
-              shadows: _skyShadow,
+            Text(
+              l10n.atTime(context.formatTime(next.time)),
+              style: text.titleMedium?.copyWith(
+                color: _onSkyMuted,
+                fontWeight: FontWeight.w400,
+                shadows: _skyShadow,
+              ),
             ),
-          ),
-          RollingDigits(
-            context.digits(_clock(left)),
-            style: text.displayLarge!.copyWith(
-              fontSize: big,
-              height: 1.05,
-              color: _onSky,
-              shadows: _skyShadow,
-            ),
-          ),
-          Text(
-            l10n.atTime(context.formatTime(next.time)),
-            style: text.titleMedium?.copyWith(
-              color: _onSkyMuted,
-              fontWeight: FontWeight.w400,
-              shadows: _skyShadow,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

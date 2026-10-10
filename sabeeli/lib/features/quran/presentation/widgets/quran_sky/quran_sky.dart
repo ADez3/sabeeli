@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 
+import '../../../../../core/platform/live_state.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../domain/entities/quran_entities.dart';
 import 'quran_sky_painters.dart';
@@ -16,6 +16,7 @@ class QuranSky extends StatefulWidget {
     required this.current,
     required this.selected,
     required this.onSelected,
+    this.today = const {},
   });
 
   final QuranData data;
@@ -26,18 +27,19 @@ class QuranSky extends StatefulWidget {
   final int? selected;
   final ValueChanged<int?> onSelected;
 
+  /// Surahs of today's khatmah portion.
+  final Set<int> today;
+
   @override
   State<QuranSky> createState() => _QuranSkyState();
 }
 
-class _QuranSkyState extends State<QuranSky>
-    with SingleTickerProviderStateMixin {
+class _QuranSkyState extends State<QuranSky> with LiveStateMixin {
   final _transform = TransformationController();
-  final _clock = ValueNotifier(0.0);
+
+  /// Twinkle and pulse at 30 fps, only while the sky is on screen.
+  final _clock = FrameClock();
   final _scale = ValueNotifier(1.0);
-  late final Ticker _ticker = createTicker(
-    (e) => _clock.value = e.inMilliseconds / 1000,
-  );
   late List<TextPainter> _names = QuranSkyStarsPainter.layoutNames(widget.data);
   late List<double> _progress = _computeProgress();
   Size? _fittedTo;
@@ -54,9 +56,16 @@ class _QuranSkyState extends State<QuranSky>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final still = MediaQuery.disableAnimationsOf(context);
-    if (still && _ticker.isActive) _ticker.stop();
-    if (!still && !_ticker.isActive) _ticker.start();
+    onLiveChanged(isLive);
+  }
+
+  @override
+  void onLiveChanged(bool live) {
+    if (live && !MediaQuery.disableAnimationsOf(context)) {
+      _clock.start();
+    } else {
+      _clock.stop();
+    }
   }
 
   @override
@@ -99,7 +108,6 @@ class _QuranSkyState extends State<QuranSky>
 
   @override
   void dispose() {
-    _ticker.dispose();
     _transform.dispose();
     _clock.dispose();
     _scale.dispose();
@@ -135,6 +143,7 @@ class _QuranSkyState extends State<QuranSky>
                         progress: _progress,
                         current: widget.current,
                         selected: widget.selected,
+                        today: widget.today,
                         clock: _clock,
                         scale: _scale,
                         fitScale: _fitScale,

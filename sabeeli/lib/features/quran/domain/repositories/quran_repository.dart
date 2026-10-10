@@ -25,4 +25,10 @@ abstract interface class QuranRepository {
   /// Adds [page] to the pages read and returns the updated set.
   Future<Result<Set<int>>> markPageRead(int page);
   Future<Result<void>> savePreferences(ReaderPreferences preferences);
+
+  /// Days on which a page was read; today is added by [markPageRead].
+  Future<Result<Set<DateTime>>> readDays();
+
+  Future<Result<KhatmahPlan?>> plan();
+  Future<Result<void>> savePlan(KhatmahPlan? plan);
 }

@@ -13,6 +13,8 @@ class QuranLocalDataSource {
   static const _positionKey = 'quran.position';
   static const _prefsKey = 'quran.prefs';
   static const _readPagesKey = 'quran.readPages';
+  static const _readDaysKey = 'quran.readDays';
+  static const _planKey = 'quran.plan';
 
   List<Bookmark> bookmarks() => [
     for (final j
@@ -60,6 +62,28 @@ class QuranLocalDataSource {
   Future<void> saveReadPages(Set<int> pages) =>
       _store.setJson(_readPagesKey, pages.toList()..sort());
 
+  /// The days (local dates) on which the reader opened a page; the last 60.
+  Set<DateTime> readDays() => {
+    for (final d in _store.getJsonList(_readDaysKey) ?? const [])
+      ?DateTime.tryParse(d as String),
+  };
+
+  Future<void> saveReadDays(Set<DateTime> days) {
+    final sorted = days.toList()..sort();
+    final kept = sorted.length > 60
+        ? sorted.sublist(sorted.length - 60)
+        : sorted;
+    return _store.setJson(_readDaysKey, [
+      for (final d in kept) d.toIso8601String().substring(0, 10),
+    ]);
+  }
+
+  KhatmahPlan? plan() => KhatmahPlan.fromJson(_store.getJson(_planKey));
+
+  Future<void> savePlan(KhatmahPlan? plan) => plan == null
+      ? _store.remove(_planKey)
+      : _store.setJson(_planKey, plan.toJson());
+
   ReaderPreferences preferences() {
     final j = _store.getJson(_prefsKey);
     if (j == null) return const ReaderPreferences();
@@ -67,6 +91,7 @@ class QuranLocalDataSource {
       fontScale: ((j['scale'] as num?)?.toDouble() ?? 1.0).clamp(0.8, 1.8),
       translationId: j['translation'] as String?,
       riwayah: Riwayah.values.asNameMap()[j['riwayah']],
+      theme: ReaderTheme.values.asNameMap()[j['theme']] ?? ReaderTheme.auto,
     );
   }
 
@@ -75,5 +100,6 @@ class QuranLocalDataSource {
         'scale': p.fontScale,
         if (p.translationId != null) 'translation': p.translationId,
         if (p.riwayah != null) 'riwayah': p.riwayah!.name,
+        'theme': p.theme.name,
       });
 }

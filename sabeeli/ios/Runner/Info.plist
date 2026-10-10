@@ -67,7 +67,9 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Sabeeli uses your location to calculate prayer times and the Qibla direction. It never leaves your device.</string>
+	<string>Sabeeli uses your approximate location to calculate prayer times and the Qibla direction. Only a position rounded to about a kilometre is sent to OpenStreetMap to show the name of your town.</string>
+	<key>NSLocationDefaultAccuracyReduced</key>
+	<true/>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

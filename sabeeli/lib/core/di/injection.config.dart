@@ -26,9 +26,9 @@ import '../../features/azkar/domain/usecases/get_after_prayer_steps_usecase.dart
     as _i153;
 import '../../features/azkar/domain/usecases/get_azkar_categories_usecase.dart'
     as _i438;
-import '../../features/azkar/presentation/cubit/after_prayer_cubit.dart'
-    as _i157;
 import '../../features/azkar/presentation/cubit/azkar_cubit.dart' as _i223;
+import '../../features/azkar/presentation/cubit/dhikr_session_cubit.dart'
+    as _i707;
 import '../../features/hijri/data/datasources/hijri_local_data_source.dart'
     as _i544;
 import '../../features/hijri/data/repositories/hijri_repository_impl.dart'
@@ -123,7 +123,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.preferences,
       preResolve: true,
     );
-    gh.factory<_i223.AzkarSessionCubit>(() => _i223.AzkarSessionCubit());
     gh.lazySingleton<_i163.FlutterLocalNotificationsPlugin>(
       () => registerModule.notifications,
     );
@@ -248,8 +247,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i674.SettingsRepository>(
       () => _i955.SettingsRepositoryImpl(gh<_i599.SettingsLocalDataSource>()),
     );
-    gh.factory<_i157.AfterPrayerCubit>(
-      () => _i157.AfterPrayerCubit(gh<_i153.GetAfterPrayerStepsUseCase>()),
+    gh.factory<_i707.DhikrSessionCubit>(
+      () => _i707.DhikrSessionCubit(gh<_i153.GetAfterPrayerStepsUseCase>()),
     );
     gh.factory<_i34.LoadQuranUseCase>(
       () => _i34.LoadQuranUseCase(gh<_i498.QuranRepository>()),
@@ -287,6 +286,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i34.MarkPageReadUseCase>(
       () => _i34.MarkPageReadUseCase(gh<_i498.QuranRepository>()),
     );
+    gh.factory<_i34.GetReadDaysUseCase>(
+      () => _i34.GetReadDaysUseCase(gh<_i498.QuranRepository>()),
+    );
+    gh.factory<_i34.GetKhatmahPlanUseCase>(
+      () => _i34.GetKhatmahPlanUseCase(gh<_i498.QuranRepository>()),
+    );
+    gh.factory<_i34.SaveKhatmahPlanUseCase>(
+      () => _i34.SaveKhatmahPlanUseCase(gh<_i498.QuranRepository>()),
+    );
     gh.factory<_i279.LoadAppSettingsUseCase>(
       () => _i279.LoadAppSettingsUseCase(gh<_i674.SettingsRepository>()),
     );
@@ -305,6 +313,22 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i781.BuildHijriCalendarUseCase>(
       () => _i781.BuildHijriCalendarUseCase(gh<_i745.HijriRepository>()),
     );
+    gh.lazySingleton<_i432.QuranCubit>(
+      () => _i432.QuranCubit(
+        gh<_i34.LoadQuranUseCase>(),
+        gh<_i34.GetBookmarksUseCase>(),
+        gh<_i34.ToggleBookmarkUseCase>(),
+        gh<_i34.GetReadingPositionUseCase>(),
+        gh<_i34.SaveReadingPositionUseCase>(),
+        gh<_i34.GetReaderPreferencesUseCase>(),
+        gh<_i34.SaveReaderPreferencesUseCase>(),
+        gh<_i34.GetReadPagesUseCase>(),
+        gh<_i34.MarkPageReadUseCase>(),
+        gh<_i34.GetReadDaysUseCase>(),
+        gh<_i34.GetKhatmahPlanUseCase>(),
+        gh<_i34.SaveKhatmahPlanUseCase>(),
+      ),
+    );
     gh.lazySingleton<_i332.LocationRepository>(
       () => _i115.LocationRepositoryImpl(
         gh<_i148.DeviceLocationDataSource>(),
@@ -317,19 +341,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i34.GetEditionsUseCase>(),
         gh<_i34.GetEditionTextUseCase>(),
         gh<_i34.DownloadEditionUseCase>(),
-      ),
-    );
-    gh.lazySingleton<_i432.QuranCubit>(
-      () => _i432.QuranCubit(
-        gh<_i34.LoadQuranUseCase>(),
-        gh<_i34.GetBookmarksUseCase>(),
-        gh<_i34.ToggleBookmarkUseCase>(),
-        gh<_i34.GetReadingPositionUseCase>(),
-        gh<_i34.SaveReadingPositionUseCase>(),
-        gh<_i34.GetReaderPreferencesUseCase>(),
-        gh<_i34.SaveReaderPreferencesUseCase>(),
-        gh<_i34.GetReadPagesUseCase>(),
-        gh<_i34.MarkPageReadUseCase>(),
       ),
     );
     gh.lazySingleton<_i287.HijriCubit>(

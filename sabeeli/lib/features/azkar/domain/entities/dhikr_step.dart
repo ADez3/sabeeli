@@ -3,10 +3,10 @@ import 'package:equatable/equatable.dart';
 import '../../../../core/astronomy/prayer.dart';
 import '../../../quran/domain/entities/quran_entities.dart';
 
-/// One step of the adhkar said after an obligatory prayer: a dhikr from Hisn
-/// al-Muslim, or a passage of the Quran (Ayat al-Kursi, the three Quls).
-class AfterPrayerStep extends Equatable {
-  const AfterPrayerStep({
+/// One step of a dhikr session: a dhikr from Hisn al-Muslim, or a passage of
+/// the Quran (Ayat al-Kursi, the three Quls after prayer).
+class DhikrStep extends Equatable {
+  const DhikrStep({
     required this.id,
     required this.count,
     this.countAfterFajrAndMaghrib,
@@ -46,7 +46,9 @@ class AfterPrayerStep extends Equatable {
 
   bool saidAfter(Prayer prayer) => only == null || only!.contains(prayer);
 
-  int countAfter(Prayer prayer) =>
+  /// Repetitions; [prayer] is the prayer just prayed, for the after-prayer
+  /// adhkar (null elsewhere).
+  int countAfter(Prayer? prayer) =>
       (prayer == Prayer.fajr || prayer == Prayer.maghrib)
       ? countAfterFajrAndMaghrib ?? count
       : count;

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/astronomy/coordinates.dart';
+import '../../../../core/hijri/hijri_calendar.dart';
 import '../../../../core/astronomy/prayer_calculator.dart';
 import '../../../../core/error/error_handler.dart';
 import '../../../../core/result/result.dart';
@@ -59,6 +60,7 @@ class PrayerRepositoryImpl implements PrayerRepository {
     required Coordinates coordinates,
     required PrayerSettings settings,
     required NotificationTexts texts,
+    HijriCalendar? hijri,
   }) => _guard(() async {
     final days = calculate(
       coordinates: coordinates,
@@ -71,6 +73,7 @@ class PrayerRepositoryImpl implements PrayerRepository {
       days: days,
       settings: settings,
       texts: texts,
+      hijri: hijri,
     );
   });
 

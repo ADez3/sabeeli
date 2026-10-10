@@ -59,10 +59,9 @@ void main() {
       const [AyahRef(2, 253), AyahRef(2, 254)],
     );
     // The three Quls are numbered alike.
-    expect(
-      warsh.fromHafsRange(const AyahRef(112, 1), const AyahRef(112, 4)),
-      [for (var a = 1; a <= 4; a++) AyahRef(112, a)],
-    );
+    expect(warsh.fromHafsRange(const AyahRef(112, 1), const AyahRef(112, 4)), [
+      for (var a = 1; a <= 4; a++) AyahRef(112, a),
+    ]);
     // Round trip through Hafs: back to the same ayah, or (where a Hafs ayah is
     // shared by two Warsh ayahs) to the earlier one that also holds it.
     var exact = 0;

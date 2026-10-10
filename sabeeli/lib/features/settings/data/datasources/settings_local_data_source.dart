@@ -13,6 +13,9 @@ class SettingsLocalDataSource {
   static const _themeKey = 'settings.theme';
   static const _languageKey = 'settings.language';
   static const _numeralsKey = 'settings.numerals';
+  static const _onboardedKey = 'settings.onboarded';
+  static const _shakeKey = 'settings.shakeToReport';
+  static const _betaKey = 'settings.betaNoticeSeen';
 
   AppSettings read() => AppSettings(
     themeMode:
@@ -22,11 +25,19 @@ class SettingsLocalDataSource {
     numeralStyle:
         NumeralStyle.values.asNameMap()[_store.getString(_numeralsKey)] ??
         NumeralStyle.auto,
+    // Installs from before the welcome existed have stored a theme already.
+    onboarded:
+        _store.getBool(_onboardedKey) ?? _store.getString(_themeKey) != null,
+    shakeToReport: _store.getBool(_shakeKey) ?? true,
+    betaNoticeSeen: _store.getBool(_betaKey) ?? false,
   );
 
   Future<void> write(AppSettings settings) async {
     await _store.setString(_themeKey, settings.themeMode.name);
     await _store.setString(_numeralsKey, settings.numeralStyle.name);
+    await _store.setBool(_onboardedKey, settings.onboarded);
+    await _store.setBool(_shakeKey, settings.shakeToReport);
+    await _store.setBool(_betaKey, settings.betaNoticeSeen);
     final code = settings.languageCode;
     if (code == null) {
       await _store.remove(_languageKey);

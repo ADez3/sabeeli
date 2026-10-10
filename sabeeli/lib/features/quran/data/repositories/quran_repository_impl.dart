@@ -115,8 +115,24 @@ class QuranRepositoryImpl implements QuranRepository {
   Future<Result<Set<int>>> markPageRead(int page) => _guard(() async {
     final pages = _local.readPages();
     if (pages.add(page)) await _local.saveReadPages(pages);
+    final now = DateTime.now();
+    final days = _local.readDays();
+    if (days.add(DateTime(now.year, now.month, now.day))) {
+      await _local.saveReadDays(days);
+    }
     return pages;
   });
+
+  @override
+  Future<Result<Set<DateTime>>> readDays() =>
+      _guard(() async => _local.readDays());
+
+  @override
+  Future<Result<KhatmahPlan?>> plan() => _guard(() async => _local.plan());
+
+  @override
+  Future<Result<void>> savePlan(KhatmahPlan? plan) =>
+      _guard(() => _local.savePlan(plan));
 
   @override
   Future<Result<ReaderPreferences>> preferences() =>

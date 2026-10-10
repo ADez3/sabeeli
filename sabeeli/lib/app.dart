@@ -8,6 +8,7 @@ import 'core/theme/app_theme.dart';
 import 'core/theme/sky_ambience.dart';
 import 'core/utils/numerals.dart';
 import 'features/azkar/presentation/cubit/azkar_cubit.dart';
+import 'features/feedback/presentation/widgets/shake_to_report.dart';
 import 'features/hijri/presentation/cubit/hijri_cubit.dart';
 import 'features/location/presentation/cubit/location_cubit.dart';
 import 'features/prayer_times/presentation/cubit/prayer_times_cubit.dart';
@@ -55,23 +56,30 @@ class SabeeliApp extends StatelessWidget {
           final where = context.select(
             (LocationCubit c) => c.state.location?.coordinates,
           );
-          return SkyAmbience(
-            where: where,
-            child: NumeralsScope(
-              numerals: Numerals.resolve(
-                settings.numeralStyle,
-                languageCode: Localizations.localeOf(context).languageCode,
-                // The phone's region first (a Moroccan phone in French is still
-                // Moroccan), then the country of the saved location.
-                countryCode:
-                    WidgetsBinding
-                        .instance
-                        .platformDispatcher
-                        .locale
-                        .countryCode ??
-                    locationCountry,
+          // The phone's font size is honoured within a range: beyond 1.3 the
+          // fixed rows (the navigation capsule, the prayer strip, chips) clip
+          // their labels; below 0.9 secondary text stops being legible.
+          return MediaQuery.withClampedTextScaling(
+            minScaleFactor: 0.9,
+            maxScaleFactor: 1.3,
+            child: SkyAmbience(
+              where: where,
+              child: NumeralsScope(
+                numerals: Numerals.resolve(
+                  settings.numeralStyle,
+                  languageCode: Localizations.localeOf(context).languageCode,
+                  // The phone's region first (a Moroccan phone in French is still
+                  // Moroccan), then the country of the saved location.
+                  countryCode:
+                      WidgetsBinding
+                          .instance
+                          .platformDispatcher
+                          .locale
+                          .countryCode ??
+                      locationCountry,
+                ),
+                child: ShakeToReport(child: child!),
               ),
-              child: child!,
             ),
           );
         },

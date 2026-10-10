@@ -91,6 +91,8 @@ flutter:
   fonts:
     - family: ReadexPro
       fonts:
+        - asset: assets/fonts/ReadexPro-200.ttf
+          weight: 200
         - asset: assets/fonts/ReadexPro-300.ttf
           weight: 300
         - asset: assets/fonts/ReadexPro-400.ttf
@@ -99,18 +101,6 @@ flutter:
           weight: 500
         - asset: assets/fonts/ReadexPro-600.ttf
           weight: 600
-    - family: Fraunces
-      fonts:
-        - asset: assets/fonts/Fraunces-300.ttf
-          weight: 300
-        - asset: assets/fonts/Fraunces-500.ttf
-          weight: 500
-    - family: ReemKufi
-      fonts:
-        - asset: assets/fonts/ReemKufi-500.ttf
-          weight: 500
-        - asset: assets/fonts/ReemKufi-700.ttf
-          weight: 700
     - family: IBMPlexSansArabic
       fonts:
         - asset: assets/fonts/IBMPlexSansArabic-Regular.ttf

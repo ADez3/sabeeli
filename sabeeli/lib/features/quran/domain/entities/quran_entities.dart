@@ -330,11 +330,15 @@ class QuranEdition extends Equatable {
   List<Object?> get props => [id];
 }
 
+/// The colours of the mushaf page.
+enum ReaderTheme { auto, night, sepia, paper }
+
 class ReaderPreferences extends Equatable {
   const ReaderPreferences({
     this.fontScale = 1.0,
     this.translationId,
     this.riwayah,
+    this.theme = ReaderTheme.auto,
   });
 
   /// Multiplies the base Quran font size; 0.8…1.8.
@@ -346,17 +350,83 @@ class ReaderPreferences extends Equatable {
 
   /// The riwayah chosen by the user; null follows the region.
   final Riwayah? riwayah;
+  final ReaderTheme theme;
 
   ReaderPreferences copyWith({
     double? fontScale,
     String? Function()? translationId,
     Riwayah? Function()? riwayah,
+    ReaderTheme? theme,
   }) => ReaderPreferences(
     fontScale: fontScale ?? this.fontScale,
     translationId: translationId != null ? translationId() : this.translationId,
     riwayah: riwayah != null ? riwayah() : this.riwayah,
+    theme: theme ?? this.theme,
   );
 
   @override
-  List<Object?> get props => [fontScale, translationId, riwayah];
+  List<Object?> get props => [fontScale, translationId, riwayah, theme];
+}
+
+/// A plan to read the whole Quran (or what remains of it) in a set number of
+/// days, page by page from [fromPage]. Each day has a target page; the reader
+/// is on track when the reading position has reached it.
+class KhatmahPlan extends Equatable {
+  const KhatmahPlan({
+    required this.start,
+    required this.days,
+    this.fromPage = 1,
+  });
+
+  /// The local date the plan began (midnight).
+  final DateTime start;
+  final int days;
+  final int fromPage;
+
+  int get pages => QuranData.pageCount - fromPage + 1;
+  double get pagesPerDay => pages / days;
+
+  static DateTime _date(DateTime t) => DateTime(t.year, t.month, t.day);
+
+  /// 1 on the first day; above [days] once the plan's time is over.
+  int dayOf(DateTime now) => _date(now).difference(_date(start)).inDays + 1;
+
+  /// The last page of day [day]'s portion.
+  int targetPageOfDay(int day) {
+    if (day <= 0) return fromPage - 1;
+    return (fromPage - 1 + (pagesPerDay * day).ceil()).clamp(
+      fromPage,
+      QuranData.pageCount,
+    );
+  }
+
+  /// Today's portion: from the page after yesterday's target to today's.
+  (int, int) portion(DateTime now) {
+    final day = dayOf(now).clamp(1, days);
+    return (targetPageOfDay(day - 1) + 1, targetPageOfDay(day));
+  }
+
+  Map<String, dynamic> toJson() => {
+    'start': _date(start).toIso8601String().substring(0, 10),
+    'days': days,
+    'from': fromPage,
+  };
+
+  static KhatmahPlan? fromJson(Map<String, dynamic>? j) {
+    if (j == null) return null;
+    final start = DateTime.tryParse(j['start'] as String? ?? '');
+    final days = (j['days'] as num?)?.toInt();
+    if (start == null || days == null || days <= 0) return null;
+    return KhatmahPlan(
+      start: start,
+      days: days,
+      fromPage: ((j['from'] as num?)?.toInt() ?? 1).clamp(
+        1,
+        QuranData.pageCount,
+      ),
+    );
+  }
+
+  @override
+  List<Object?> get props => [start, days, fromPage];
 }

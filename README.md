@@ -1,12 +1,14 @@
 <div align="center">
 
+<img src="docs/icon.png" width="112" alt="Sabeeli icon: a path towards the rising sun">
+
 # Sabeeli · سبيلي
 
 **A free, offline-first companion for the daily life of a Muslim.**
 
 Prayer times · After-prayer adhkar · The Holy Quran in Hafs, Warsh and Qalun · Qibla · Azkar · Misbaha · Hijri calendar
 
-No ads. No account. No tracking. Your location never leaves your device.
+No ads. No account. No tracking. Prayer times are computed on your phone; only a position rounded to about a kilometre is sent to OpenStreetMap, to name your town.
 
 </div>
 
@@ -37,6 +39,14 @@ No ads. No account. No tracking. Your location never leaves your device.
   <img src="docs/screenshots/reader_ar_light.png" width="200" alt="Quran reader in Arabic, light mode">
 </p>
 
+<p align="center"><em>A calm first launch, a khatmah plan that marks today's surahs in the sky, and reminders for the adhkar, the daily reading and the sunnah fasts, all optional.</em></p>
+<p align="center">
+  <img src="docs/screenshots/welcome.png" width="200" alt="The welcome screen">
+  <img src="docs/screenshots/khatmah.png" width="200" alt="Planning a khatmah">
+  <img src="docs/screenshots/reminders.png" width="200" alt="Daily and fasting reminders">
+  <img src="docs/screenshots/beta.png" width="200" alt="The beta notice: shake to report a problem">
+</p>
+
 <p align="center"><em>The sky is the real one above you: the sun and the moon where they actually are, in the moon's real phase. Below, the same scene at other hours.</em></p>
 <p align="center">
   <img src="docs/screenshots/sky_dawn.png" width="200" alt="The sky at dawn">
@@ -51,14 +61,20 @@ No ads. No account. No tracking. Your location never leaves your device.
   - Calculated on the device for any location, with 19 calculation methods. The method is chosen automatically from your country and can be changed.
   - Choice of Asr method, a high-latitude rule, and per-prayer minute adjustments to match your mosque.
 - **Prayer notifications:** use the phone's own notification sound, or are silent or off, per prayer. An optional reminder can come before each prayer. Notifications are scheduled as exact alarms, so there is no background service.
+- **Optional daily reminders** for the morning, evening and sleep adhkar and a daily reading, each at the time you choose. Prayer notifications clear themselves when the next prayer begins.
+- **Beta feedback:** shake the phone on any screen to report a problem by email, with a screenshot.
+- **Light on the battery:** nothing runs in the background. Sensors, timers and animations stop whenever their screen is out of sight, ambient scenes draw at 30 frames a second, and the location is refreshed at most every half hour.
 - **Adhkar after prayer:** after each prayer, the adhkar of the Sunnah one step at a time, in the order of Hisn al-Muslim: istighfar, the tasbih, tahmid and takbir counted 33 times each on the misbaha, Ayat al-Kursi and the three Quls from the mushaf. After Fajr and Maghrib the session adds what is said only then. Today offers it right after each prayer time.
 - **Qibla:** a compass with the great-circle bearing to the Kaaba, the distance to it, and a vibration when you face it; or a globe showing the path itself.
 - **The Holy Quran:**
   - The 604-page Madani mushaf from the King Fahd Complex, text and font unaltered, in three riwayat: **Hafs** from ʿAsim, **Warsh** from Nafiʿ (the Maghreb and West Africa) and **Qalun** from Nafiʿ (Libya, Tunisia). The riwayah follows your region until you choose one.
   - Each riwayah keeps its own numbering (Warsh counts 6214 ayahs). Tafsir, translations, bookmarks and links are matched to it ayah by ayah.
   - Tap any ayah for Tafsir al-Muyassar and a translation. About thirty languages can be downloaded on demand.
+  - An immersive reader: the title bar steps aside while reading, a thin line follows your progress through the juz, and the page can be night, sepia or paper.
   - Bookmarks, the reading position saved automatically, and adjustable font size.
-- **Azkar:** the full Hisn al-Muslim with repeat counts and a tap-to-count reader. The morning or evening azkar are suggested at the right time.
+  - **Khatmah plan:** finish the Quran in 7 to 60 days. Each day shows the pages left and marks today's surahs in the sky; the days you read in the last week are counted, without streaks to lose.
+- **Fasting:** Today shows Ramadan's iftar and suhoor countdowns and the sunnah fasts (Mondays and Thursdays, the white days, Arafah, Tasuʿa and ʿAshura) from the Hijri calendar. Optional reminders come the evening before a fast and before Fajr in Ramadan.
+- **Azkar:** the full Hisn al-Muslim, each category read as a guided session, one dhikr at a time, with repeated adhkar counted on the misbaha. The morning or evening azkar are suggested at the right time.
 - **Misbaha:** 33 beads you turn with your thumb, with haptic clicks; common phrases, targets of 33, 99, 100 or no limit, and totals that are kept.
 - **Hijri calendar that follows your country:**
   - Umm al-Qura or the arithmetical calendar.
@@ -66,6 +82,8 @@ No ads. No account. No tracking. Your location never leaves your device.
 - **Your digits:**
   - Western (123), Arabic (١٢٣) or Persian (۱۲۳), chosen automatically from your region, so Morocco gets Western digits and Egypt Arabic ones.
   - The choice applies everywhere, ayah numbers in the mushaf included.
+- **A home-screen widget (Android):** the next prayer and its time. It refreshes itself only when a prayer begins.
+- **A first-launch welcome** over the living sky: the language, your place, and the prayer notifications.
 - **Languages:** العربية, English, Français, اردو, Bahasa Indonesia, Türkçe, with full right-to-left support.
 - **Today, under a living sky:**
   - The sky above you right now, drawn in code from real astronomy: the sun and the moon at their true positions, the moon in its real phase, stars and shooting stars at night, and dunes with a mosque on the horizon. The layers move with the tilt of the phone.
@@ -73,7 +91,7 @@ No ads. No account. No tracking. Your location never leaves your device.
   - Below the horizon, live tiles: what to say now, where you stopped reading, the moon and the Hijri date, the Qibla, the misbaha and an ayah for the day.
 - **The Quran as a night sky:** the 114 surahs as stars that brighten as you read them, with a magazine-style opening for every surah (calligraphy, revelation order, pages, juz, progress).
 - **A moon-phase Hijri calendar:** every day in the real phase of the moon, with the white days, the Eids, Arafah, Ashura and Ramadan marked.
-- **Design:** four places (Today, Quran, Dhikr, Qibla) in a floating glass capsule. Every screen takes a faint tint from the real sky, with a fine film grain; Readex Pro, Fraunces and Reem Kufi type; spring motion and haptics. Dark by default with a light mode, and layouts that adapt to phones, tablets and desktop. Animations respect the system "reduce motion" setting.
+- **Design:** four places (Today, Quran, Dhikr, Qibla) in a floating glass capsule. Every screen takes a faint tint from the real sky, with a fine film grain; Readex Pro type, an icon of a path towards the rising sun; spring motion and haptics. Dark by default with a light mode, and layouts that adapt to phones, tablets and desktop. Animations respect the system "reduce motion" setting.
 
 ## Building
 
@@ -132,3 +150,14 @@ UI strings live in [`sabeeli/lib/l10n/`](sabeeli/lib/l10n/). `intl_en.arb` is th
 2. Add the language to `L10n.languages` in `lib/l10n/l10n.dart`.
 
 Corrections from native speakers are very welcome.
+
+## Privacy
+
+No accounts, no ads, no analytics. See the [privacy policy](docs/privacy.md).
+
+## Licence
+
+The app's source code is released under the [GNU General Public License v3.0](LICENSE): you may use, study, change and share it, and anything built from it must stay free and open under the same licence.
+
+The bundled data keeps its own terms (see [`sabeeli/assets/SOURCES.md`](sabeeli/assets/SOURCES.md)): the Quran texts and the King Fahd Complex fonts may be distributed but not altered, the UI fonts are under the SIL Open Font License, and so on.
+

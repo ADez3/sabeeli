@@ -109,7 +109,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get setLocationHint =>
-      'Prayer times and the Qibla are calculated from where you are. Your location never leaves your device.';
+      'Prayer times and the Qibla are calculated on your phone from where you are. Only a rounded position is sent to OpenStreetMap, to name your town.';
 
   @override
   String get useCurrentLocation => 'Use my current location';
@@ -880,4 +880,317 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get qiblaSubtitle => 'The direction of the Kaaba from where you are';
+
+  @override
+  String get unitHours => 'h';
+
+  @override
+  String get unitMinutes => 'min';
+
+  @override
+  String get unitSeconds => 's';
+
+  @override
+  String get pageColour => 'Page';
+
+  @override
+  String get pageAuto => 'Auto';
+
+  @override
+  String get pageNight => 'Night';
+
+  @override
+  String get pageSepia => 'Sepia';
+
+  @override
+  String get pagePaper => 'Paper';
+
+  @override
+  String get welcomeTagline =>
+      'Prayer, the Quran and remembrance, under the real sky above you. Free, private, and yours.';
+
+  @override
+  String get welcomeBegin => 'Begin';
+
+  @override
+  String get welcomeNext => 'Next';
+
+  @override
+  String get welcomeStart => 'Start';
+
+  @override
+  String get welcomePlaceTitle => 'Where are you?';
+
+  @override
+  String get welcomeNotifyTitle => 'At each prayer';
+
+  @override
+  String get welcomeNotifyBody =>
+      'A gentle notification with your phone\'s own sound when each prayer time comes. Choose it prayer by prayer later.';
+
+  @override
+  String get welcomeNotifyAllow => 'Allow notifications';
+
+  @override
+  String get welcomeNotifyOn => 'Notifications are on';
+
+  @override
+  String get welcomeExactAlarms => 'Let them arrive on the minute';
+
+  @override
+  String welcomeRiwayah(String riwayah) {
+    return 'The Quran opens in $riwayah. You can change it in Settings.';
+  }
+
+  @override
+  String get prepareSoon => 'Soon';
+
+  @override
+  String get prepareHint => 'time for wudu';
+
+  @override
+  String get channelDaily => 'Daily reminders';
+
+  @override
+  String get dailyReminders => 'Daily reminders';
+
+  @override
+  String get dailyMorning => 'Morning adhkar';
+
+  @override
+  String get dailyMorningBody =>
+      'A few minutes of remembrance to begin the day.';
+
+  @override
+  String get dailyEvening => 'Evening adhkar';
+
+  @override
+  String get dailyEveningBody => 'The evening adhkar, as the day turns.';
+
+  @override
+  String get dailySleep => 'Adhkar before sleep';
+
+  @override
+  String get dailySleepBody => 'End the day with remembrance.';
+
+  @override
+  String get dailyQuran => 'Your daily reading';
+
+  @override
+  String get dailyQuranBody => 'A page of the Quran is waiting for you.';
+
+  @override
+  String get dailyRemindersIntro =>
+      'Reminders for the adhkar and your daily reading, at the time you choose. They are optional: the same notification every day can become noise after a while, so turn on only the ones that truly help you, and turn them off whenever you like.';
+
+  @override
+  String get dailyRemindersOff => 'Off';
+
+  @override
+  String dailyRemindersOn(int count) {
+    return '$count on';
+  }
+
+  @override
+  String get betaBadge => 'Beta';
+
+  @override
+  String get betaTitle => 'Sabeeli is in beta';
+
+  @override
+  String get betaBody =>
+      'The app is still young. Its texts, translations and the information it shows still need review by people of knowledge. If you notice anything wrong, even a small detail, please tell us: every report helps.';
+
+  @override
+  String get betaShakeHint =>
+      'Shake your phone on any screen to report a problem, with a screenshot.';
+
+  @override
+  String get betaUnderstood => 'I understand';
+
+  @override
+  String get reportTitle => 'Report a problem';
+
+  @override
+  String get reportHint => 'What is wrong? (optional)';
+
+  @override
+  String get reportSend => 'Send by email';
+
+  @override
+  String get reportAttach => 'Attach the screenshot';
+
+  @override
+  String get reportPrivacy =>
+      'Your mail app opens with the report ready. Nothing is sent until you press send there.';
+
+  @override
+  String get reportNoMail => 'No email app found on this phone';
+
+  @override
+  String get shakeToReport => 'Shake to report a problem';
+
+  @override
+  String get khatmahPlan => 'Khatmah plan';
+
+  @override
+  String get planAKhatmah => 'Plan a khatmah';
+
+  @override
+  String khatmahDays(int days) {
+    return '$days days';
+  }
+
+  @override
+  String khatmahDayOf(int day, int days) {
+    return 'Day $day of $days';
+  }
+
+  @override
+  String khatmahToday(int from, int to) {
+    return 'Today: pages $from–$to';
+  }
+
+  @override
+  String khatmahLeft(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pages left today',
+      one: '1 page left today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get khatmahDone => 'Today’s portion is done';
+
+  @override
+  String khatmahPerDay(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'About $count pages a day',
+      one: 'About 1 page a day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String khatmahEnds(String date) {
+    return 'ends on $date';
+  }
+
+  @override
+  String get khatmahFromStart => 'From the beginning';
+
+  @override
+  String khatmahFromHere(int page) {
+    return 'From page $page';
+  }
+
+  @override
+  String get khatmahStart => 'Start the plan';
+
+  @override
+  String get khatmahEnd => 'End the plan';
+
+  @override
+  String get khatmahFinished => 'Khatmah completed. May Allah accept it.';
+
+  @override
+  String readOnDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Read on $count of the last 7 days',
+      one: 'Read on 1 of the last 7 days',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get fastRamadan => 'Ramadan';
+
+  @override
+  String get fastMondayThursday => 'Mondays and Thursdays';
+
+  @override
+  String get fastWhiteDays => 'The white days';
+
+  @override
+  String get fastArafah => 'The Day of Arafah';
+
+  @override
+  String get fastAshura => 'Tasu‘a and ‘Ashura';
+
+  @override
+  String fastTomorrow(String name) {
+    return 'Tomorrow: $name';
+  }
+
+  @override
+  String get fastTomorrowBody =>
+      'A reminder for those who wish to fast. Suhoor before Fajr.';
+
+  @override
+  String get suhoorTitle => 'Suhoor';
+
+  @override
+  String suhoorBody(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: 'Fajr in $minutes minutes',
+      one: 'Fajr in 1 minute',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get fastingReminders => 'Fasting';
+
+  @override
+  String get fastReminderTitle => 'Voluntary fasts';
+
+  @override
+  String get fastReminderBody => 'The evening before a sunnah fast.';
+
+  @override
+  String get suhoorReminderTitle => 'Suhoor in Ramadan';
+
+  @override
+  String get suhoorReminderBody => 'Before Fajr, during Ramadan.';
+
+  @override
+  String get iftarIn => 'Iftar in';
+
+  @override
+  String get suhoorEndsIn => 'Suhoor ends in';
+
+  @override
+  String ramadanDay(int day) {
+    return 'Ramadan · day $day';
+  }
+
+  @override
+  String fastToday(String name) {
+    return 'Today: $name';
+  }
+
+  @override
+  String iftarAt(String time) {
+    return 'Iftar $time';
+  }
+
+  @override
+  String suhoorUntil(String time) {
+    return 'Suhoor until $time';
+  }
+
+  @override
+  String get privacyPolicy => 'Privacy policy';
+
+  @override
+  String get sourceCode => 'Source code (GPL-3.0)';
 }

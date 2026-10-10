@@ -1,4 +1,5 @@
 import '../../../../core/astronomy/coordinates.dart';
+import '../../../../core/hijri/hijri_calendar.dart';
 import '../../../../core/astronomy/prayer_calculator.dart';
 import '../../../../core/result/result.dart';
 import '../entities/notification_texts.dart';
@@ -21,6 +22,7 @@ abstract interface class PrayerRepository {
     required Coordinates coordinates,
     required PrayerSettings settings,
     required NotificationTexts texts,
+    HijriCalendar? hijri,
   });
 
   Future<Result<NotificationPermissions>> permissions();

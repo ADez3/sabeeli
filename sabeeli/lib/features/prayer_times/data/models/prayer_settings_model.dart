@@ -1,6 +1,7 @@
 import '../../../../core/astronomy/calculation_method.dart';
 import '../../../../core/astronomy/prayer.dart';
 import '../../../../core/astronomy/prayer_calculator.dart';
+import '../../../../core/hijri/fasting.dart';
 import '../../domain/entities/prayer_settings.dart';
 
 /// Stored by enum name, so reordering an enum never corrupts saved settings, and an
@@ -36,6 +37,19 @@ abstract final class PrayerSettingsModel {
       },
       reminderMinutes: (json['reminder'] as num?)?.toInt() ?? 0,
       methodChosenByUser: json['methodChosen'] as bool? ?? false,
+      dailyReminders: {
+        for (final e
+            in (json['daily'] as Map<String, dynamic>? ?? const {}).entries)
+          ?DailyReminder.values.asNameMap()[e.key]: (e.value as num).toInt(),
+      },
+      fastReminderMinutes: (json['fast'] as num?)?.toInt(),
+      fastKinds: json['fastKinds'] == null
+          ? Fasting.voluntary
+          : {
+              for (final k in json['fastKinds'] as List<dynamic>)
+                ?FastKind.values.asNameMap()[k],
+            },
+      suhoorMinutes: (json['suhoor'] as num?)?.toInt(),
     );
   }
 
@@ -55,5 +69,9 @@ abstract final class PrayerSettingsModel {
     'alerts': {for (final e in s.alerts.entries) e.key.name: e.value.name},
     'reminder': s.reminderMinutes,
     'methodChosen': s.methodChosenByUser,
+    'daily': {for (final e in s.dailyReminders.entries) e.key.name: e.value},
+    'fast': ?s.fastReminderMinutes,
+    'fastKinds': [for (final k in s.fastKinds) k.name],
+    'suhoor': ?s.suhoorMinutes,
   };
 }

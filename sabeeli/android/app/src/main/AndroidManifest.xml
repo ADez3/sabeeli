@@ -1,10 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Prayer times are computed from the device position. Coarse is accurate to the
-         minute; fine is declared so a fresh fix arrives faster when it is allowed. -->
+    <!-- Prayer times and the Qibla only need the city: approximate location is
+         accurate to the minute and to a fraction of a degree. -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- Adhan notifications: posted at exact times, re-armed after a reboot. -->
+    <!-- Prayer notifications: posted at exact times, re-armed after a reboot. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
@@ -44,7 +43,29 @@
             </intent-filter>
         </activity>
 
-        <!-- flutter_local_notifications: delivers scheduled adhans and re-arms them
+        <!-- Lends a problem-report screenshot to the mail app (reports/ only). -->
+        <provider
+            android:name=".ReportFileProvider"
+            android:authorities="${applicationId}.reports"
+            android:exported="false"
+            android:grantUriPermissions="true" />
+
+        <!-- Home-screen widget: the next prayer. -->
+        <receiver
+            android:name=".PrayerWidgetProvider"
+            android:exported="false"
+            android:label="@string/widget_description">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/prayer_widget_info" />
+        </receiver>
+
+        <!-- flutter_local_notifications: delivers scheduled prayer notifications and re-arms them
              after a reboot or an app update. -->
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
@@ -68,6 +89,11 @@
 
          In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
     <queries>
+        <!-- Problem reports open the user's mail app. -->
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
+        </intent>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>

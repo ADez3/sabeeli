@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -50,34 +49,4 @@ class AzkarCubit extends Cubit<AzkarState> {
           emit(AzkarState(status: AzkarStatus.ready, categories: categories)),
     );
   }
-}
-
-/// Remaining repetitions per dhikr while reading one category.
-class AzkarSessionState extends Equatable {
-  const AzkarSessionState({required this.remaining});
-
-  final Map<int, int> remaining;
-
-  int left(DhikrItem item) => remaining[item.id] ?? item.count;
-  bool isDone(DhikrItem item) => left(item) == 0;
-
-  @override
-  List<Object?> get props => [remaining];
-}
-
-@injectable
-class AzkarSessionCubit extends Cubit<AzkarSessionState> {
-  AzkarSessionCubit() : super(const AzkarSessionState(remaining: {}));
-
-  /// Returns true when this tap finished the item.
-  bool count(DhikrItem item) {
-    final left = state.left(item);
-    if (left == 0) return false;
-    final next = left - 1;
-    emit(AzkarSessionState(remaining: {...state.remaining, item.id: next}));
-    next == 0 ? HapticFeedback.mediumImpact() : HapticFeedback.selectionClick();
-    return next == 0;
-  }
-
-  void restart() => emit(const AzkarSessionState(remaining: {}));
 }

@@ -45,7 +45,8 @@ class QiblaState extends Equatable {
   List<Object?> get props => [status, bearing, distanceKm, reading, failure];
 }
 
-/// Lives only while the Qibla screen is open: the compass sensor costs battery.
+/// The compass sensor costs battery: the Qibla screen pauses it whenever it is
+/// out of sight (another tab, the app in the background) and resumes it after.
 @injectable
 class QiblaCubit extends Cubit<QiblaState> {
   QiblaCubit(this._watch) : super(const QiblaState());
@@ -53,9 +54,13 @@ class QiblaCubit extends Cubit<QiblaState> {
   final WatchCompassUseCase _watch;
   StreamSubscription<void>? _subscription;
   bool _wasFacing = false;
+  Coordinates? _position;
+  bool _paused = false;
 
   void start(Coordinates? position) {
+    _position = position;
     _subscription?.cancel();
+    _subscription = null;
     if (position == null) {
       emit(const QiblaState(status: QiblaStatus.noLocation));
       return;
@@ -67,6 +72,22 @@ class QiblaCubit extends Cubit<QiblaState> {
         distanceKm: Qibla.distanceKm(position),
       ),
     );
+    if (!_paused) _listen(position);
+  }
+
+  void pause() {
+    _paused = true;
+    _subscription?.cancel();
+    _subscription = null;
+  }
+
+  void resume() {
+    _paused = false;
+    final position = _position;
+    if (position != null && _subscription == null) _listen(position);
+  }
+
+  void _listen(Coordinates position) {
     _subscription = _watch(position).listen((result) {
       result.fold(
         (failure) => emit(

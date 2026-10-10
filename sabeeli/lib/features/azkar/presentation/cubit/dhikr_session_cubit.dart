@@ -5,20 +5,21 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../core/astronomy/prayer.dart';
 import '../../../../core/error/failures.dart';
-import '../../domain/entities/after_prayer.dart';
+import '../../domain/entities/dhikr_step.dart';
 import '../../domain/usecases/get_after_prayer_steps_usecase.dart';
 
-class AfterPrayerState extends Equatable {
-  const AfterPrayerState({
-    required this.prayer,
+class DhikrSessionState extends Equatable {
+  const DhikrSessionState({
+    this.prayer,
     this.steps = const [],
     this.index = 0,
     this.counted = 0,
     this.failure,
   });
 
-  final Prayer prayer;
-  final List<AfterPrayerStep> steps;
+  /// The prayer just prayed, for the after-prayer adhkar; null otherwise.
+  final Prayer? prayer;
+  final List<DhikrStep> steps;
 
   /// The step being said; equal to `steps.length` once all are done.
   final int index;
@@ -29,7 +30,7 @@ class AfterPrayerState extends Equatable {
 
   bool get loaded => steps.isNotEmpty;
   bool get finished => loaded && index >= steps.length;
-  AfterPrayerStep? get step => finished || !loaded ? null : steps[index];
+  DhikrStep? get step => finished || !loaded ? null : steps[index];
   int get target => step?.countAfter(prayer) ?? 0;
   int get left => target - counted;
 
@@ -37,12 +38,12 @@ class AfterPrayerState extends Equatable {
   int get totalRepetitions =>
       steps.fold(0, (sum, s) => sum + s.countAfter(prayer));
 
-  AfterPrayerState copyWith({
-    List<AfterPrayerStep>? steps,
+  DhikrSessionState copyWith({
+    List<DhikrStep>? steps,
     int? index,
     int? counted,
     Failure? failure,
-  }) => AfterPrayerState(
+  }) => DhikrSessionState(
     prayer: prayer,
     steps: steps ?? this.steps,
     index: index ?? this.index,
@@ -54,17 +55,20 @@ class AfterPrayerState extends Equatable {
   List<Object?> get props => [prayer, steps, index, counted, failure];
 }
 
-/// Walks through the adhkar after one prayer, counting each step and moving on
-/// to the next once it has been said the right number of times.
+/// Walks through adhkar one at a time, counting each step and moving on once
+/// it has been said the right number of times.
 @injectable
-class AfterPrayerCubit extends Cubit<AfterPrayerState> {
-  AfterPrayerCubit(this._steps)
-    : super(const AfterPrayerState(prayer: Prayer.fajr));
+class DhikrSessionCubit extends Cubit<DhikrSessionState> {
+  DhikrSessionCubit(this._steps) : super(const DhikrSessionState());
 
   final GetAfterPrayerStepsUseCase _steps;
 
-  Future<void> load(Prayer prayer) async {
-    emit(AfterPrayerState(prayer: prayer));
+  /// A session over given steps (a category of Hisn al-Muslim).
+  void start(List<DhikrStep> steps) => emit(DhikrSessionState(steps: steps));
+
+  /// The adhkar after [prayer].
+  Future<void> loadAfterPrayer(Prayer prayer) async {
+    emit(DhikrSessionState(prayer: prayer));
     final result = await _steps(prayer);
     result.fold(
       (f) => emit(state.copyWith(failure: f)),

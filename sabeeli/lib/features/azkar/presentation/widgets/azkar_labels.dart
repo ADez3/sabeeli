@@ -38,7 +38,7 @@ IconData azkarIcon(String? key) => switch (key) {
   'anger' => LucideIcons.heartHandshake,
   'rain' || 'rain_seeking' || 'thunder' || 'wind' => LucideIcons.cloud,
   'istighfar' || 'after_sin' => LucideIcons.heart,
-  _ => LucideIcons.sparkles,
+  _ => LucideIcons.handHeart,
 };
 
 /// The tile to suggest on the home screen at [now]: morning azkar from Fajr until

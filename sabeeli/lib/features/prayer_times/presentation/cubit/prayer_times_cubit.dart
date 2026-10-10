@@ -6,6 +6,7 @@ import '../../../../core/astronomy/calculation_method.dart';
 import '../../../../core/astronomy/prayer.dart';
 import '../../../../core/astronomy/prayer_calculator.dart';
 import '../../../../core/error/failures.dart';
+import '../../../../core/hijri/hijri_calendar.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../../location/domain/entities/saved_location.dart';
 import '../../domain/entities/notification_texts.dart';
@@ -153,6 +154,52 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
     await _reschedule();
   }
 
+  HijriCalendar? _hijri;
+
+  /// The user's Hijri calendar, for the fasting reminders (from AppSync).
+  Future<void> setHijriCalendar(HijriCalendar calendar) async {
+    if (identical(calendar, _hijri)) return;
+    _hijri = calendar;
+    await _reschedule();
+  }
+
+  /// The reminder the evening before voluntary fasts; null turns it off.
+  Future<void> setFastReminder(int? minutes, {Set<FastKind>? kinds}) async {
+    if (minutes != null &&
+        !(state.permissions?.notificationsAllowed ?? false)) {
+      await requestNotificationPermission();
+    }
+    await updateSettings(
+      state.settings.copyWith(
+        fastReminderMinutes: () => minutes,
+        fastKinds: kinds,
+      ),
+    );
+  }
+
+  /// The suhoor reminder in Ramadan, [minutes] before Fajr; null turns it off.
+  Future<void> setSuhoorReminder(int? minutes) async {
+    if (minutes != null &&
+        !(state.permissions?.notificationsAllowed ?? false)) {
+      await requestNotificationPermission();
+    }
+    await updateSettings(state.settings.copyWith(suhoorMinutes: () => minutes));
+  }
+
+  /// Turns a daily reminder on at [minutes] after midnight, or off with null.
+  Future<void> setDailyReminder(DailyReminder kind, int? minutes) async {
+    final reminders = {...state.settings.dailyReminders};
+    if (minutes == null) {
+      reminders.remove(kind);
+    } else {
+      reminders[kind] = minutes;
+      if (!(state.permissions?.notificationsAllowed ?? false)) {
+        await requestNotificationPermission();
+      }
+    }
+    await updateSettings(state.settings.copyWith(dailyReminders: reminders));
+  }
+
   Future<void> setMethod(CalculationMethod method) => updateSettings(
     state.settings.copyWith(
       calculation: state.settings.calculation.copyWith(method: method),
@@ -236,6 +283,7 @@ class PrayerTimesCubit extends Cubit<PrayerTimesState> {
       coordinates: location.coordinates,
       settings: state.settings,
       texts: texts,
+      hijri: _hijri,
     );
     if (!force && params == _lastScheduled) return;
     _lastScheduled = params;

@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 
 import '../../../../../core/astronomy/coordinates.dart';
 import '../../../../../core/astronomy/solar.dart';
+import '../../../../../core/platform/live_state.dart';
 import '../../../../../core/platform/tilt.dart';
+import '../../../../../core/theme/sky_ambience.dart';
 import '../../../../../core/theme/sky.dart';
 import 'landscape_painter.dart';
 import 'sky_painter.dart';
@@ -38,60 +38,58 @@ class LivingSky extends StatefulWidget {
   State<LivingSky> createState() => _LivingSkyState();
 }
 
-class _LivingSkyState extends State<LivingSky>
-    with SingleTickerProviderStateMixin {
-  late final Ticker _ticker;
-  final _clock = ValueNotifier(0.0);
+class _LivingSkyState extends State<LivingSky> with LiveStateMixin {
+  /// Drives twinkling and shooting stars at 30 fps, only while on screen.
+  final _clock = FrameClock();
   final _tilt = ValueNotifier(Offset.zero);
   StreamSubscription<Offset>? _tiltSub;
   Timer? _minute;
-  DateTime _now = _skyNow();
-
-  /// Debug builds can preview the sky at another hour:
-  /// `flutter run --dart-define=SKY_MINUTES_OFFSET=-840` (ignored in release).
-  static const _debugMinutesOffset = int.fromEnvironment('SKY_MINUTES_OFFSET');
-
-  static DateTime _skyNow() {
-    final now = DateTime.now();
-    if (!kDebugMode || _debugMinutesOffset == 0) return now;
-    return now.add(const Duration(minutes: _debugMinutesOffset));
-  }
-
+  DateTime _now = SkyClock.now();
   bool _animate = true;
 
   @override
-  void initState() {
-    super.initState();
-    _ticker = createTicker(
-      (elapsed) => _clock.value = elapsed.inMilliseconds / 1000,
-    );
-    // The sun moves a quarter of a degree a minute: once a minute is smooth enough.
-    _minute = Timer.periodic(
-      const Duration(minutes: 1),
-      (_) => setState(() => _now = _skyNow()),
-    );
+  void didChangeDependencies() {
+    // Honour the system "reduce motion" setting: a still sky, no tilt.
+    _animate = !MediaQuery.disableAnimationsOf(context);
+    super.didChangeDependencies();
+    if (isLive) onLiveChanged(true);
   }
 
+  /// Nothing runs out of sight: no clock, no tilt sensor, no timer.
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Honour the system "reduce motion" setting: a still sky, no tilt.
-    final on = !MediaQuery.disableAnimationsOf(context);
-    _animate = on;
-    if (on) {
-      if (!_ticker.isActive) _ticker.start();
-      _tiltSub ??= Tilt.watch().listen((o) => _tilt.value = o);
+  void onLiveChanged(bool live) {
+    if (live) {
+      // The sun moves a quarter of a degree a minute: once a minute is smooth
+      // enough. Catch up at once after a pause.
+      if (_minute == null) {
+        _minute = Timer.periodic(
+          const Duration(minutes: 1),
+          (_) => setState(() => _now = SkyClock.now()),
+        );
+        setState(() => _now = SkyClock.now());
+      }
+      if (_animate) {
+        _clock.start();
+        _tiltSub ??= Tilt.watch().listen((o) => _tilt.value = o);
+      } else {
+        _stopMotion();
+      }
     } else {
-      if (_ticker.isActive) _ticker.stop();
-      _tiltSub?.cancel();
-      _tiltSub = null;
-      _tilt.value = Offset.zero;
+      _minute?.cancel();
+      _minute = null;
+      _stopMotion();
     }
+  }
+
+  void _stopMotion() {
+    _clock.stop();
+    _tiltSub?.cancel();
+    _tiltSub = null;
+    _tilt.value = Offset.zero;
   }
 
   @override
   void dispose() {
-    _ticker.dispose();
     _minute?.cancel();
     _tiltSub?.cancel();
     _clock.dispose();

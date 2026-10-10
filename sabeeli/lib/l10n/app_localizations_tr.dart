@@ -109,7 +109,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get setLocationHint =>
-      'Namaz vakitleri ve kıble, bulunduğunuz yere göre hesaplanır. Konumunuz cihazınızdan asla çıkmaz.';
+      'Namaz vakitleri ve kıble, bulunduğunuz yere göre telefonunuzda hesaplanır. Şehrinizin adını göstermek için OpenStreetMap’e yalnızca yuvarlanmış bir konum gönderilir.';
 
   @override
   String get useCurrentLocation => 'Mevcut konumumu kullan';
@@ -872,4 +872,292 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get qiblaSubtitle => 'Bulunduğunuz yerden Kâbe’nin yönü';
+
+  @override
+  String get unitHours => 'sa';
+
+  @override
+  String get unitMinutes => 'dk';
+
+  @override
+  String get unitSeconds => 'sn';
+
+  @override
+  String get pageColour => 'Sayfa';
+
+  @override
+  String get pageAuto => 'Otomatik';
+
+  @override
+  String get pageNight => 'Gece';
+
+  @override
+  String get pageSepia => 'Sepya';
+
+  @override
+  String get pagePaper => 'Kâğıt';
+
+  @override
+  String get welcomeTagline =>
+      'Namaz, Kur’an ve zikir, üzerinizdeki gerçek gökyüzünün altında. Ücretsiz, gizli ve sizin.';
+
+  @override
+  String get welcomeBegin => 'Başla';
+
+  @override
+  String get welcomeNext => 'İleri';
+
+  @override
+  String get welcomeStart => 'Haydi';
+
+  @override
+  String get welcomePlaceTitle => 'Neredesiniz?';
+
+  @override
+  String get welcomeNotifyTitle => 'Her namazda';
+
+  @override
+  String get welcomeNotifyBody =>
+      'Her namaz vaktinde telefonunuzun kendi sesiyle sade bir bildirim. Sonra her namaz için ayarlayın.';
+
+  @override
+  String get welcomeNotifyAllow => 'Bildirimlere izin ver';
+
+  @override
+  String get welcomeNotifyOn => 'Bildirimler açık';
+
+  @override
+  String get welcomeExactAlarms => 'Tam dakikasında gelsin';
+
+  @override
+  String welcomeRiwayah(String riwayah) {
+    return 'Kur’an $riwayah rivayetiyle açılır. Ayarlardan değiştirebilirsiniz.';
+  }
+
+  @override
+  String get prepareSoon => 'Yakında';
+
+  @override
+  String get prepareHint => 'abdest vakti';
+
+  @override
+  String get channelDaily => 'Günlük hatırlatıcılar';
+
+  @override
+  String get dailyReminders => 'Günlük hatırlatıcılar';
+
+  @override
+  String get dailyMorning => 'Sabah zikirleri';
+
+  @override
+  String get dailyMorningBody => 'Güne birkaç dakikalık zikirle başlayın.';
+
+  @override
+  String get dailyEvening => 'Akşam zikirleri';
+
+  @override
+  String get dailyEveningBody => 'Gün dönerken akşam zikirleri.';
+
+  @override
+  String get dailySleep => 'Uyku zikirleri';
+
+  @override
+  String get dailySleepBody => 'Günü zikirle bitirin.';
+
+  @override
+  String get dailyQuran => 'Günlük okumanız';
+
+  @override
+  String get dailyQuranBody => 'Kur’an’dan bir sayfa sizi bekliyor.';
+
+  @override
+  String get dailyRemindersIntro =>
+      'Zikirler ve günlük okumanız için, seçtiğiniz saatte hatırlatıcılar. İsteğe bağlıdır: her gün aynı bildirim zamanla can sıkıcı olabilir; yalnızca gerçekten yardımcı olanları açın, istediğiniz zaman kapatın.';
+
+  @override
+  String get dailyRemindersOff => 'Kapalı';
+
+  @override
+  String dailyRemindersOn(int count) {
+    return '$count açık';
+  }
+
+  @override
+  String get betaBadge => 'Beta';
+
+  @override
+  String get betaTitle => 'Sabeeli beta sürümünde';
+
+  @override
+  String get betaBody =>
+      'Uygulama henüz yeni. Metinleri, çevirileri ve sunduğu bilgiler henüz ilim ehli tarafından gözden geçirilmeli. Küçük de olsa bir hata görürseniz bize bildirin: her bildirim yardımcı olur.';
+
+  @override
+  String get betaShakeHint =>
+      'Herhangi bir ekranda telefonu sallayarak ekran görüntüsüyle sorun bildirin.';
+
+  @override
+  String get betaUnderstood => 'Anladım';
+
+  @override
+  String get reportTitle => 'Sorun bildir';
+
+  @override
+  String get reportHint => 'Sorun nedir? (isteğe bağlı)';
+
+  @override
+  String get reportSend => 'E-postayla gönder';
+
+  @override
+  String get reportAttach => 'Ekran görüntüsünü ekle';
+
+  @override
+  String get reportPrivacy =>
+      'E-posta uygulamanız bildirim hazır olarak açılır. Orada gönder’e basana kadar hiçbir şey gönderilmez.';
+
+  @override
+  String get reportNoMail => 'Bu telefonda e-posta uygulaması bulunamadı';
+
+  @override
+  String get shakeToReport => 'Sorun bildirmek için salla';
+
+  @override
+  String get khatmahPlan => 'Hatim planı';
+
+  @override
+  String get planAKhatmah => 'Hatim planla';
+
+  @override
+  String khatmahDays(int days) {
+    return '$days gün';
+  }
+
+  @override
+  String khatmahDayOf(int day, int days) {
+    return '$days günün $day. günü';
+  }
+
+  @override
+  String khatmahToday(int from, int to) {
+    return 'Bugün: $from–$to. sayfalar';
+  }
+
+  @override
+  String khatmahLeft(int count) {
+    return 'Bugün $count sayfa kaldı';
+  }
+
+  @override
+  String get khatmahDone => 'Bugünkü bölüm tamam';
+
+  @override
+  String khatmahPerDay(int count) {
+    return 'Günde yaklaşık $count sayfa';
+  }
+
+  @override
+  String khatmahEnds(String date) {
+    return '$date tarihinde biter';
+  }
+
+  @override
+  String get khatmahFromStart => 'Baştan';
+
+  @override
+  String khatmahFromHere(int page) {
+    return '$page. sayfadan';
+  }
+
+  @override
+  String get khatmahStart => 'Planı başlat';
+
+  @override
+  String get khatmahEnd => 'Planı bitir';
+
+  @override
+  String get khatmahFinished => 'Hatim tamamlandı. Allah kabul etsin.';
+
+  @override
+  String readOnDays(int count) {
+    return 'Son 7 günün $count gününde okudunuz';
+  }
+
+  @override
+  String get fastRamadan => 'Ramazan';
+
+  @override
+  String get fastMondayThursday => 'Pazartesi ve perşembe orucu';
+
+  @override
+  String get fastWhiteDays => 'Eyyâm-ı bîd';
+
+  @override
+  String get fastArafah => 'Arefe günü';
+
+  @override
+  String get fastAshura => 'Tâsûâ ve Âşûrâ';
+
+  @override
+  String fastTomorrow(String name) {
+    return 'Yarın: $name';
+  }
+
+  @override
+  String get fastTomorrowBody =>
+      'Oruç tutmak isteyenler için bir hatırlatma. Sahur imsaktan önce.';
+
+  @override
+  String get suhoorTitle => 'Sahur';
+
+  @override
+  String suhoorBody(int minutes) {
+    return 'İmsaka $minutes dakika';
+  }
+
+  @override
+  String get fastingReminders => 'Oruç';
+
+  @override
+  String get fastReminderTitle => 'Nafile oruçlar';
+
+  @override
+  String get fastReminderBody => 'Sünnet oruçtan önceki akşam.';
+
+  @override
+  String get suhoorReminderTitle => 'Ramazan’da sahur';
+
+  @override
+  String get suhoorReminderBody => 'Ramazan boyunca imsaktan önce.';
+
+  @override
+  String get iftarIn => 'İftara';
+
+  @override
+  String get suhoorEndsIn => 'İmsaka';
+
+  @override
+  String ramadanDay(int day) {
+    return 'Ramazan · $day. gün';
+  }
+
+  @override
+  String fastToday(String name) {
+    return 'Bugün: $name';
+  }
+
+  @override
+  String iftarAt(String time) {
+    return 'İftar $time';
+  }
+
+  @override
+  String suhoorUntil(String time) {
+    return 'Sahur $time’a kadar';
+  }
+
+  @override
+  String get privacyPolicy => 'Gizlilik politikası';
+
+  @override
+  String get sourceCode => 'Kaynak kodu (GPL-3.0)';
 }

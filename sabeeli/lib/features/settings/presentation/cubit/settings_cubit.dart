@@ -31,6 +31,14 @@ class SettingsCubit extends Cubit<AppSettings> {
   Future<void> setNumeralStyle(NumeralStyle style) =>
       _update(state.copyWith(numeralStyle: style));
 
+  Future<void> completeOnboarding() => _update(state.copyWith(onboarded: true));
+
+  Future<void> setShakeToReport(bool on) =>
+      _update(state.copyWith(shakeToReport: on));
+
+  Future<void> markBetaNoticeSeen() =>
+      _update(state.copyWith(betaNoticeSeen: true));
+
   Future<void> _update(AppSettings next) async {
     emit(next);
     await _save(next);

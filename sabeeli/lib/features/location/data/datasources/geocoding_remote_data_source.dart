@@ -20,11 +20,13 @@ class GeocodingRemoteDataSource {
     Coordinates c, {
     required String language,
   }) async {
+    // Only a position rounded to about a kilometre leaves the device: enough to
+    // name the town, not to find the user.
     final json = await _http.get(
       Uri.https(_host, '/reverse', {
         'format': 'jsonv2',
-        'lat': '${c.latitude}',
-        'lon': '${c.longitude}',
+        'lat': c.latitude.toStringAsFixed(2),
+        'lon': c.longitude.toStringAsFixed(2),
         'zoom': '10',
         'accept-language': language,
       }),

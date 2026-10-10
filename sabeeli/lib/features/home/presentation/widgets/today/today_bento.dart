@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -7,6 +8,10 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../../core/astronomy/qibla.dart';
 import '../../../../../core/astronomy/solar.dart';
+import '../../../../../core/di/injection.dart';
+import '../../../../../core/hijri/fasting.dart';
+import '../../../../../core/layout/breakpoints.dart';
+import '../../../../../core/platform/live_state.dart';
 import '../../../../../core/router/app_routes.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/theme/app_fonts.dart';
@@ -22,10 +27,12 @@ import '../../../../hijri/presentation/cubit/hijri_cubit.dart';
 import '../../../../hijri/presentation/widgets/hijri_labels.dart';
 import '../../../../location/presentation/cubit/location_cubit.dart';
 import '../../../../prayer_times/presentation/cubit/prayer_times_cubit.dart';
+import '../../../../qibla/domain/usecases/watch_compass_usecase.dart';
 import '../../../../prayer_times/presentation/widgets/prayer_labels.dart';
 import '../../../../quran/domain/entities/quran_entities.dart';
 import '../../../../quran/presentation/cubit/quran_cubit.dart';
 import '../../../../quran/presentation/widgets/ayah_number.dart';
+import '../../../../quran/presentation/widgets/khatmah_sheet.dart';
 import '../../../../quran/presentation/widgets/surah_labels.dart';
 import '../../../../quran/presentation/widgets/quran_font.dart';
 
@@ -42,6 +49,7 @@ class TodayBento extends StatelessWidget {
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       _NowTile(),
+      _FastingTile(),
       SizedBox(height: _gap),
       _ContinueReadingTile(),
       SizedBox(height: _gap),
@@ -102,13 +110,48 @@ class _Caption extends StatelessWidget {
   }
 }
 
-/// The one thing that fits this moment: the adhkar after the prayer just
-/// prayed, or the morning or evening adhkar.
-class _NowTile extends StatelessWidget {
+/// The one thing that fits this moment: getting ready in the last minutes
+/// before a prayer, the adhkar after the prayer just prayed, or the morning or
+/// evening adhkar.
+class _NowTile extends StatefulWidget {
   const _NowTile();
 
+  @override
+  State<_NowTile> createState() => _NowTileState();
+}
+
+class _NowTileState extends State<_NowTile> with LiveStateMixin {
   /// How long after a prayer's time its adhkar are suggested first.
   static const _afterPrayerWindow = Duration(minutes: 50);
+
+  /// How long before a prayer the tile turns to getting ready.
+  static const _prepareWindow = Duration(minutes: 15);
+
+  Timer? _minute;
+
+  @override
+  void onLiveChanged(bool live) {
+    _minute?.cancel();
+    _minute = null;
+    if (!live) return;
+    void tick() {
+      if (!mounted) return;
+      setState(() {});
+      final now = DateTime.now();
+      _minute = Timer(
+        Duration(seconds: 60 - now.second, milliseconds: -now.millisecond),
+        tick,
+      );
+    }
+
+    tick();
+  }
+
+  @override
+  void dispose() {
+    _minute?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,29 +166,35 @@ class _NowTile extends StatelessWidget {
         lastTime != null &&
         !lastTime.isAfter(now) &&
         now.difference(lastTime) < _afterPrayerWindow;
+    final next = prayers.nextAfter(now);
+    final soon =
+        next != null &&
+        next.prayer.isObligatory &&
+        next.time.difference(now) <= _prepareWindow;
     final azkarKey = suggestedAzkarKey(now);
     final category = context.select(
       (AzkarCubit c) => azkarKey == null ? null : c.state.byKey(azkarKey),
     );
 
-    void openAfterPrayer() => context.pushNamed(
-      AppRoutes.afterPrayerName,
-      queryParameters: {'prayer': last.name},
-    );
-
-    final (
-      icon,
-      caption,
-      title,
-      subtitle,
-      onTap,
-    ) = justPrayed || category == null
+    final (icon, caption, title, subtitle, onTap) = soon
         ? (
-            LucideIcons.sparkles,
+            LucideIcons.droplet,
+            l10n.prepareSoon,
+            l10n.prayerIn(l10n.prayerName(next.prayer, on: now)),
+            '${context.formatDuration(next.time.difference(now))} · '
+                '${l10n.prepareHint}',
+            () => context.pushNamed(AppRoutes.prayerName),
+          )
+        : justPrayed || category == null
+        ? (
+            LucideIcons.handHeart,
             l10n.afterPrayer,
             l10n.afterPrayerOf(l10n.prayerName(last, on: now)),
             l10n.afterPrayerHint,
-            openAfterPrayer,
+            () => context.pushNamed(
+              AppRoutes.afterPrayerName,
+              queryParameters: {'prayer': last.name},
+            ),
           )
         : (
             azkarIcon(azkarKey),
@@ -187,6 +236,77 @@ class _NowTile extends StatelessWidget {
             child: Icon(context.forwardArrow, color: colors.accent, size: 20),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Fasting, when it matters today: the day of Ramadan with iftar and suhoor,
+/// a sunnah fast today, or one tomorrow. Nothing the rest of the time.
+class _FastingTile extends StatelessWidget {
+  const _FastingTile();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final colors = context.colors;
+    final text = Theme.of(context).textTheme;
+    final calendar = context.select((HijriCubit c) => c.state.calendar);
+    final prayers = context.watch<PrayerTimesCubit>().state;
+    final today = prayers.today;
+    final tomorrowTimes = prayers.tomorrow;
+    if (today == null) return const SizedBox.shrink();
+    final now = DateTime.now();
+    final date = DateTime(now.year, now.month, now.day);
+    final kindsToday = Fasting.on(calendar, date);
+    final kindsTomorrow = Fasting.on(
+      calendar,
+      date.add(const Duration(days: 1)),
+    );
+
+    final String title;
+    final String detail;
+    if (kindsToday.contains(FastKind.ramadan)) {
+      title = l10n.ramadanDay(calendar.fromGregorian(date).day);
+      // Before iftar: today's iftar; after it: tomorrow's suhoor.
+      detail = now.isBefore(today.maghrib)
+          ? l10n.iftarAt(context.formatTime(today.maghrib))
+          : l10n.suhoorUntil(
+              context.formatTime(tomorrowTimes?.fajr ?? today.fajr),
+            );
+    } else if (kindsToday.isNotEmpty && now.isBefore(today.maghrib)) {
+      title = l10n.fastToday(l10n.fastName(kindsToday.first));
+      detail = l10n.iftarAt(context.formatTime(today.maghrib));
+    } else if (kindsTomorrow.isNotEmpty &&
+        !kindsTomorrow.contains(FastKind.ramadan)) {
+      title = l10n.fastTomorrow(l10n.fastName(kindsTomorrow.first));
+      detail = l10n.suhoorUntil(
+        context.formatTime(tomorrowTimes?.fajr ?? today.fajr),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(top: TodayBento._gap),
+      child: BentoTile(
+        glow: colors.secondary,
+        onTap: () => context.pushNamed(AppRoutes.remindersName),
+        child: Row(
+          children: [
+            Icon(LucideIcons.moonStar, color: colors.secondary),
+            const SizedBox(width: AppSpacing.lg),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(context.digits(title), style: text.titleMedium),
+                  Text(context.digits(detail), style: text.bodySmall),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -235,7 +355,19 @@ class _ContinueReadingTile extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: text.titleLarge,
                   ),
-                if (position != null)
+                if (quran.plan != null)
+                  Text(
+                    context.digits(
+                      quran.pagesLeftToday(DateTime.now()) == 0
+                          ? l10n.khatmahDone
+                          : l10n.khatmahToday(
+                              quran.plan!.portion(DateTime.now()).$1,
+                              quran.plan!.portion(DateTime.now()).$2,
+                            ),
+                    ),
+                    style: text.bodySmall,
+                  )
+                else if (position != null)
                   Text(
                     context.digits(
                       l10n.pageAyah(position.page, position.ref.ayah),
@@ -288,11 +420,20 @@ class _MoonTile extends StatelessWidget {
         children: [
           Expanded(
             child: Center(
-              child: MoonPhaseIcon(
-                age: Solar.moonAge(DateTime.now()),
-                size: 64,
-                lit: const Color(0xFFF5F1E4),
-                dark: colors.text.withValues(alpha: 0.08),
+              // A faint rim keeps the disc visible around the new moon.
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: colors.text.withValues(alpha: 0.18),
+                  ),
+                ),
+                child: MoonPhaseIcon(
+                  age: Solar.moonAge(DateTime.now()),
+                  size: 64,
+                  lit: const Color(0xFFF5F1E4),
+                  dark: colors.text.withValues(alpha: 0.06),
+                ),
               ),
             ),
           ),
@@ -316,8 +457,70 @@ class _MoonTile extends StatelessWidget {
   }
 }
 
-class _QiblaTile extends StatelessWidget {
+/// A small compass: the dial turns with the phone while the tile is on
+/// screen (the sensor is off the rest of the time), and the amber needle shows
+/// the Qibla.
+class _QiblaTile extends StatefulWidget {
   const _QiblaTile();
+
+  @override
+  State<_QiblaTile> createState() => _QiblaTileState();
+}
+
+class _QiblaTileState extends State<_QiblaTile> with LiveStateMixin {
+  ScrollPosition? _scroll;
+  StreamSubscription<void>? _compass;
+  double? _heading;
+  bool _onScreen = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final scroll = Scrollable.maybeOf(context)?.position;
+    if (scroll != _scroll) {
+      _scroll?.removeListener(_checkOnScreen);
+      _scroll = scroll?..addListener(_checkOnScreen);
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) => _checkOnScreen());
+  }
+
+  @override
+  void onLiveChanged(bool live) => _checkOnScreen();
+
+  /// The compass runs only while the tile is visible in the viewport.
+  void _checkOnScreen() {
+    if (!mounted) return;
+    final box = context.findRenderObject() as RenderBox?;
+    var visible = false;
+    if (isLive && box != null && box.hasSize && box.attached) {
+      final top = box.localToGlobal(Offset.zero).dy;
+      final screen = MediaQuery.sizeOf(context).height;
+      // At least half of the tile, above the navigation bar.
+      final middle = top + box.size.height / 2;
+      visible = middle > 0 && middle < screen - context.navBarClearance;
+    }
+    if (visible == _onScreen) return;
+    _onScreen = visible;
+    _compass?.cancel();
+    _compass = null;
+    final where = context.read<LocationCubit>().state.location?.coordinates;
+    if (visible && where != null) {
+      _compass = getIt<WatchCompassUseCase>()(where).listen(
+        (r) => r.fold((_) {}, (reading) {
+          if (mounted) setState(() => _heading = reading.heading);
+        }),
+      );
+    } else if (_heading != null) {
+      setState(() => _heading = null);
+    }
+  }
+
+  @override
+  void dispose() {
+    _scroll?.removeListener(_checkOnScreen);
+    _compass?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -328,7 +531,13 @@ class _QiblaTile extends StatelessWidget {
       (LocationCubit c) => c.state.location?.coordinates,
     );
     final bearing = where == null ? null : Qibla.bearingFrom(where);
+    final heading = _heading;
+    final facing =
+        bearing != null &&
+        heading != null &&
+        (((bearing - heading + 540) % 360) - 180).abs() < 4;
     return BentoTile(
+      glow: facing ? colors.accent : null,
       onTap: () => context.go(AppRoutes.qibla),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -337,12 +546,18 @@ class _QiblaTile extends StatelessWidget {
             child: Center(
               child: SizedBox.square(
                 dimension: 72,
-                child: CustomPaint(
-                  painter: _MiniCompassPainter(
-                    bearing: bearing,
-                    ring: colors.text.withValues(alpha: 0.14),
-                    north: colors.textMuted,
-                    needle: colors.accent,
+                child: TweenAnimationBuilder<double>(
+                  // The dial eases towards each reading rather than jumping.
+                  tween: Tween(end: -(heading ?? 0)),
+                  duration: const Duration(milliseconds: 200),
+                  builder: (_, rotation, _) => CustomPaint(
+                    painter: _MiniCompassPainter(
+                      bearing: bearing,
+                      rotation: rotation,
+                      ring: colors.text.withValues(alpha: 0.14),
+                      north: colors.textMuted,
+                      needle: colors.accent,
+                    ),
                   ),
                 ),
               ),
@@ -369,12 +584,16 @@ class _QiblaTile extends StatelessWidget {
 class _MiniCompassPainter extends CustomPainter {
   const _MiniCompassPainter({
     required this.bearing,
+    this.rotation = 0,
     required this.ring,
     required this.north,
     required this.needle,
   });
 
   final double? bearing;
+
+  /// Degrees the dial is turned by (minus the phone's heading).
+  final double rotation;
   final Color ring;
   final Color north;
   final Color needle;
@@ -383,6 +602,9 @@ class _MiniCompassPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final c = size.center(Offset.zero);
     final r = size.shortestSide / 2;
+    canvas.translate(c.dx, c.dy);
+    canvas.rotate(rotation * math.pi / 180);
+    canvas.translate(-c.dx, -c.dy);
     final tick = Paint()
       ..color = ring
       ..strokeWidth = 1.2
@@ -424,7 +646,10 @@ class _MiniCompassPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_MiniCompassPainter old) =>
-      old.bearing != bearing || old.needle != needle || old.ring != ring;
+      old.bearing != bearing ||
+      old.rotation != rotation ||
+      old.needle != needle ||
+      old.ring != ring;
 }
 
 class _TasbihTile extends StatelessWidget {
@@ -510,7 +735,7 @@ class _DhikrTile extends StatelessWidget {
           Expanded(
             child: Center(
               child: Icon(
-                LucideIcons.heartHandshake,
+                LucideIcons.handHeart,
                 size: 44,
                 color: colors.secondary,
               ),

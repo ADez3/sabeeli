@@ -197,7 +197,7 @@ class _AfterPrayerHero extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(LucideIcons.sparkles, size: 15, color: colors.accent),
+                    Icon(LucideIcons.handHeart, size: 15, color: colors.accent),
                     const SizedBox(width: AppSpacing.xs + 2),
                     Text(
                       l10n.afterPrayer,

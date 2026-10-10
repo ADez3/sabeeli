@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/layout/breakpoints.dart';
+import '../../../../core/widgets/misbaha_icon.dart';
 import '../../../../l10n/l10n.dart';
 import '../widgets/app_sync.dart';
 import '../widgets/glass_nav_bar.dart';
@@ -23,11 +24,13 @@ class ShellPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final destinations = [
-      (LucideIcons.sunMoon, l10n.navToday),
-      (LucideIcons.bookOpen, l10n.navQuran),
-      (LucideIcons.sparkles, l10n.navDhikr),
-      (LucideIcons.compass, l10n.qibla),
+    Widget Function(Color) lucide(IconData icon) =>
+        (color) => Icon(icon, size: 22, color: color);
+    final destinations = <(Widget Function(Color), String)>[
+      (lucide(LucideIcons.sunMoon), l10n.navToday),
+      (lucide(LucideIcons.bookOpen), l10n.navQuran),
+      ((color) => MisbahaIcon(size: 22, color: color), l10n.navDhikr),
+      (lucide(LucideIcons.compass), l10n.qibla),
     ];
 
     final body = AppSync(child: navigationShell);
@@ -63,7 +66,10 @@ class ShellPage extends StatelessWidget {
               destinations: [
                 for (final (icon, label) in destinations)
                   NavigationRailDestination(
-                    icon: Icon(icon),
+                    icon: Builder(
+                      builder: (context) =>
+                          icon(IconTheme.of(context).color ?? Colors.grey),
+                    ),
                     label: Text(label),
                   ),
               ],

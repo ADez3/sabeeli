@@ -215,9 +215,9 @@ abstract final class AppTheme {
     );
   }
 
-  /// Readex Pro for reading and controls; the Fraunces serif (with Reem Kufi for
-  /// Arabic) for display sizes. Letter-spacing is zero throughout: any tracking
-  /// breaks the joins of Arabic script.
+  /// One family, Readex Pro: light weights for display sizes, regular and
+  /// medium for reading and controls. Letter-spacing is zero throughout: any
+  /// tracking breaks the joins of Arabic script.
   static TextTheme _textTheme(TextTheme base, AppColors c) {
     final t = base.apply(
       fontFamily: AppFonts.ui,
@@ -225,34 +225,27 @@ abstract final class AppTheme {
       bodyColor: c.text,
       displayColor: c.text,
     );
-    TextStyle? flat(TextStyle? s, FontWeight w) =>
-        s?.copyWith(letterSpacing: 0, fontWeight: w);
-    TextStyle? serif(TextStyle? s, FontWeight w) => s?.copyWith(
-      fontFamily: AppFonts.serif,
-      fontFamilyFallback: AppFonts.displayFallback,
-      fontWeight: w,
-      letterSpacing: 0,
-      height: 1.15,
-    );
+    TextStyle? style(TextStyle? s, FontWeight w, {double? height}) =>
+        s?.copyWith(letterSpacing: 0, fontWeight: w, height: height);
     return t.copyWith(
-      displayLarge: serif(t.displayLarge, FontWeight.w300),
-      displayMedium: serif(t.displayMedium, FontWeight.w300),
-      displaySmall: serif(t.displaySmall, FontWeight.w300),
-      headlineLarge: serif(t.headlineLarge, FontWeight.w300),
-      headlineMedium: serif(t.headlineMedium, FontWeight.w300),
-      headlineSmall: serif(t.headlineSmall, FontWeight.w500),
-      titleLarge: flat(t.titleLarge, FontWeight.w500),
-      titleMedium: flat(t.titleMedium, FontWeight.w500),
-      titleSmall: flat(t.titleSmall, FontWeight.w500),
-      bodyLarge: flat(t.bodyLarge, FontWeight.w400),
-      bodyMedium: flat(t.bodyMedium, FontWeight.w400),
-      bodySmall: flat(
+      displayLarge: style(t.displayLarge, FontWeight.w200, height: 1.1),
+      displayMedium: style(t.displayMedium, FontWeight.w200, height: 1.1),
+      displaySmall: style(t.displaySmall, FontWeight.w300, height: 1.15),
+      headlineLarge: style(t.headlineLarge, FontWeight.w300),
+      headlineMedium: style(t.headlineMedium, FontWeight.w300),
+      headlineSmall: style(t.headlineSmall, FontWeight.w400),
+      titleLarge: style(t.titleLarge, FontWeight.w500),
+      titleMedium: style(t.titleMedium, FontWeight.w500),
+      titleSmall: style(t.titleSmall, FontWeight.w500),
+      bodyLarge: style(t.bodyLarge, FontWeight.w400),
+      bodyMedium: style(t.bodyMedium, FontWeight.w400),
+      bodySmall: style(
         t.bodySmall,
         FontWeight.w400,
       )?.copyWith(color: c.textMuted),
-      labelLarge: flat(t.labelLarge, FontWeight.w500),
-      labelMedium: flat(t.labelMedium, FontWeight.w500),
-      labelSmall: flat(t.labelSmall, FontWeight.w500),
+      labelLarge: style(t.labelLarge, FontWeight.w500),
+      labelMedium: style(t.labelMedium, FontWeight.w500),
+      labelSmall: style(t.labelSmall, FontWeight.w500),
     );
   }
 }

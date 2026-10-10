@@ -18,12 +18,13 @@ import '../../../quran/domain/entities/quran_entities.dart';
 import '../../../quran/presentation/cubit/quran_cubit.dart';
 import '../../../quran/presentation/widgets/ayah_number.dart';
 import '../../../tasbih/presentation/widgets/misbaha.dart';
-import '../../domain/entities/after_prayer.dart';
-import '../cubit/after_prayer_cubit.dart';
+import '../../domain/entities/dhikr_step.dart';
+import '../cubit/azkar_cubit.dart';
+import '../widgets/azkar_labels.dart';
+import '../cubit/dhikr_session_cubit.dart';
 import '../../../quran/presentation/widgets/quran_font.dart';
 
-/// The adhkar after the salam, one step at a time: repeated adhkar are counted on
-/// the misbaha, the rest are read and confirmed with a tap.
+/// The adhkar after the salam, as a guided session.
 class AfterPrayerPage extends StatelessWidget {
   const AfterPrayerPage({super.key, this.prayer});
 
@@ -31,24 +32,76 @@ class AfterPrayerPage extends StatelessWidget {
   final Prayer? prayer;
 
   @override
-  Widget build(BuildContext context) => BlocProvider(
-    create: (_) => getIt<AfterPrayerCubit>()
-      ..load(
+  Widget build(BuildContext context) {
+    final p =
         prayer ??
-            context.read<PrayerTimesCubit>().state.lastPrayerAt(DateTime.now()),
+        context.read<PrayerTimesCubit>().state.lastPrayerAt(DateTime.now());
+    return BlocProvider(
+      create: (_) => getIt<DhikrSessionCubit>()..loadAfterPrayer(p),
+      child: DhikrSessionView(
+        title: context.l10n.afterPrayerOf(context.l10n.prayerName(p)),
       ),
-    child: const _AfterPrayerView(),
-  );
+    );
+  }
 }
 
-class _AfterPrayerView extends StatefulWidget {
-  const _AfterPrayerView();
+/// A category of Hisn al-Muslim (morning, evening, sleep…) as the same guided
+/// session.
+class AzkarReaderPage extends StatefulWidget {
+  const AzkarReaderPage({super.key, required this.categoryId});
+
+  final int categoryId;
 
   @override
-  State<_AfterPrayerView> createState() => _AfterPrayerViewState();
+  State<AzkarReaderPage> createState() => _AzkarReaderPageState();
 }
 
-class _AfterPrayerViewState extends State<_AfterPrayerView> {
+class _AzkarReaderPageState extends State<AzkarReaderPage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<AzkarCubit>().load();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final category = context.select(
+      (AzkarCubit c) => c.state.byId(widget.categoryId),
+    );
+    if (category == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    return BlocProvider(
+      create: (_) => getIt<DhikrSessionCubit>()
+        ..start([
+          for (final item in category.items)
+            DhikrStep(
+              id: '${item.id}',
+              arabic: item.arabic,
+              count: item.count,
+              translation: item.translation,
+              transliteration: item.transliteration,
+              reference: item.reference,
+              virtue: item.virtue,
+            ),
+        ]),
+      child: DhikrSessionView(title: context.azkarTitle(category)),
+    );
+  }
+}
+
+/// Adhkar one step at a time: repeated adhkar are counted on the misbaha, the
+/// rest are read and confirmed with a tap.
+class DhikrSessionView extends StatefulWidget {
+  const DhikrSessionView({super.key, required this.title});
+
+  final String title;
+
+  @override
+  State<DhikrSessionView> createState() => _DhikrSessionViewState();
+}
+
+class _DhikrSessionViewState extends State<DhikrSessionView> {
   bool _translation = false;
 
   @override
@@ -61,8 +114,8 @@ class _AfterPrayerViewState extends State<_AfterPrayerView> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final s = context.watch<AfterPrayerCubit>().state;
-    final cubit = context.read<AfterPrayerCubit>();
+    final s = context.watch<DhikrSessionCubit>().state;
+    final cubit = context.read<DhikrSessionCubit>();
 
     return Scaffold(
       body: AmbientBackground(
@@ -81,7 +134,9 @@ class _AfterPrayerViewState extends State<_AfterPrayerView> {
                     ),
                     Expanded(
                       child: Text(
-                        l10n.afterPrayerOf(l10n.prayerName(s.prayer)),
+                        widget.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
@@ -142,6 +197,7 @@ class _AfterPrayerViewState extends State<_AfterPrayerView> {
               ),
               if (s.loaded && !s.finished)
                 _StepNav(
+                  reference: s.step?.reference,
                   onPrevious: s.index > 0
                       ? () => cubit.goTo(s.index - 1)
                       : null,
@@ -159,12 +215,48 @@ class _AfterPrayerViewState extends State<_AfterPrayerView> {
 class _StepsProgress extends StatelessWidget {
   const _StepsProgress({required this.state, required this.onTap});
 
-  final AfterPrayerState state;
+  final DhikrSessionState state;
   final ValueChanged<int> onTap;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    final n = state.steps.length;
+    if (n > 16) {
+      final done =
+          state.index + (state.target > 0 ? state.counted / state.target : 0);
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+        child: Row(
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(2),
+                child: TweenAnimationBuilder<double>(
+                  tween: Tween(end: (done / n).clamp(0.0, 1.0)),
+                  duration: const Duration(milliseconds: 240),
+                  curve: Curves.easeOut,
+                  builder: (_, v, _) => LinearProgressIndicator(
+                    value: v,
+                    minHeight: 3,
+                    color: colors.primary,
+                    backgroundColor: colors.text.withValues(alpha: 0.12),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: AppSpacing.md),
+            Text(
+              context.digits(
+                context.l10n.progressOf((state.index + 1).clamp(1, n), n),
+              ),
+              style: Theme.of(context).textTheme.labelMedium
+                  ?.copyWith(color: colors.textMuted),
+            ),
+          ],
+        ),
+      );
+    }
     return Row(
       children: [
         for (var i = 0; i < state.steps.length; i++)
@@ -213,7 +305,7 @@ class _StepView extends StatelessWidget {
     required this.onCount,
   });
 
-  final AfterPrayerState state;
+  final DhikrSessionState state;
   final bool translation;
   final VoidCallback onCount;
 
@@ -222,7 +314,7 @@ class _StepView extends StatelessWidget {
     final step = state.step!;
     // Up to a full string of beads is counted on the misbaha; single adhkar and
     // the Quran passages are read and then confirmed.
-    if (!step.isQuran && state.target > 1) {
+    if (!step.isQuran && state.target > 1 && step.arabic!.length <= 140) {
       return _CountedStep(
         state: state,
         translation: translation,
@@ -240,7 +332,7 @@ class _CountedStep extends StatelessWidget {
     required this.onCount,
   });
 
-  final AfterPrayerState state;
+  final DhikrSessionState state;
   final bool translation;
   final VoidCallback onCount;
 
@@ -297,7 +389,7 @@ class _ReadStep extends StatelessWidget {
     required this.onDone,
   });
 
-  final AfterPrayerState state;
+  final DhikrSessionState state;
   final bool translation;
   final VoidCallback onDone;
 
@@ -362,7 +454,7 @@ class _ReadStep extends StatelessWidget {
 class _DhikrText extends StatelessWidget {
   const _DhikrText({required this.step, required this.size});
 
-  final AfterPrayerStep step;
+  final DhikrStep step;
   final double size;
 
   @override
@@ -383,7 +475,7 @@ class _DhikrText extends StatelessWidget {
 class _QuranPassage extends StatelessWidget {
   const _QuranPassage({required this.step, required this.data});
 
-  final AfterPrayerStep step;
+  final DhikrStep step;
   final QuranData data;
 
   @override
@@ -446,7 +538,7 @@ class _QuranPassage extends StatelessWidget {
 class _Translation extends StatelessWidget {
   const _Translation({required this.step});
 
-  final AfterPrayerStep step;
+  final DhikrStep step;
 
   @override
   Widget build(BuildContext context) {
@@ -545,10 +637,17 @@ class _DoneButton extends StatelessWidget {
 }
 
 class _StepNav extends StatelessWidget {
-  const _StepNav({required this.onPrevious, required this.onSkip});
+  const _StepNav({
+    required this.onPrevious,
+    required this.onSkip,
+    this.reference,
+  });
 
   final VoidCallback? onPrevious;
   final VoidCallback onSkip;
+
+  /// Where the dhikr is narrated, shown on demand.
+  final String? reference;
 
   @override
   Widget build(BuildContext context) {
@@ -564,6 +663,40 @@ class _StepNav extends StatelessWidget {
             style: TextButton.styleFrom(foregroundColor: muted),
             child: Text(l10n.previousStep),
           ),
+          if (reference != null)
+            IconButton(
+              tooltip: l10n.source,
+              icon: Icon(LucideIcons.bookMarked, size: 20, color: muted),
+              onPressed: () => showModalBottomSheet<void>(
+                context: context,
+                builder: (sheet) => SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      AppSpacing.xl,
+                      0,
+                      AppSpacing.xl,
+                      AppSpacing.xl,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          l10n.source,
+                          style: Theme.of(sheet).textTheme.titleMedium,
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        Text(
+                          reference!,
+                          textDirection: TextDirection.rtl,
+                          style: const TextStyle(height: 1.8),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
           TextButton(
             onPressed: onSkip,
             style: TextButton.styleFrom(foregroundColor: muted),
@@ -578,7 +711,7 @@ class _StepNav extends StatelessWidget {
 class _Finished extends StatelessWidget {
   const _Finished({super.key, required this.state, required this.onRestart});
 
-  final AfterPrayerState state;
+  final DhikrSessionState state;
   final VoidCallback onRestart;
 
   @override

@@ -115,6 +115,7 @@ class QuranSkyStarsPainter extends CustomPainter {
     required this.progress,
     required this.current,
     required this.selected,
+    this.today = const {},
     required this.clock,
     required this.scale,
     required this.fitScale,
@@ -128,6 +129,9 @@ class QuranSkyStarsPainter extends CustomPainter {
   final List<double> progress;
   final int? current;
   final int? selected;
+
+  /// Surahs in today's khatmah portion: a steady amber ring.
+  final Set<int> today;
   final ValueNotifier<double> clock;
 
   /// The view's absolute zoom, and the zoom at which the whole sky fits.
@@ -194,6 +198,16 @@ class QuranSkyStarsPainter extends CustomPainter {
         canvas.drawLine(c - Offset(0, r * 3.2), c + Offset(0, r * 3.2), spark);
       }
 
+      if (today.contains(i + 1)) {
+        canvas.drawCircle(
+          c,
+          r + 6,
+          Paint()
+            ..color = accent.withValues(alpha: 0.55)
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 1,
+        );
+      }
       if (i + 1 == current) {
         final pulse = (t * 0.8) % 1;
         canvas.drawCircle(
@@ -245,5 +259,6 @@ class QuranSkyStarsPainter extends CustomPainter {
       old.progress != progress ||
       old.current != current ||
       old.selected != selected ||
+      old.today != today ||
       old.accent != accent;
 }

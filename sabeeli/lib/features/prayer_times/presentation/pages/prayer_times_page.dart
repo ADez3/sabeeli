@@ -11,6 +11,7 @@ import '../../../../core/astronomy/prayer.dart';
 import '../../../../core/astronomy/prayer_calculator.dart';
 import '../../../../core/astronomy/solar.dart';
 import '../../../../core/layout/breakpoints.dart';
+import '../../../../core/platform/live_state.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_icons.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -43,7 +44,7 @@ class PrayerTimesPage extends StatefulWidget {
 }
 
 class _PrayerTimesPageState extends State<PrayerTimesPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, LiveStateMixin {
   final _scroll = ScrollController();
   late final AnimationController _arrival = AnimationController(
     vsync: this,
@@ -58,10 +59,18 @@ class _PrayerTimesPageState extends State<PrayerTimesPage>
   void initState() {
     super.initState();
     if (widget.arrivedByDive) _arrival.forward();
+  }
+
+  @override
+  void onLiveChanged(bool live) {
+    _minute?.cancel();
+    _minute = null;
+    if (!live) return;
     _minute = Timer.periodic(
       const Duration(minutes: 1),
       (_) => setState(() {}),
     );
+    setState(() {});
   }
 
   @override
@@ -219,7 +228,6 @@ class _PrayerTimesPageState extends State<PrayerTimesPage>
               context.formatDuration(gap),
               style: text.labelSmall?.copyWith(
                 color: _white.withValues(alpha: 0.45),
-                letterSpacing: 0.3,
               ),
             ),
           ),
@@ -229,7 +237,7 @@ class _PrayerTimesPageState extends State<PrayerTimesPage>
         PositionedDirectional(
           start: 0,
           end: 0,
-          top: y - 34,
+          top: y - 40,
           child: AnimatedOpacity(
             duration: const Duration(milliseconds: 400),
             opacity: past ? 0.5 : 1,
@@ -406,7 +414,7 @@ class _Station extends StatelessWidget {
     final text = Theme.of(context).textTheme;
     final minor = !prayer.isObligatory;
     return SizedBox(
-      height: 68,
+      height: 80,
       child: Row(
         children: [
           SizedBox(
@@ -435,20 +443,21 @@ class _Station extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // No capitals or tracking: they break Arabic names.
                 Text(
-                  l10n.prayerName(prayer, on: date).toUpperCase(),
-                  style: text.labelMedium?.copyWith(
-                    color: _whiteMuted,
-                    letterSpacing: 1.6,
+                  l10n.prayerName(prayer, on: date),
+                  style: text.titleSmall?.copyWith(
+                    color: isNext ? const Color(0xFFF4B56A) : _whiteMuted,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
                 Text(
                   context.formatTime(time),
-                  style: (minor ? text.headlineSmall : text.headlineMedium)
+                  style: (minor ? text.headlineSmall : text.headlineLarge)
                       ?.copyWith(
                         color: _white,
-                        fontWeight: isNext ? FontWeight.w600 : FontWeight.w300,
-                        fontFeatures: const [FontFeature.tabularFigures()],
+                        height: 1.1,
+                        fontWeight: isNext ? FontWeight.w400 : FontWeight.w200,
                       ),
                 ),
               ],
@@ -547,7 +556,7 @@ class _NowMarker extends StatelessWidget {
                 child: Text(
                   label,
                   style: Theme.of(context).textTheme.labelMedium
-                      ?.copyWith(color: _white, fontWeight: FontWeight.w600),
+                      ?.copyWith(color: _white, fontWeight: FontWeight.w500),
                 ),
               ),
             ],
@@ -617,10 +626,7 @@ class _Header extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: text.headlineSmall?.copyWith(
-                    color: _white,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: text.displaySmall?.copyWith(color: _white),
                 ),
               ),
               IconButton(
@@ -725,7 +731,13 @@ class _PermissionBanner extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(LucideIcons.bellOff, size: 15, color: Color(0xFFF4B860)),
+            Icon(
+              perms.notificationsAllowed
+                  ? LucideIcons.alarmClock
+                  : LucideIcons.bellOff,
+              size: 15,
+              color: const Color(0xFFF4B860),
+            ),
             const SizedBox(width: 6),
             Text(l10n.allow, style: const TextStyle(color: _white)),
           ],

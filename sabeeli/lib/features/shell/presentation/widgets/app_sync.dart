@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/astronomy/prayer.dart';
+import '../../../../core/platform/home_widget.dart';
+import '../../../../core/utils/formatters.dart';
 import '../../../../core/utils/numerals.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../hijri/presentation/cubit/hijri_cubit.dart';
@@ -37,6 +40,9 @@ class _AppSyncState extends State<AppSync> with WidgetsBindingObserver {
     final location = context.read<LocationCubit>();
     context.read<PrayerTimesCubit>().setLocation(location.state.location);
     _pushRegion(location.state.location?.countryCode);
+    context.read<PrayerTimesCubit>().setHijriCalendar(
+      context.read<HijriCubit>().state.calendar,
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) location.refreshIfAutomatic(context.languageCode);
     });
@@ -46,6 +52,28 @@ class _AppSyncState extends State<AppSync> with WidgetsBindingObserver {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _pushNotificationTexts();
+    _pushWidget();
+  }
+
+  /// Today's and tomorrow's prayers for the home-screen widget.
+  void _pushWidget() {
+    final state = context.read<PrayerTimesCubit>().state;
+    final l10n = context.l10n;
+    final days = [?state.today, ?state.tomorrow];
+    final place = state.location?.name;
+    HomeWidget.update(
+      prayers: [
+        for (final day in days)
+          for (final p in Prayer.values.where((p) => p.isObligatory))
+            (
+              name: l10n.prayerName(p, on: day.date),
+              time: day.timeOf(p),
+              label: context.formatTime(day.timeOf(p)),
+            ),
+      ],
+      caption: place == null ? l10n.nextPrayer : '${l10n.nextPrayer} · $place',
+      empty: l10n.appName,
+    );
   }
 
   void _pushNotificationTexts() {
@@ -53,17 +81,19 @@ class _AppSyncState extends State<AppSync> with WidgetsBindingObserver {
     prayer.setNotificationTexts(
       context.l10n.notificationTexts(
         reminderMinutes: prayer.state.settings.reminderMinutes,
+        suhoorMinutes: prayer.state.settings.suhoorMinutes,
         numerals: NumeralsScope.of(context),
       ),
     );
   }
 
-  /// The riwayah follows the region until the user picks one: the phone's
-  /// region first (as for digits), then the country of the saved location.
+  /// The riwayah follows the region until the user picks one: the country of
+  /// the saved location first (phones in Morocco are often set to en_US or
+  /// fr_FR), then the phone's region.
   void _pushRegion(String? locationCountry) =>
       context.read<QuranCubit>().setRegion(
-        WidgetsBinding.instance.platformDispatcher.locale.countryCode ??
-            locationCountry,
+        locationCountry ??
+            WidgetsBinding.instance.platformDispatcher.locale.countryCode,
       );
 
   @override
@@ -106,8 +136,21 @@ class _AppSyncState extends State<AppSync> with WidgetsBindingObserver {
       ),
       BlocListener<PrayerTimesCubit, PrayerTimesState>(
         listenWhen: (a, b) =>
-            a.settings.reminderMinutes != b.settings.reminderMinutes,
+            a.settings.reminderMinutes != b.settings.reminderMinutes ||
+            a.settings.suhoorMinutes != b.settings.suhoorMinutes,
         listener: (_, _) => _pushNotificationTexts(),
+      ),
+      BlocListener<HijriCubit, HijriState>(
+        listenWhen: (a, b) => !identical(a.calendar, b.calendar),
+        listener: (context, state) =>
+            context.read<PrayerTimesCubit>().setHijriCalendar(state.calendar),
+      ),
+      BlocListener<PrayerTimesCubit, PrayerTimesState>(
+        listenWhen: (a, b) =>
+            a.today != b.today ||
+            a.tomorrow != b.tomorrow ||
+            a.location != b.location,
+        listener: (_, _) => _pushWidget(),
       ),
     ],
     child: widget.child,

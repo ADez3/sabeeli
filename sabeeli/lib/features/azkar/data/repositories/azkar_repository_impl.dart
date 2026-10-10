@@ -2,7 +2,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../core/error/error_handler.dart';
 import '../../../../core/result/result.dart';
-import '../../domain/entities/after_prayer.dart';
+import '../../domain/entities/dhikr_step.dart';
 import '../../domain/entities/azkar_entities.dart';
 import '../../domain/repositories/azkar_repository.dart';
 import '../datasources/azkar_asset_data_source.dart';
@@ -22,7 +22,7 @@ class AzkarRepositoryImpl implements AzkarRepository {
   }
 
   @override
-  Future<Result<List<AfterPrayerStep>>> afterPrayer() async {
+  Future<Result<List<DhikrStep>>> afterPrayer() async {
     try {
       return Ok(await _assets.afterPrayer());
     } catch (e) {

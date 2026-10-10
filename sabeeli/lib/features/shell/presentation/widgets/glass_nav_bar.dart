@@ -8,7 +8,9 @@ import '../../../../core/theme/sky_ambience.dart';
 
 class GlassNavItem {
   const GlassNavItem({required this.icon, required this.label});
-  final IconData icon;
+
+  /// The icon in a given colour (a Lucide [Icon], or a drawn one).
+  final Widget Function(Color color) icon;
   final String label;
 }
 
@@ -159,8 +161,7 @@ class _NavIcon extends StatelessWidget {
                 tween: ColorTween(
                   end: selected ? colors.onPrimary : colors.textMuted,
                 ),
-                builder: (_, color, _) =>
-                    Icon(item.icon, size: 22, color: color),
+                builder: (_, color, _) => item.icon(color!),
               ),
             ),
           ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/astronomy/coordinates.dart';
 import '../../../../core/astronomy/qibla.dart';
+import '../../../../core/platform/live_state.dart';
 import '../../domain/entities/land_mask.dart';
 
 /// The Earth as a globe of dots with the great-circle path from the user to the
@@ -27,15 +28,16 @@ class QiblaGlobe extends StatefulWidget {
   State<QiblaGlobe> createState() => _QiblaGlobeState();
 }
 
-class _QiblaGlobeState extends State<QiblaGlobe> with TickerProviderStateMixin {
+class _QiblaGlobeState extends State<QiblaGlobe>
+    with SingleTickerProviderStateMixin, LiveStateMixin {
   late final AnimationController _intro = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 2600),
   );
-  late final AnimationController _loop = AnimationController(
-    vsync: this,
-    duration: const Duration(seconds: 3),
-  );
+
+  /// The travelling light and the pulses: a 3 s loop at 30 fps, only while the
+  /// globe is on screen.
+  final _clock = FrameClock();
   late List<Coordinates> _path = Qibla.pathFrom(widget.user, steps: 96);
   late List<(double, double)> _land = _landPoints(widget.mask);
 
@@ -51,11 +53,16 @@ class _QiblaGlobeState extends State<QiblaGlobe> with TickerProviderStateMixin {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (MediaQuery.disableAnimationsOf(context)) {
-      _intro.value = 1;
-      _loop.stop();
-    } else if (!_loop.isAnimating) {
-      _loop.repeat();
+    if (MediaQuery.disableAnimationsOf(context)) _intro.value = 1;
+    onLiveChanged(isLive);
+  }
+
+  @override
+  void onLiveChanged(bool live) {
+    if (live && !MediaQuery.disableAnimationsOf(context)) {
+      _clock.start();
+    } else {
+      _clock.stop();
     }
   }
 
@@ -84,7 +91,7 @@ class _QiblaGlobeState extends State<QiblaGlobe> with TickerProviderStateMixin {
   @override
   void dispose() {
     _intro.dispose();
-    _loop.dispose();
+    _clock.dispose();
     super.dispose();
   }
 
@@ -95,7 +102,7 @@ class _QiblaGlobeState extends State<QiblaGlobe> with TickerProviderStateMixin {
       _drag = Offset(_drag.dx, _drag.dy.clamp(-70.0, 70.0));
     }),
     child: AnimatedBuilder(
-      animation: Listenable.merge([_intro, _loop]),
+      animation: Listenable.merge([_intro, _clock]),
       builder: (_, _) {
         final t = Curves.easeInOutCubic.transform(_intro.value);
         // Turn from the user to the middle of the route.
@@ -117,7 +124,7 @@ class _QiblaGlobeState extends State<QiblaGlobe> with TickerProviderStateMixin {
             drawn: Curves.easeOut.transform(
               ((_intro.value - 0.25) / 0.75).clamp(0.0, 1.0),
             ),
-            pulse: _loop.value,
+            pulse: (_clock.value / 3) % 1,
             youLabel: widget.youLabel,
             makkahLabel: widget.makkahLabel,
           ),
