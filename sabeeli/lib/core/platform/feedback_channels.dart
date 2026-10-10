@@ -6,16 +6,16 @@ import 'package:flutter/services.dart';
 abstract final class Shake {
   static const _channel = EventChannel('dev.adez.sabeeli/shake');
 
+  /// Shared by every listener (see [Tilt] for why one stream per channel).
+  static final _raw = _channel.receiveBroadcastStream();
+
   static Stream<void> watch() {
     if (kIsWeb ||
         !(defaultTargetPlatform == TargetPlatform.android ||
             defaultTargetPlatform == TargetPlatform.iOS)) {
       return const Stream.empty();
     }
-    return _channel
-        .receiveBroadcastStream()
-        .map((_) {})
-        .handleError((Object _) {});
+    return _raw.map((_) {}).handleError((Object _) {});
   }
 }
 

@@ -15,6 +15,7 @@ import 'features/prayer_times/presentation/cubit/prayer_times_cubit.dart';
 import 'features/quran/presentation/cubit/quran_cubit.dart';
 import 'features/settings/domain/entities/app_settings.dart';
 import 'features/settings/presentation/cubit/settings_cubit.dart';
+import 'features/shell/presentation/widgets/app_sync.dart';
 import 'l10n/l10n.dart';
 
 class SabeeliApp extends StatelessWidget {
@@ -78,7 +79,10 @@ class SabeeliApp extends StatelessWidget {
                           .countryCode ??
                       locationCountry,
                 ),
-                child: ShakeToReport(child: child!),
+                // AppSync sits above the router so it runs whatever the first
+                // route is: a notification or a link can open a page pushed
+                // over the shell, and the shell is not built under it.
+                child: ShakeToReport(child: AppSync(child: child!)),
               ),
             ),
           );

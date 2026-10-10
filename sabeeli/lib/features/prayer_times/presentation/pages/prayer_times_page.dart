@@ -182,7 +182,7 @@ class _PrayerTimesPageState extends State<PrayerTimesPage>
                           !now.isBefore(layout.start) &&
                           now.isBefore(layout.end))
                         _NowMarker(
-                          y: layout.yOf(now),
+                          y: layout.nowY(now),
                           now: now,
                           where: location.coordinates,
                         ),
@@ -328,6 +328,18 @@ class _DayLayout {
       }
     }
     return anchors.last.$2;
+  }
+
+  /// Where the "now" marker goes: at [yOf], except that a few minutes before or
+  /// after a prayer it would run through that prayer's row, so it waits just
+  /// outside the row, on the right side of it.
+  double nowY(DateTime t) {
+    const clear = 56.0;
+    final y = yOf(t);
+    for (final s in stationY) {
+      if ((y - s).abs() < clear) return y < s ? s - clear : s + clear;
+    }
+    return y;
   }
 }
 

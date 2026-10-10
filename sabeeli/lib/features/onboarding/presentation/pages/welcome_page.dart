@@ -35,7 +35,10 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-  final _pages = PageController();
+  // Changing the language rebuilds this page with `_index` back at 0; a kept
+  // page would come back at its old position and disagree with the dots and
+  // the button.
+  final _pages = PageController(keepPage: false);
   int _index = 0;
 
   /// Where the sky is drawn from before the user has set a location.
@@ -69,129 +72,121 @@ class _WelcomePageState extends State<WelcomePage> {
       (LocationCubit c) => c.state.location?.coordinates,
     );
 
-    return BlocListener<LocationCubit, LocationState>(
-      // The riwayah follows the region; the shell is not running yet here.
-      listenWhen: (a, b) => a.location != b.location,
-      // Same order as AppSync: where the user is, then the phone's region.
-      listener: (context, state) => context.read<QuranCubit>().setRegion(
-        state.location?.countryCode ??
-            WidgetsBinding.instance.platformDispatcher.locale.countryCode,
+    // AppSync (above the router) points the riwayah at the chosen region.
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light.copyWith(
+        statusBarColor: Colors.transparent,
       ),
-      child: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light.copyWith(
-          statusBarColor: Colors.transparent,
-        ),
-        child: Scaffold(
-          backgroundColor: Colors.black,
-          body: Stack(
-            fit: StackFit.expand,
-            children: [
-              LivingSky(coordinates: where ?? _defaultSky),
-              // A veil so the text reads on any sky.
-              const DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0x55000000),
-                      Color(0x00000000),
-                      Color(0xCC05070F),
-                    ],
-                    stops: [0, 0.35, 0.8],
-                  ),
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            LivingSky(coordinates: where ?? _defaultSky),
+            // A veil so the text reads on any sky.
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0x55000000),
+                    Color(0x00000000),
+                    Color(0xCC05070F),
+                  ],
+                  stops: [0, 0.35, 0.8],
                 ),
               ),
-              SafeArea(
-                child: ContentWidth(
-                  maxWidth: 560,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          AppSpacing.lg,
-                          AppSpacing.sm,
-                          AppSpacing.lg,
-                          0,
-                        ),
-                        child: Row(
-                          children: [
-                            const _LanguageButton(),
-                            const Spacer(),
-                            if (_index < 2)
-                              TextButton(
-                                onPressed: _finish,
-                                style: TextButton.styleFrom(
-                                  foregroundColor: _onSkyMuted,
-                                ),
-                                child: Text(l10n.skipStep),
-                              ),
-                          ],
-                        ),
+            ),
+            SafeArea(
+              child: ContentWidth(
+                maxWidth: 560,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.lg,
+                        AppSpacing.sm,
+                        AppSpacing.lg,
+                        0,
                       ),
-                      Expanded(
-                        child: PageView(
-                          controller: _pages,
-                          onPageChanged: (i) => setState(() => _index = i),
-                          children: const [_Hello(), _Place(), _Notify()],
-                        ),
+                      child: Row(
+                        children: [
+                          const _LanguageButton(),
+                          const Spacer(),
+                          if (_index < 2)
+                            TextButton(
+                              onPressed: _finish,
+                              style: TextButton.styleFrom(
+                                foregroundColor: _onSkyMuted,
+                              ),
+                              child: Text(l10n.skipStep),
+                            ),
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          AppSpacing.xl,
-                          0,
-                          AppSpacing.xl,
-                          AppSpacing.xl,
-                        ),
-                        child: Row(
-                          children: [
-                            for (var i = 0; i < 3; i++)
-                              AnimatedContainer(
-                                duration: Motion.component,
-                                curve: Motion.enter,
-                                margin: const EdgeInsetsDirectional.only(
-                                  end: AppSpacing.xs + 2,
-                                ),
-                                width: i == _index ? 22 : 7,
-                                height: 7,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                  color: i == _index
-                                      ? _onSky
-                                      : _onSky.withValues(alpha: 0.3),
-                                ),
+                    ),
+                    Expanded(
+                      child: PageView(
+                        controller: _pages,
+                        onPageChanged: (i) => setState(() => _index = i),
+                        children: const [_Hello(), _Place(), _Notify()],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.xl,
+                        0,
+                        AppSpacing.xl,
+                        AppSpacing.xl,
+                      ),
+                      child: Row(
+                        children: [
+                          for (var i = 0; i < 3; i++)
+                            AnimatedContainer(
+                              duration: Motion.component,
+                              curve: Motion.enter,
+                              margin: const EdgeInsetsDirectional.only(
+                                end: AppSpacing.xs + 2,
                               ),
-                            const Spacer(),
-                            FilledButton(
-                              onPressed: _next,
-                              style: FilledButton.styleFrom(
-                                backgroundColor: _onSky,
-                                foregroundColor: const Color(0xFF0A0E1A),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: AppSpacing.xl,
-                                ),
-                              ),
-                              child: Text(
-                                _index == 0
-                                    ? l10n.welcomeBegin
-                                    : _index == 1
-                                    ? l10n.welcomeNext
-                                    : l10n.welcomeStart,
-                                style: text.labelLarge?.copyWith(
-                                  fontSize: 15,
-                                  color: const Color(0xFF0A0E1A),
-                                ),
+                              width: i == _index ? 22 : 7,
+                              height: 7,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                color: i == _index
+                                    ? _onSky
+                                    : _onSky.withValues(alpha: 0.3),
                               ),
                             ),
-                          ],
-                        ),
+                          const Spacer(),
+                          FilledButton(
+                            onPressed: _next,
+                            style: FilledButton.styleFrom(
+                              backgroundColor: _onSky,
+                              foregroundColor: const Color(0xFF0A0E1A),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: AppSpacing.xl,
+                              ),
+                            ),
+                            child: Text(
+                              _index == 0
+                                  ? l10n.welcomeBegin
+                                  : _index == 1
+                                  ? l10n.welcomeNext
+                                  : l10n.welcomeStart,
+                              style: text.labelLarge?.copyWith(
+                                fontSize: 15,
+                                color: const Color(0xFF0A0E1A),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

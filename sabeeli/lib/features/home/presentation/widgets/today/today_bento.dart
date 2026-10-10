@@ -386,7 +386,8 @@ class _ContinueReadingTile extends StatelessWidget {
               ],
             ),
           ),
-          if (surah != null) ...[
+          // In Arabic the title already is the Arabic name.
+          if (surah != null && context.languageCode != 'ar') ...[
             const SizedBox(width: AppSpacing.lg),
             Text(
               surah.nameArabic,

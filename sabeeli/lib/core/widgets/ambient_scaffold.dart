@@ -22,7 +22,10 @@ class AmbientScaffold extends StatelessWidget {
     child: Scaffold(
       backgroundColor: Colors.transparent,
       appBar: appBar,
-      body: body,
+      // The app draws edge to edge: the sky runs under the system bars, but the
+      // content stops above them. With three-button navigation the bar is tall
+      // and would otherwise cover the last rows of every list.
+      body: SafeArea(top: appBar == null, child: body),
     ),
   );
 }

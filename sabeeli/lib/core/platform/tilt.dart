@@ -12,6 +12,12 @@ import 'package:flutter/services.dart';
 abstract final class Tilt {
   static const _channel = EventChannel('dev.adez.sabeeli/tilt');
 
+  /// One stream for every listener. Each `receiveBroadcastStream()` call
+  /// installs its own handler on the channel, replacing the previous one, and
+  /// the first to cancel stops the sensor for all: two skies alive at once (the
+  /// welcome handing over to Today) would freeze the second.
+  static final _raw = _channel.receiveBroadcastStream();
+
   static Stream<Offset> watch() {
     if (kIsWeb ||
         !(defaultTargetPlatform == TargetPlatform.android ||
@@ -20,8 +26,7 @@ abstract final class Tilt {
     }
     Offset? rest;
     var smooth = Offset.zero;
-    return _channel
-        .receiveBroadcastStream()
+    return _raw
         .map((event) {
           final list = (event as List).cast<num>();
           final raw = Offset(list[0].toDouble(), list[1].toDouble());

@@ -23,6 +23,18 @@ void main() {
     expect(auto('fr', 'FR'), Numerals.western);
   });
 
+  test('the percent sign and decimal point follow the digits', () {
+    expect(Numerals.arabicIndic.apply('12% read'), '١٢٪ read');
+    expect(
+      Numerals.arabicIndic.apply('93.7° from north.'),
+      '٩٣٫٧° from north.',
+    );
+    expect(Numerals.persian.apply('5%'), '۵٪');
+    expect(Numerals.western.apply('٩٣٫٧ ٪'), '93.7 %');
+    // A full stop that ends a sentence is not a decimal point.
+    expect(Numerals.arabicIndic.apply('Page 4. Next'), 'Page ٤. Next');
+  });
+
   test('an explicit choice wins over the region', () {
     expect(
       Numerals.resolve(

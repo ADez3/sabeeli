@@ -5,7 +5,6 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/layout/breakpoints.dart';
 import '../../../../core/widgets/misbaha_icon.dart';
 import '../../../../l10n/l10n.dart';
-import '../widgets/app_sync.dart';
 import '../widgets/glass_nav_bar.dart';
 
 /// The four places of the app: a floating glass bar on phones, a rail on wider
@@ -33,7 +32,7 @@ class ShellPage extends StatelessWidget {
       (lucide(LucideIcons.compass), l10n.qibla),
     ];
 
-    final body = AppSync(child: navigationShell);
+    final Widget body = navigationShell;
 
     if (context.windowSize == WindowSize.compact) {
       // Pages scroll under the floating bar; they pad their ends with

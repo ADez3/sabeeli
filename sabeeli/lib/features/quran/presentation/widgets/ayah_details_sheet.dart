@@ -93,11 +93,12 @@ class _AyahDetailsSheetState extends State<_AyahDetailsSheet> {
       maxChildSize: 0.95,
       builder: (context, controller) => ListView(
         controller: controller,
-        padding: const EdgeInsets.fromLTRB(
+        // Clear of the system navigation bar, which the sheet slides over.
+        padding: EdgeInsets.fromLTRB(
           AppSpacing.lg,
           0,
           AppSpacing.lg,
-          AppSpacing.xxl,
+          AppSpacing.xxl + MediaQuery.paddingOf(context).bottom,
         ),
         children: [
           Padding(

@@ -187,16 +187,19 @@ class _CountdownState extends State<_Countdown> with LiveStateMixin {
       shadows: _skyShadow,
     );
 
+    // Minutes round up, like formatDuration: at 7:08 with Isha at 7:21 the
+    // clock says 13 minutes, and the tiles below say the same.
+    final minutesLeft = (left.inSeconds + 59) ~/ 60;
     // (value, unit) pairs: "1 h 05 min", "42 min", "35 s".
     final parts = <(String, String)>[
       if (left.inSeconds < 60)
         ('${left.inSeconds}', l10n.unitSeconds)
       else ...[
-        if (left.inHours > 0) ('${left.inHours}', l10n.unitHours),
+        if (minutesLeft >= 60) ('${minutesLeft ~/ 60}', l10n.unitHours),
         (
-          left.inHours > 0
-              ? (left.inMinutes % 60).toString().padLeft(2, '0')
-              : '${left.inMinutes}',
+          minutesLeft >= 60
+              ? (minutesLeft % 60).toString().padLeft(2, '0')
+              : '$minutesLeft',
           l10n.unitMinutes,
         ),
       ],

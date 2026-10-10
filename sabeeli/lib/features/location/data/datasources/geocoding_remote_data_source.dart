@@ -85,10 +85,15 @@ class GeocodingRemoteDataSource {
     final place = _placeName(a) ?? item['name'] as String? ?? '';
     final region = a['state'] as String?;
     final country = a['country'] as String?;
-    return [
+    final parts = [
       place,
       if (region != null && region != place) region,
       ?country,
-    ].where((s) => s.isNotEmpty).join(', ');
+    ].where((s) => s.isNotEmpty);
+    // Names in Arabic script (Arabic, Urdu, Persian) take the Arabic comma.
+    final arabicScript = parts.any(_arabicScript.hasMatch);
+    return parts.join(arabicScript ? '، ' : ', ');
   }
+
+  static final _arabicScript = RegExp(r'[؀-ۿ]');
 }

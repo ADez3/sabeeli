@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -34,7 +36,8 @@ class QuranSky extends StatefulWidget {
   State<QuranSky> createState() => _QuranSkyState();
 }
 
-class _QuranSkyState extends State<QuranSky> with LiveStateMixin {
+class _QuranSkyState extends State<QuranSky>
+    with SingleTickerProviderStateMixin, LiveStateMixin {
   final _transform = TransformationController();
 
   /// Twinkle and pulse at 30 fps, only while the sky is on screen.
@@ -44,6 +47,15 @@ class _QuranSkyState extends State<QuranSky> with LiveStateMixin {
   late List<double> _progress = _computeProgress();
   Size? _fittedTo;
   double _fitScale = 1;
+  Matrix4 _fitted = Matrix4.identity();
+  EdgeInsets _margin = const EdgeInsets.all(400);
+
+  /// Eases the sky back to its fitted place after a zoom-out past it.
+  late final _settle = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 420),
+  );
+  Animation<Matrix4>? _settleTo;
 
   @override
   void initState() {
@@ -51,6 +63,20 @@ class _QuranSkyState extends State<QuranSky> with LiveStateMixin {
     _transform.addListener(
       () => _scale.value = _transform.value.getMaxScaleOnAxis(),
     );
+    _settle.addListener(() {
+      final to = _settleTo;
+      if (to != null) _transform.value = to.value;
+    });
+  }
+
+  /// Zoomed out past the fit, the sky floats back to the centre.
+  void _onInteractionEnd(ScaleEndDetails _) {
+    if (_transform.value.getMaxScaleOnAxis() >= _fitScale) return;
+    _settleTo = Matrix4Tween(
+      begin: _transform.value,
+      end: _fitted,
+    ).animate(CurvedAnimation(parent: _settle, curve: Curves.easeOutCubic));
+    _settle.forward(from: 0);
   }
 
   @override
@@ -93,11 +119,26 @@ class _QuranSkyState extends State<QuranSky> with LiveStateMixin {
     final s = _fitScale;
     final dx = (viewport.width - QuranSkyGeometry.size * s) / 2;
     final dy = (viewport.height - QuranSkyGeometry.size * s) / 2;
-    _transform.value = Matrix4.identity()
+    _fitted = Matrix4.identity()
       ..translateByDouble(dx, dy, 0, 1)
       ..scaleByDouble(s, s, 1, 1);
+    _transform.value = _fitted.clone();
     _scale.value = s;
+
+    // InteractiveViewer keeps the child plus this margin over the whole
+    // viewport, and pins it to the top-left corner when it gets smaller. The
+    // margin must therefore still fill the screen at the smallest zoom, or
+    // zooming out sticks the sky to the top.
+    final minScale = _fitScale * _minZoom;
+    double need(double side) =>
+        math.max(400, (side / minScale - QuranSkyGeometry.size) / 2 + 1);
+    _margin = EdgeInsets.symmetric(
+      horizontal: need(viewport.width),
+      vertical: need(viewport.height),
+    );
   }
+
+  static const _minZoom = 0.8;
 
   void _onTap(TapUpDetails d) {
     final zoom = _transform.value.getMaxScaleOnAxis();
@@ -108,6 +149,7 @@ class _QuranSkyState extends State<QuranSky> with LiveStateMixin {
 
   @override
   void dispose() {
+    _settle.dispose();
     _transform.dispose();
     _clock.dispose();
     _scale.dispose();
@@ -122,9 +164,11 @@ class _QuranSkyState extends State<QuranSky> with LiveStateMixin {
         return InteractiveViewer(
           transformationController: _transform,
           constrained: false,
-          minScale: _fitScale * 0.8,
+          minScale: _fitScale * _minZoom,
           maxScale: _fitScale * 6,
-          boundaryMargin: const EdgeInsets.all(400),
+          boundaryMargin: _margin,
+          onInteractionStart: (_) => _settle.stop(),
+          onInteractionEnd: _onInteractionEnd,
           child: GestureDetector(
             onTapUp: _onTap,
             child: SizedBox.square(

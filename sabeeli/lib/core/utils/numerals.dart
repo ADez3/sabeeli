@@ -64,15 +64,37 @@ enum Numerals {
     }
   }
 
-  /// Rewrites every digit in [text], whichever of the three systems it was in.
+  /// Rewrites every digit in [text], whichever of the three systems it was in,
+  /// with the signs that go with them: the percent sign (٪) and, between two
+  /// digits, the decimal separator (٫). A full stop elsewhere is left alone.
   String apply(String text) {
+    final runes = text.runes.toList();
+    final arabic = this != western;
     final out = StringBuffer();
-    for (final c in text.runes) {
+    for (var i = 0; i < runes.length; i++) {
+      final c = runes[i];
       final value = _digitValue(c);
-      out.writeCharCode(value == null ? c : _zero + value);
+      if (value != null) {
+        out.writeCharCode(_zero + value);
+      } else if (c == _percent || c == _arabicPercent) {
+        out.writeCharCode(arabic ? _arabicPercent : _percent);
+      } else if ((c == _point || c == _arabicPoint) &&
+          i > 0 &&
+          i < runes.length - 1 &&
+          _digitValue(runes[i - 1]) != null &&
+          _digitValue(runes[i + 1]) != null) {
+        out.writeCharCode(arabic ? _arabicPoint : _point);
+      } else {
+        out.writeCharCode(c);
+      }
     }
     return out.toString();
   }
+
+  static const _percent = 0x25;
+  static const _arabicPercent = 0x066A;
+  static const _point = 0x2E;
+  static const _arabicPoint = 0x066B;
 
   static int? _digitValue(int c) {
     if (c >= 0x30 && c <= 0x39) return c - 0x30;
