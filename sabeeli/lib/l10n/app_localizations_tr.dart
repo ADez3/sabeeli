@@ -721,6 +721,27 @@ class AppLocalizationsTr extends AppLocalizations {
   String get hijriMonth12 => 'Zilhicce';
 
   @override
+  String get eidAlFitr => 'Ramazan Bayramı';
+
+  @override
+  String get eidAlAdha => 'Kurban Bayramı';
+
+  @override
+  String get dayOfArafah => 'Arefe günü';
+
+  @override
+  String get ashura => 'Aşure';
+
+  @override
+  String get islamicNewYear => 'Hicri Yılbaşı';
+
+  @override
+  String get whiteDays => 'Eyyam-ı biyz';
+
+  @override
+  String get ramadanBegins => 'Ramazan\'ın başlangıcı';
+
+  @override
   String get about => 'Hakkında';
 
   @override

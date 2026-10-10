@@ -1354,6 +1354,48 @@ abstract class AppLocalizations {
   /// **'Dhu al-Hijjah'**
   String get hijriMonth12;
 
+  /// No description provided for @eidAlFitr.
+  ///
+  /// In en, this message translates to:
+  /// **'Eid al-Fitr'**
+  String get eidAlFitr;
+
+  /// No description provided for @eidAlAdha.
+  ///
+  /// In en, this message translates to:
+  /// **'Eid al-Adha'**
+  String get eidAlAdha;
+
+  /// No description provided for @dayOfArafah.
+  ///
+  /// In en, this message translates to:
+  /// **'Day of Arafah'**
+  String get dayOfArafah;
+
+  /// No description provided for @ashura.
+  ///
+  /// In en, this message translates to:
+  /// **'Ashura'**
+  String get ashura;
+
+  /// No description provided for @islamicNewYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Islamic New Year'**
+  String get islamicNewYear;
+
+  /// No description provided for @whiteDays.
+  ///
+  /// In en, this message translates to:
+  /// **'White days'**
+  String get whiteDays;
+
+  /// No description provided for @ramadanBegins.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan begins'**
+  String get ramadanBegins;
+
   /// No description provided for @about.
   ///
   /// In en, this message translates to:

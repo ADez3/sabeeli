@@ -221,6 +221,13 @@
   "hijriMonth10": "Syawal",
   "hijriMonth11": "Zulkaidah",
   "hijriMonth12": "Zulhijah",
+  "eidAlFitr": "Idulfitri",
+  "eidAlAdha": "Iduladha",
+  "dayOfArafah": "Hari Arafah",
+  "ashura": "Asyura",
+  "islamicNewYear": "Tahun Baru Islam",
+  "whiteDays": "Ayyamul Bidh",
+  "ramadanBegins": "Awal Ramadan",
 
   "about": "Tentang",
   "aboutText": "Sabeeli adalah pendamping gratis untuk kehidupan sehari-hari seorang Muslim. Bekerja tanpa internet, tanpa iklan, dan tidak mengumpulkan data apa pun.",

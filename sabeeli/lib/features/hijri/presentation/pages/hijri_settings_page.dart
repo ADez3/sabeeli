@@ -12,6 +12,7 @@ import '../../../../l10n/l10n.dart';
 import '../../domain/entities/hijri_settings.dart';
 import '../cubit/hijri_cubit.dart';
 import '../widgets/hijri_labels.dart';
+import '../widgets/moon_month.dart';
 
 /// Lets each user follow their own country's announcements: pick the base
 /// calendar, shift it, or pin the first day of the current and coming months.
@@ -43,25 +44,7 @@ class HijriSettingsPage extends StatelessWidget {
           ),
           children: [
             const SizedBox(height: AppSpacing.md),
-            AppCard(
-              padding: const EdgeInsets.all(AppSpacing.xl),
-              child: Column(
-                children: [
-                  Text(
-                    context.formatHijri(today),
-                    style: text.headlineSmall?.copyWith(
-                      color: colors.accent,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.xs),
-                  Text(
-                    context.formatWeekdayDate(DateTime.now()),
-                    style: text.bodyMedium?.copyWith(color: colors.textMuted),
-                  ),
-                ],
-              ),
-            ),
+            const MoonMonth(),
             Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: AppSpacing.lg,

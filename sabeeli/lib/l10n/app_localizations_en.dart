@@ -723,6 +723,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hijriMonth12 => 'Dhu al-Hijjah';
 
   @override
+  String get eidAlFitr => 'Eid al-Fitr';
+
+  @override
+  String get eidAlAdha => 'Eid al-Adha';
+
+  @override
+  String get dayOfArafah => 'Day of Arafah';
+
+  @override
+  String get ashura => 'Ashura';
+
+  @override
+  String get islamicNewYear => 'Islamic New Year';
+
+  @override
+  String get whiteDays => 'White days';
+
+  @override
+  String get ramadanBegins => 'Ramadan begins';
+
+  @override
   String get about => 'About';
 
   @override

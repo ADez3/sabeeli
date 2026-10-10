@@ -221,6 +221,13 @@
   "hijriMonth10": "Şevval",
   "hijriMonth11": "Zilkade",
   "hijriMonth12": "Zilhicce",
+  "eidAlFitr": "Ramazan Bayramı",
+  "eidAlAdha": "Kurban Bayramı",
+  "dayOfArafah": "Arefe günü",
+  "ashura": "Aşure",
+  "islamicNewYear": "Hicri Yılbaşı",
+  "whiteDays": "Eyyam-ı biyz",
+  "ramadanBegins": "Ramazan'ın başlangıcı",
 
   "about": "Hakkında",
   "aboutText": "Sabeeli, bir Müslümanın günlük hayatı için ücretsiz bir yol arkadaşıdır. Çevrimdışı çalışır, reklam içermez ve hiçbir veri toplamaz.",

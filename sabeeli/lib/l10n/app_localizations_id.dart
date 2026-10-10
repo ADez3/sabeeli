@@ -723,6 +723,27 @@ class AppLocalizationsId extends AppLocalizations {
   String get hijriMonth12 => 'Zulhijah';
 
   @override
+  String get eidAlFitr => 'Idulfitri';
+
+  @override
+  String get eidAlAdha => 'Iduladha';
+
+  @override
+  String get dayOfArafah => 'Hari Arafah';
+
+  @override
+  String get ashura => 'Asyura';
+
+  @override
+  String get islamicNewYear => 'Tahun Baru Islam';
+
+  @override
+  String get whiteDays => 'Ayyamul Bidh';
+
+  @override
+  String get ramadanBegins => 'Awal Ramadan';
+
+  @override
   String get about => 'Tentang';
 
   @override

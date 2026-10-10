@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/astronomy/solar.dart';
 import '../../../../../core/theme/sky.dart';
+import '../../../../../core/widgets/moon_phase.dart';
 
 /// Maps a body's hour angle and altitude to a point in the scene: the day's arc
 /// runs from the left edge (rising) to the right edge (setting), whatever the
@@ -211,36 +212,13 @@ class SkyPainter extends CustomPainter {
       Paint()..color = Colors.white.withValues(alpha: 0.06 * alpha),
     );
 
-    final phase = moonAge / 29.530588853;
-    final k = math.cos(phase * 2 * math.pi); // 1 new, -1 full
-    final waxing = phase < 0.5;
-    final lit = Path()
-      ..moveTo(0, -r)
-      ..arcTo(
-        Rect.fromCircle(center: Offset.zero, radius: r),
-        -math.pi / 2,
-        math.pi,
-        false,
-      )
-      ..arcTo(
-        Rect.fromCenter(
-          center: Offset.zero,
-          width: 2 * r * k.abs(),
-          height: 2 * r,
-        ),
-        math.pi / 2,
-        k > 0 ? -math.pi : math.pi,
-        false,
-      )
-      ..close();
-    canvas.save();
-    canvas.translate(c.dx, c.dy);
-    if (!waxing) canvas.scale(-1, 1);
-    canvas.drawPath(
-      lit,
-      Paint()..color = const Color(0xFFF5F1E4).withValues(alpha: alpha),
+    paintMoonPhase(
+      canvas,
+      c,
+      r,
+      moonAge,
+      const Color(0xFFF5F1E4).withValues(alpha: alpha),
     );
-    canvas.restore();
   }
 
   @override

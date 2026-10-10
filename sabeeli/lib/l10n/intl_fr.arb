@@ -221,6 +221,13 @@
   "hijriMonth10": "Chawwal",
   "hijriMonth11": "Dhou al-Qi'da",
   "hijriMonth12": "Dhou al-Hijja",
+  "eidAlFitr": "Aïd al-Fitr",
+  "eidAlAdha": "Aïd al-Adha",
+  "dayOfArafah": "Jour d'Arafat",
+  "ashura": "Achoura",
+  "islamicNewYear": "Nouvel an hégirien",
+  "whiteDays": "Jours blancs",
+  "ramadanBegins": "Début du Ramadan",
 
   "about": "À propos",
   "aboutText": "Sabeeli est un compagnon gratuit pour la vie quotidienne du musulman. Il fonctionne hors ligne, sans publicité, et ne collecte aucune donnée.",
