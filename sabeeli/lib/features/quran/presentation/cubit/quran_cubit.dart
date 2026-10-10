@@ -36,7 +36,7 @@ class QuranState extends Equatable {
     QuranStatus? status,
     QuranData? data,
     List<Bookmark>? bookmarks,
-    ReadingPosition? position,
+    ReadingPosition? Function()? position,
     ReaderPreferences? preferences,
     Set<int>? readPages,
     Failure? Function()? failure,
@@ -44,7 +44,7 @@ class QuranState extends Equatable {
     status: status ?? this.status,
     data: data ?? this.data,
     bookmarks: bookmarks ?? this.bookmarks,
-    position: position ?? this.position,
+    position: position != null ? position() : this.position,
     preferences: preferences ?? this.preferences,
     readPages: readPages ?? this.readPages,
     failure: failure != null ? failure() : this.failure,
@@ -88,39 +88,70 @@ class QuranCubit extends Cubit<QuranState> {
   final GetReadPagesUseCase _readPages;
   final MarkPageReadUseCase _markPageRead;
 
+  /// The device's region (or the location's country): picks the riwayah until
+  /// the user chooses one. Set by the shell's AppSync.
+  String? _region;
+
+  /// The riwayah to read: the user's choice, or the one of their region.
+  Riwayah get riwayah =>
+      state.preferences.riwayah ?? Riwayah.forCountry(_region);
+
   Future<void> load() async {
     if (state.status == QuranStatus.loading ||
         state.status == QuranStatus.ready) {
       return;
     }
     emit(state.copyWith(status: QuranStatus.loading));
+    final preferences = (await _preferences(const NoParams())).valueOrNull;
+    if (preferences != null) emit(state.copyWith(preferences: preferences));
+    await _open(riwayah);
+  }
+
+  /// Loads a mushaf, then the personal state, which the repository converts
+  /// into that mushaf's numbering.
+  Future<void> _open(Riwayah riwayah) async {
+    final result = await _load(riwayah);
+    final data = result.valueOrNull;
+    if (data == null) {
+      result.fold(
+        (failure) => emit(
+          state.copyWith(status: QuranStatus.failed, failure: () => failure),
+        ),
+        (_) {},
+      );
+      return;
+    }
     final bookmarks =
         (await _bookmarks(const NoParams())).valueOrNull ?? const [];
     final position = (await _position(const NoParams())).valueOrNull;
-    final preferences = (await _preferences(const NoParams())).valueOrNull;
     final readPages = (await _readPages(const NoParams())).valueOrNull;
     emit(
       state.copyWith(
+        status: QuranStatus.ready,
+        data: data,
         bookmarks: bookmarks,
-        position: position,
-        preferences: preferences,
+        position: () => position,
         readPages: readPages,
+        failure: () => null,
       ),
     );
+  }
 
-    final result = await _load(const NoParams());
-    result.fold(
-      (failure) => emit(
-        state.copyWith(status: QuranStatus.failed, failure: () => failure),
-      ),
-      (data) => emit(
-        state.copyWith(
-          status: QuranStatus.ready,
-          data: data,
-          failure: () => null,
-        ),
-      ),
-    );
+  void setRegion(String? countryCode) {
+    if (_region == countryCode) return;
+    _region = countryCode;
+    final data = state.data;
+    if (state.status == QuranStatus.ready &&
+        data != null &&
+        data.riwayah != riwayah) {
+      _open(riwayah);
+    }
+  }
+
+  /// Null goes back to following the region.
+  Future<void> setRiwayah(Riwayah? choice) async {
+    await _setPreferences(state.preferences.copyWith(riwayah: () => choice));
+    if (state.data?.riwayah != riwayah) await _open(riwayah);
   }
 
   Future<void> toggleBookmark(AyahRef ref) async {
@@ -137,7 +168,7 @@ class QuranCubit extends Cubit<QuranState> {
       page: page ?? data.pageOf(ref),
       updatedAt: DateTime.now(),
     );
-    emit(state.copyWith(position: position));
+    emit(state.copyWith(position: () => position));
     await _savePosition(position);
     // A page the reader settles on counts as read; it lights its surah's star.
     if (page != null && !state.readPages.contains(page)) {

@@ -5,8 +5,6 @@ import '../../../../l10n/l10n.dart';
 import '../../domain/entities/azkar_entities.dart';
 
 /// The categories given a tile of their own, in display order.
-const featuredAzkar = ['morning', 'evening', 'after_prayer', 'sleep', 'waking'];
-
 extension AzkarLabels on BuildContext {
   String azkarTitle(AzkarCategory c) {
     final l10n = this.l10n;

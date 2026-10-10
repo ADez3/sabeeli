@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import 'package:go_router/go_router.dart';
+
 import '../../../../core/layout/breakpoints.dart';
+import '../../../../core/router/app_routes.dart';
+import '../../../../core/theme/app_icons.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../../core/utils/numerals.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../quran/presentation/widgets/riwayah_picker.dart';
 import '../cubit/settings_cubit.dart';
+import '../../../../core/widgets/ambient_scaffold.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -19,7 +25,7 @@ class SettingsPage extends StatelessWidget {
     final cubit = context.read<SettingsCubit>();
     final settings = context.watch<SettingsCubit>().state;
 
-    return Scaffold(
+    return AmbientScaffold(
       appBar: AppBar(title: Text(l10n.settings)),
       body: ContentWidth(
         child: ListView(
@@ -30,6 +36,51 @@ class SettingsPage extends StatelessWidget {
             AppSpacing.xxl,
           ),
           children: [
+            SectionHeader(l10n.general),
+            AppCard(
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+              child: Column(
+                children: [
+                  for (final (icon, label, route) in [
+                    (LucideIcons.mapPin, l10n.location, AppRoutes.locationName),
+                    (
+                      LucideIcons.bellRing,
+                      l10n.prayerTimes,
+                      AppRoutes.prayerSettingsName,
+                    ),
+                    (
+                      LucideIcons.calendarDays,
+                      l10n.hijriCalendar,
+                      AppRoutes.hijriName,
+                    ),
+                    (LucideIcons.info, l10n.about, AppRoutes.aboutName),
+                  ])
+                    ListTile(
+                      leading: Icon(icon),
+                      title: Text(label),
+                      trailing: Icon(context.forwardChevron, size: 18),
+                      onTap: () => context.pushNamed(route),
+                    ),
+                ],
+              ),
+            ),
+            SectionHeader(l10n.riwayah),
+            const AppCard(
+              padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
+              child: RiwayahPicker(),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.sm,
+                AppSpacing.sm,
+                AppSpacing.sm,
+                0,
+              ),
+              child: Text(
+                l10n.riwayahNote,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
             SectionHeader(l10n.theme),
             SegmentedButton<ThemeMode>(
               segments: [

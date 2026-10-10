@@ -9,6 +9,7 @@ import '../../../hijri/presentation/cubit/hijri_cubit.dart';
 import '../../../location/presentation/cubit/location_cubit.dart';
 import '../../../prayer_times/presentation/cubit/prayer_times_cubit.dart';
 import '../../../prayer_times/presentation/widgets/prayer_labels.dart';
+import '../../../quran/presentation/cubit/quran_cubit.dart';
 
 /// Keeps the app-wide cubits in step with each other and with the clock, so no cubit
 /// has to listen to another:
@@ -35,6 +36,7 @@ class _AppSyncState extends State<AppSync> with WidgetsBindingObserver {
     _armMidnight();
     final location = context.read<LocationCubit>();
     context.read<PrayerTimesCubit>().setLocation(location.state.location);
+    _pushRegion(location.state.location?.countryCode);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) location.refreshIfAutomatic(context.languageCode);
     });
@@ -55,6 +57,14 @@ class _AppSyncState extends State<AppSync> with WidgetsBindingObserver {
       ),
     );
   }
+
+  /// The riwayah follows the region until the user picks one: the phone's
+  /// region first (as for digits), then the country of the saved location.
+  void _pushRegion(String? locationCountry) =>
+      context.read<QuranCubit>().setRegion(
+        WidgetsBinding.instance.platformDispatcher.locale.countryCode ??
+            locationCountry,
+      );
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -89,8 +99,10 @@ class _AppSyncState extends State<AppSync> with WidgetsBindingObserver {
     listeners: [
       BlocListener<LocationCubit, LocationState>(
         listenWhen: (a, b) => a.location != b.location,
-        listener: (context, state) =>
-            context.read<PrayerTimesCubit>().setLocation(state.location),
+        listener: (context, state) {
+          context.read<PrayerTimesCubit>().setLocation(state.location);
+          _pushRegion(state.location?.countryCode);
+        },
       ),
       BlocListener<PrayerTimesCubit, PrayerTimesState>(
         listenWhen: (a, b) =>

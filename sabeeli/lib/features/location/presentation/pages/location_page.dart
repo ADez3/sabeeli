@@ -15,6 +15,7 @@ import '../../../../l10n/l10n.dart';
 import '../../domain/entities/saved_location.dart';
 import '../../domain/usecases/location_usecases.dart';
 import '../cubit/location_cubit.dart';
+import '../../../../core/widgets/ambient_scaffold.dart';
 
 /// Use the GPS, or search for a city (for travellers planning ahead, or anyone who
 /// prefers not to share their position).
@@ -83,7 +84,7 @@ class _LocationPageState extends State<LocationPage> {
           a.status == LocationStatus.locating &&
           b.status == LocationStatus.ready,
       listener: (context, _) => context.pop(),
-      child: Scaffold(
+      child: AmbientScaffold(
         appBar: AppBar(title: Text(l10n.location)),
         body: ContentWidth(
           child: ListView(

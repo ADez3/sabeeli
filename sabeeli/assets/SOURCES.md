@@ -35,6 +35,7 @@ These two riwayat do not count the basmala of al-Fatihah as an ayah (6214 ayahs 
 |---|---|---|
 | `azkar/azkar_ar.json`, `azkar/azkar_en.json` (all categories except morning/evening) | Hisn al-Muslim (*Fortress of the Muslim*) by Sa'id ibn Wahf al-Qahtani, via the hisnmuslim.com API (`http://www.hisnmuslim.com/api/{ar,en}/husn_{ar,en}.json` and `/api/{ar,en}/{1..132}.json`): Arabic text, English translation, transliteration, repeat counts | The author allows the book to be printed and distributed free of charge. Attribution: "حصن المسلم - سعيد بن علي بن وهف القحطاني", hisnmuslim.com. |
 | `reference` field of those categories | https://github.com/asellam/HisnElMuslim (`hisn.json`), matched to hisnmuslim.com items by text similarity | MIT License (c) asellam. |
+| `azkar/after_prayer.json` | Built by `tool/data/build_after_prayer.py` from category 25 ("الأذكار بعد السلام من الصلاة") of the files above: entries that bundle several adhkar are split into one step each, with the Arabic cut out word for word (the script asserts every step is a verbatim substring of the source). Ayat al-Kursi and the three Quls are references (surah, ayah) rendered from the mushaf text. | Same as Hisn al-Muslim above. |
 | Morning (`id 1001`) and evening (`id 1002`) categories | https://github.com/Seen-Arabic/Morning-And-Evening-Adhkar-DB (`ar.json`, `en.json`): text, count, virtue (`fadl`), reference (`source`), English translation and transliteration | MIT License, Copyright (c) 2024 Seen Arabic. |
 
 ## Hijri calendar
@@ -47,6 +48,9 @@ These two riwayat do not count the basmala of al-Fatihah as an ayah (6214 ayahs 
 
 | File | Source | License |
 |---|---|---|
+| `fonts/ReadexPro-{300,400,500,600}.ttf` | Static instances cut by `tool/data/build_fonts.py` from the variable `ReadexPro[HEXP,wght].ttf` of https://github.com/google/fonts/tree/main/ofl/readexpro | SIL Open Font License 1.1, see `fonts/OFL-ReadexPro.txt` |
+| `fonts/Fraunces-{300,500}.ttf` | Static instances (opsz 72, SOFT 100) cut by `tool/data/build_fonts.py` from https://github.com/google/fonts/tree/main/ofl/fraunces | SIL Open Font License 1.1, see `fonts/OFL-Fraunces.txt` |
+| `fonts/ReemKufi-{500,700}.ttf` | Static instances cut by `tool/data/build_fonts.py` from https://github.com/google/fonts/tree/main/ofl/reemkufi | SIL Open Font License 1.1, see `fonts/OFL-ReemKufi.txt` |
 | `fonts/IBMPlexSansArabic-{Regular,Medium,SemiBold,Bold}.ttf` | https://github.com/google/fonts/tree/main/ofl/ibmplexsansarabic | SIL Open Font License 1.1, see `fonts/OFL-IBMPlexSansArabic.txt` (Copyright 2017 IBM Corp., Reserved Font Name "Plex") |
 | `fonts/Amiri-{Regular,Bold}.ttf` | https://github.com/google/fonts/tree/main/ofl/amiri | SIL Open Font License 1.1, see `fonts/OFL-Amiri.txt` (Copyright 2010-2022 The Amiri Project Authors) |
 | `fonts/UthmanicHafs_V18.ttf` | see Qur'an section | KFGQPC EULA |

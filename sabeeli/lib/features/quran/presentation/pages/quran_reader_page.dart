@@ -26,6 +26,8 @@ class QuranReaderPage extends StatefulWidget {
   });
 
   final int? page;
+
+  /// In Hafs numbering, as in every link; shown in the riwayah being read.
   final AyahRef? ayah;
   final bool highlight;
 
@@ -42,13 +44,14 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
   @override
   void initState() {
     super.initState();
-    _selected = widget.highlight ? widget.ayah : null;
     context.read<QuranCubit>().load();
   }
 
   void _initController(QuranData data) {
     if (_controller != null) return;
-    final ayah = widget.ayah;
+    final hafs = widget.ayah;
+    final ayah = hafs == null ? null : data.fromHafs(hafs);
+    if (widget.highlight) _selected = ayah;
     _page = (ayah != null ? data.pageOf(ayah) : widget.page ?? 1).clamp(
       1,
       QuranData.pageCount,

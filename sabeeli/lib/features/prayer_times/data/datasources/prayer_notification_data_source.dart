@@ -25,7 +25,7 @@ class PrayerNotificationDataSource {
   bool _initialized = false;
 
   /// Payload carried by every prayer notification; tapping one opens the prayer tab.
-  static const payload = 'sabeeli://prayer';
+  static const payload = 'sabeeli://today/day';
 
   // Android freezes a channel's sound and importance when it is created, so changing
   // either needs a new channel id.

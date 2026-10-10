@@ -783,4 +783,113 @@ class AppLocalizationsAr extends AppLocalizations {
   String version(String version) {
     return 'الإصدار $version';
   }
+
+  @override
+  String get afterPrayer => 'أذكار بعد الصلاة';
+
+  @override
+  String afterPrayerOf(String prayer) {
+    return 'بعد صلاة $prayer';
+  }
+
+  @override
+  String get afterPrayerHint => 'الأذكار بعد السلام، خطوة بخطوة';
+
+  @override
+  String get showTranslation => 'الترجمة';
+
+  @override
+  String get turnTheBeads => 'أدِر الحبات أو انقر';
+
+  @override
+  String get doneStep => 'تم';
+
+  @override
+  String get previousStep => 'السابق';
+
+  @override
+  String get skipStep => 'تخطٍّ';
+
+  @override
+  String remembrances(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ذِكرًا لله',
+      few: '$count أذكار لله',
+      two: 'ذِكران لله',
+      one: 'ذِكر واحد لله',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String prayerIn(String prayer) {
+    return '$prayer بعد';
+  }
+
+  @override
+  String atTime(String time) {
+    return 'عند $time';
+  }
+
+  @override
+  String get nowLabel => 'الآن';
+
+  @override
+  String pageAyah(int page, int ayah) {
+    return 'الصفحة $page · الآية $ayah';
+  }
+
+  @override
+  String get tasbihHint => 'أدِر الحبات';
+
+  @override
+  String get azkarHint => 'الصباح والمساء وغيرها';
+
+  @override
+  String get ayahOfTheDay => 'آية اليوم';
+
+  @override
+  String get navToday => 'اليوم';
+
+  @override
+  String get navDhikr => 'الذكر';
+
+  @override
+  String get riwayah => 'الرواية';
+
+  @override
+  String get riwayahAuto => 'تلقائي حسب المنطقة';
+
+  @override
+  String get riwayahHafs => 'حفص عن عاصم';
+
+  @override
+  String get riwayahWarsh => 'ورش عن نافع';
+
+  @override
+  String get riwayahQalun => 'قالون عن نافع';
+
+  @override
+  String get riwayahHafsHint => 'تُقرأ في أغلب العالم الإسلامي';
+
+  @override
+  String get riwayahWarshHint => 'المغرب، الجزائر، موريتانيا، غرب إفريقيا';
+
+  @override
+  String get riwayahQalunHint => 'ليبيا، تونس';
+
+  @override
+  String get riwayahNote =>
+      'تُعرض كل رواية في مصحفها من مجمع الملك فهد، ويُطابَق التفسير والترجمة معها آيةً بآية.';
+
+  @override
+  String get general => 'عام';
+
+  @override
+  String get dhikrSubtitle => 'اذكر الله يذكرك';
+
+  @override
+  String get qiblaSubtitle => 'اتجاه الكعبة من مكانك';
 }

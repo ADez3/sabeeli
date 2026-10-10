@@ -2,7 +2,8 @@ import '../../../../core/result/result.dart';
 import '../entities/quran_entities.dart';
 
 abstract interface class QuranRepository {
-  Future<Result<QuranData>> load();
+  /// Loads [riwayah]'s mushaf; later calls convert to and from its numbering.
+  Future<Result<QuranData>> load(Riwayah riwayah);
 
   /// Every edition that can be shown: the bundled ones first, then the catalogue.
   Future<Result<List<QuranEdition>>> editions();

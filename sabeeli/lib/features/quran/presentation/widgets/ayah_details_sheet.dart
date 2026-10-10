@@ -13,6 +13,7 @@ import '../../../../l10n/l10n.dart';
 import '../../domain/entities/quran_entities.dart';
 import '../cubit/ayah_details_cubit.dart';
 import '../cubit/quran_cubit.dart';
+import 'quran_font.dart';
 import 'ayah_number.dart';
 import 'surah_labels.dart';
 
@@ -61,7 +62,7 @@ class _AyahDetailsSheet extends StatelessWidget {
     final details = context.watch<AyahDetailsCubit>().state;
     final ayahText = data.text(ref);
     final quranStyle = TextStyle(
-      fontFamily: AppFonts.quran,
+      fontFamily: context.quranFont,
       fontSize: 25,
       height: 2.0,
       color: colors.text,

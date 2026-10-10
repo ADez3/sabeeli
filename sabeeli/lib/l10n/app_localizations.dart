@@ -1449,6 +1449,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Version {version}'**
   String version(String version);
+
+  /// No description provided for @afterPrayer.
+  ///
+  /// In en, this message translates to:
+  /// **'After prayer'**
+  String get afterPrayer;
+
+  /// No description provided for @afterPrayerOf.
+  ///
+  /// In en, this message translates to:
+  /// **'After {prayer}'**
+  String afterPrayerOf(String prayer);
+
+  /// No description provided for @afterPrayerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The adhkar after the salam, step by step'**
+  String get afterPrayerHint;
+
+  /// No description provided for @showTranslation.
+  ///
+  /// In en, this message translates to:
+  /// **'Translation'**
+  String get showTranslation;
+
+  /// No description provided for @turnTheBeads.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn the beads, or tap'**
+  String get turnTheBeads;
+
+  /// No description provided for @doneStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get doneStep;
+
+  /// No description provided for @previousStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get previousStep;
+
+  /// No description provided for @skipStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skipStep;
+
+  /// No description provided for @remembrances.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 remembrance of Allah} other{{count} remembrances of Allah}}'**
+  String remembrances(int count);
+
+  /// No description provided for @prayerIn.
+  ///
+  /// In en, this message translates to:
+  /// **'{prayer} in'**
+  String prayerIn(String prayer);
+
+  /// No description provided for @atTime.
+  ///
+  /// In en, this message translates to:
+  /// **'at {time}'**
+  String atTime(String time);
+
+  /// No description provided for @nowLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get nowLabel;
+
+  /// No description provided for @pageAyah.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {page} · Ayah {ayah}'**
+  String pageAyah(int page, int ayah);
+
+  /// No description provided for @tasbihHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn the beads'**
+  String get tasbihHint;
+
+  /// No description provided for @azkarHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning, evening and more'**
+  String get azkarHint;
+
+  /// No description provided for @ayahOfTheDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Ayah of the day'**
+  String get ayahOfTheDay;
+
+  /// No description provided for @navToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get navToday;
+
+  /// No description provided for @navDhikr.
+  ///
+  /// In en, this message translates to:
+  /// **'Dhikr'**
+  String get navDhikr;
+
+  /// No description provided for @riwayah.
+  ///
+  /// In en, this message translates to:
+  /// **'Riwayah'**
+  String get riwayah;
+
+  /// No description provided for @riwayahAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic, by region'**
+  String get riwayahAuto;
+
+  /// No description provided for @riwayahHafs.
+  ///
+  /// In en, this message translates to:
+  /// **'Hafs from ʿAsim'**
+  String get riwayahHafs;
+
+  /// No description provided for @riwayahWarsh.
+  ///
+  /// In en, this message translates to:
+  /// **'Warsh from Nafiʿ'**
+  String get riwayahWarsh;
+
+  /// No description provided for @riwayahQalun.
+  ///
+  /// In en, this message translates to:
+  /// **'Qalun from Nafiʿ'**
+  String get riwayahQalun;
+
+  /// No description provided for @riwayahHafsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Read across most of the Muslim world'**
+  String get riwayahHafsHint;
+
+  /// No description provided for @riwayahWarshHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Morocco, Algeria, Mauritania, West Africa'**
+  String get riwayahWarshHint;
+
+  /// No description provided for @riwayahQalunHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Libya, Tunisia'**
+  String get riwayahQalunHint;
+
+  /// No description provided for @riwayahNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Each riwayah is shown in its own King Fahd Complex mushaf. Tafsir and translations are matched to it ayah by ayah.'**
+  String get riwayahNote;
+
+  /// No description provided for @general.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get general;
+
+  /// No description provided for @dhikrSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember Allah, and He remembers you'**
+  String get dhikrSubtitle;
+
+  /// No description provided for @qiblaSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The direction of the Kaaba from where you are'**
+  String get qiblaSubtitle;
 }
 
 class _AppLocalizationsDelegate

@@ -104,7 +104,7 @@ void main() {
 
   test('the basmala is not repeated inside the first ayah of a surah', () {
     final basmala = data.text(const AyahRef(1, 1));
-    for (final s in data.surahs.where((s) => s.hasBasmalaHeader)) {
+    for (final s in data.surahs.where((s) => data.hasBasmalaHeader(s.number))) {
       expect(
         data.text(AyahRef(s.number, 1)).startsWith(basmala),
         isFalse,

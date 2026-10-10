@@ -7,10 +7,12 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_fonts.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/utils/formatters.dart';
+import '../../../../core/widgets/rolling_digits.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/entities/tasbih_state_data.dart';
 import '../cubit/tasbih_cubit.dart';
 import '../widgets/misbaha.dart';
+import '../../../../core/widgets/ambient_scaffold.dart';
 
 class TasbihPage extends StatelessWidget {
   const TasbihPage({super.key});
@@ -34,7 +36,7 @@ class _TasbihView extends StatelessWidget {
     final s = context.watch<TasbihCubit>().state;
     final isArabicUi = context.languageCode == 'ar';
 
-    return Scaffold(
+    return AmbientScaffold(
       appBar: AppBar(
         title: Text(l10n.tasbih),
         actions: [
@@ -106,19 +108,9 @@ class _TasbihView extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 120),
-                        transitionBuilder: (child, a) =>
-                            ScaleTransition(scale: a, child: child),
-                        child: Text(
-                          context.digits(s.count),
-                          key: ValueKey(s.count),
-                          style: text.displayMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: colors.text,
-                            fontFeatures: const [FontFeature.tabularFigures()],
-                          ),
-                        ),
+                      RollingDigits(
+                        context.digits(s.count),
+                        style: text.displayLarge!.copyWith(color: colors.text),
                       ),
                       if (s.target > 0)
                         Text(

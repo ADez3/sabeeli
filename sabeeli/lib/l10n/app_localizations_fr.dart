@@ -777,4 +777,114 @@ class AppLocalizationsFr extends AppLocalizations {
   String version(String version) {
     return 'Version $version';
   }
+
+  @override
+  String get afterPrayer => 'Après la prière';
+
+  @override
+  String afterPrayerOf(String prayer) {
+    return 'Après $prayer';
+  }
+
+  @override
+  String get afterPrayerHint => 'Les adhkar après le salam, pas à pas';
+
+  @override
+  String get showTranslation => 'Traduction';
+
+  @override
+  String get turnTheBeads => 'Faites tourner les grains, ou touchez';
+
+  @override
+  String get doneStep => 'Terminé';
+
+  @override
+  String get previousStep => 'Précédent';
+
+  @override
+  String get skipStep => 'Passer';
+
+  @override
+  String remembrances(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count rappels d’Allah',
+      one: '1 rappel d’Allah',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String prayerIn(String prayer) {
+    return '$prayer dans';
+  }
+
+  @override
+  String atTime(String time) {
+    return 'à $time';
+  }
+
+  @override
+  String get nowLabel => 'Maintenant';
+
+  @override
+  String pageAyah(int page, int ayah) {
+    return 'Page $page · Verset $ayah';
+  }
+
+  @override
+  String get tasbihHint => 'Faites tourner les grains';
+
+  @override
+  String get azkarHint => 'Matin, soir et plus';
+
+  @override
+  String get ayahOfTheDay => 'Verset du jour';
+
+  @override
+  String get navToday => 'Aujourd’hui';
+
+  @override
+  String get navDhikr => 'Dhikr';
+
+  @override
+  String get riwayah => 'Riwaya';
+
+  @override
+  String get riwayahAuto => 'Automatique, selon la région';
+
+  @override
+  String get riwayahHafs => 'Hafs d’après ʿAsim';
+
+  @override
+  String get riwayahWarsh => 'Warsh d’après Nafiʿ';
+
+  @override
+  String get riwayahQalun => 'Qalun d’après Nafiʿ';
+
+  @override
+  String get riwayahHafsHint =>
+      'Lue dans la plus grande partie du monde musulman';
+
+  @override
+  String get riwayahWarshHint =>
+      'Maroc, Algérie, Mauritanie, Afrique de l’Ouest';
+
+  @override
+  String get riwayahQalunHint => 'Libye, Tunisie';
+
+  @override
+  String get riwayahNote =>
+      'Chaque riwaya est affichée dans son propre mushaf du Complexe du Roi Fahd. Le tafsir et les traductions y sont alignés verset par verset.';
+
+  @override
+  String get general => 'Général';
+
+  @override
+  String get dhikrSubtitle => 'Rappelle-toi d’Allah, Il se rappelle de toi';
+
+  @override
+  String get qiblaSubtitle =>
+      'La direction de la Kaaba depuis l’endroit où vous êtes';
 }

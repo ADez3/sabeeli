@@ -11,4 +11,7 @@ extension DirectionalIcons on BuildContext {
 
   IconData get forwardChevron =>
       isRtl ? LucideIcons.chevronLeft : LucideIcons.chevronRight;
+
+  IconData get backArrow =>
+      isRtl ? LucideIcons.arrowRight : LucideIcons.arrowLeft;
 }

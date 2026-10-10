@@ -12,6 +12,7 @@ import '../../../../l10n/l10n.dart';
 import '../../domain/entities/azkar_entities.dart';
 import '../cubit/azkar_cubit.dart';
 import '../widgets/azkar_labels.dart';
+import '../../../../core/widgets/ambient_scaffold.dart';
 
 /// Reads a category one dhikr after another. Tapping a card counts one
 /// repetition; when its count is reached the next card scrolls into view.
@@ -52,7 +53,7 @@ class _AzkarReaderPageState extends State<AzkarReaderPage> {
       (AzkarCubit c) => c.state.byId(widget.categoryId),
     );
     if (category == null) {
-      return Scaffold(
+      return AmbientScaffold(
         appBar: AppBar(),
         body: const Center(child: CircularProgressIndicator()),
       );
@@ -67,7 +68,7 @@ class _AzkarReaderPageState extends State<AzkarReaderPage> {
           final total = category.items.length;
           final allDone = done == total;
 
-          return Scaffold(
+          return AmbientScaffold(
             appBar: AppBar(
               title: Text(context.azkarTitle(category)),
               actions: [

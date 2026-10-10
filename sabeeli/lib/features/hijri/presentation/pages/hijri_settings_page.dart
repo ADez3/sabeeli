@@ -13,6 +13,7 @@ import '../../domain/entities/hijri_settings.dart';
 import '../cubit/hijri_cubit.dart';
 import '../widgets/hijri_labels.dart';
 import '../widgets/moon_month.dart';
+import '../../../../core/widgets/ambient_scaffold.dart';
 
 /// Lets each user follow their own country's announcements: pick the base
 /// calendar, shift it, or pin the first day of the current and coming months.
@@ -32,7 +33,7 @@ class HijriSettingsPage extends StatelessWidget {
     // This month and the next two: the ones a moon-sighting announcement concerns.
     final months = [for (var i = 0; i < 3; i++) today.monthIndex + i];
 
-    return Scaffold(
+    return AmbientScaffold(
       appBar: AppBar(title: Text(l10n.hijriCalendar)),
       body: ContentWidth(
         child: ListView(

@@ -13,6 +13,7 @@ import '../../../../core/theme/app_icons.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/glass_panel.dart';
+import '../../../../core/widgets/icon_toggle.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/entities/quran_entities.dart';
 import '../cubit/quran_cubit.dart';
@@ -20,6 +21,7 @@ import '../widgets/continue_reading_card.dart';
 import '../widgets/quran_ornaments.dart';
 import '../widgets/quran_sky/quran_sky.dart';
 import '../widgets/surah_labels.dart';
+import '../widgets/quran_font.dart';
 
 /// The Quran tab: a night sky of the 114 surahs by default, or the classic lists.
 class QuranIndexPage extends StatefulWidget {
@@ -213,51 +215,15 @@ class _ModeToggle extends StatelessWidget {
   final ValueChanged<bool> onChanged;
 
   @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final onSky = sky;
-    final fg = onSky ? Colors.white : context.colors.text;
-    Widget option(bool value, IconData icon, String label) {
-      final active = value == sky;
-      return Tooltip(
-        message: label,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(16),
-          onTap: () => onChanged(value),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: active ? fg.withValues(alpha: 0.16) : Colors.transparent,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Icon(
-              icon,
-              size: 18,
-              color: active ? fg : fg.withValues(alpha: 0.5),
-            ),
-          ),
-        ),
-      );
-    }
-
-    final row = Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        option(true, LucideIcons.sparkles, l10n.skyView),
-        option(false, LucideIcons.listOrdered, l10n.listView),
-      ],
-    );
-    return onSky
-        ? GlassPanel(radius: 20, padding: const EdgeInsets.all(3), child: row)
-        : DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: context.colors.outline),
-            ),
-            child: Padding(padding: const EdgeInsets.all(3), child: row),
-          );
-  }
+  Widget build(BuildContext context) => IconToggle<bool>(
+    selected: sky,
+    onChanged: onChanged,
+    onSky: sky,
+    options: [
+      (true, LucideIcons.sparkles, context.l10n.skyView),
+      (false, LucideIcons.listOrdered, context.l10n.listView),
+    ],
+  );
 }
 
 class _GlassContinue extends StatelessWidget {
@@ -404,12 +370,16 @@ class _SurahPreview extends StatelessWidget {
   }
 }
 
-/// Opens the reader on [ref]'s page with that ayah highlighted.
-void openAyah(BuildContext context, AyahRef ref) => context.pushNamed(
-  AppRoutes.quranSurahName,
-  pathParameters: {'surah': '${ref.surah}'},
-  queryParameters: {'ayah': '${ref.ayah}'},
-);
+/// Opens the reader on [ref]'s page (an ayah of the riwayah being read) with
+/// that ayah highlighted.
+void openAyah(BuildContext context, AyahRef ref) {
+  final hafs = context.read<QuranCubit>().state.data?.toHafs(ref) ?? ref;
+  context.pushNamed(
+    AppRoutes.quranSurahName,
+    pathParameters: {'surah': '${hafs.surah}'},
+    queryParameters: {'ayah': '${hafs.ayah}'},
+  );
+}
 
 void _openSurah(BuildContext context, int surah) => context.pushNamed(
   AppRoutes.quranSurahName,
@@ -597,7 +567,7 @@ class _JuzList extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         textDirection: TextDirection.rtl,
                         style: TextStyle(
-                          fontFamily: AppFonts.quran,
+                          fontFamily: context.quranFont,
                           fontSize: 17,
                           color: colors.textMuted,
                         ),
@@ -673,7 +643,7 @@ class _BookmarkList extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 textDirection: TextDirection.rtl,
                 style: TextStyle(
-                  fontFamily: AppFonts.quran,
+                  fontFamily: context.quranFont,
                   fontSize: 20,
                   height: 1.8,
                   color: colors.text,

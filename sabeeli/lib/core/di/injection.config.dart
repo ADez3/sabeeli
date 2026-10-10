@@ -22,8 +22,12 @@ import '../../features/azkar/data/repositories/azkar_repository_impl.dart'
     as _i3;
 import '../../features/azkar/domain/repositories/azkar_repository.dart'
     as _i598;
+import '../../features/azkar/domain/usecases/get_after_prayer_steps_usecase.dart'
+    as _i153;
 import '../../features/azkar/domain/usecases/get_azkar_categories_usecase.dart'
     as _i438;
+import '../../features/azkar/presentation/cubit/after_prayer_cubit.dart'
+    as _i157;
 import '../../features/azkar/presentation/cubit/azkar_cubit.dart' as _i223;
 import '../../features/hijri/data/datasources/hijri_local_data_source.dart'
     as _i544;
@@ -197,6 +201,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i61.TranslationRemoteDataSource>(),
       ),
     );
+    gh.factory<_i153.GetAfterPrayerStepsUseCase>(
+      () => _i153.GetAfterPrayerStepsUseCase(gh<_i598.AzkarRepository>()),
+    );
     gh.factory<_i438.GetAzkarCategoriesUseCase>(
       () => _i438.GetAzkarCategoriesUseCase(gh<_i598.AzkarRepository>()),
     );
@@ -240,6 +247,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i674.SettingsRepository>(
       () => _i955.SettingsRepositoryImpl(gh<_i599.SettingsLocalDataSource>()),
+    );
+    gh.factory<_i157.AfterPrayerCubit>(
+      () => _i157.AfterPrayerCubit(gh<_i153.GetAfterPrayerStepsUseCase>()),
     );
     gh.factory<_i34.LoadQuranUseCase>(
       () => _i34.LoadQuranUseCase(gh<_i498.QuranRepository>()),

@@ -76,16 +76,41 @@ flutter:
   uses-material-design: true
   generate: true
 
-  # assets/audio is not bundled: the adhan ships as a native notification sound
-  # (android/app/src/main/res/raw/adhan.mp3, and adhan_short.caf in the iOS bundle).
   assets:
     - assets/quran/
     - assets/quran/tafsir/
+    - assets/quran/riwayat/warsh/
+    - assets/quran/riwayat/qalun/
     - assets/azkar/
     - assets/hijri/
     - assets/geo/
 
+  shaders:
+    - shaders/grain.frag
+
   fonts:
+    - family: ReadexPro
+      fonts:
+        - asset: assets/fonts/ReadexPro-300.ttf
+          weight: 300
+        - asset: assets/fonts/ReadexPro-400.ttf
+          weight: 400
+        - asset: assets/fonts/ReadexPro-500.ttf
+          weight: 500
+        - asset: assets/fonts/ReadexPro-600.ttf
+          weight: 600
+    - family: Fraunces
+      fonts:
+        - asset: assets/fonts/Fraunces-300.ttf
+          weight: 300
+        - asset: assets/fonts/Fraunces-500.ttf
+          weight: 500
+    - family: ReemKufi
+      fonts:
+        - asset: assets/fonts/ReemKufi-500.ttf
+          weight: 500
+        - asset: assets/fonts/ReemKufi-700.ttf
+          weight: 700
     - family: IBMPlexSansArabic
       fonts:
         - asset: assets/fonts/IBMPlexSansArabic-Regular.ttf
@@ -104,6 +129,12 @@ flutter:
     - family: UthmanicHafs
       fonts:
         - asset: assets/fonts/UthmanicHafs_V18.ttf
+    - family: UthmanicWarsh
+      fonts:
+        - asset: assets/fonts/UthmanicWarsh_V21.ttf
+    - family: UthmanicQaloun
+      fonts:
+        - asset: assets/fonts/UthmanicQaloun_V21.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

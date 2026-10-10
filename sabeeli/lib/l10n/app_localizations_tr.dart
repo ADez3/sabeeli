@@ -771,4 +771,105 @@ class AppLocalizationsTr extends AppLocalizations {
   String version(String version) {
     return 'Sürüm $version';
   }
+
+  @override
+  String get afterPrayer => 'Namazdan sonra';
+
+  @override
+  String afterPrayerOf(String prayer) {
+    return '$prayer sonrası';
+  }
+
+  @override
+  String get afterPrayerHint => 'Selamdan sonraki zikirler, adım adım';
+
+  @override
+  String get showTranslation => 'Çeviri';
+
+  @override
+  String get turnTheBeads => 'Taneleri çevirin ya da dokunun';
+
+  @override
+  String get doneStep => 'Tamam';
+
+  @override
+  String get previousStep => 'Önceki';
+
+  @override
+  String get skipStep => 'Atla';
+
+  @override
+  String remembrances(int count) {
+    return '$count zikir';
+  }
+
+  @override
+  String prayerIn(String prayer) {
+    return '$prayer vaktine';
+  }
+
+  @override
+  String atTime(String time) {
+    return 'saat $time';
+  }
+
+  @override
+  String get nowLabel => 'Şimdi';
+
+  @override
+  String pageAyah(int page, int ayah) {
+    return 'Sayfa $page · Ayet $ayah';
+  }
+
+  @override
+  String get tasbihHint => 'Taneleri çevirin';
+
+  @override
+  String get azkarHint => 'Sabah, akşam ve dahası';
+
+  @override
+  String get ayahOfTheDay => 'Günün ayeti';
+
+  @override
+  String get navToday => 'Bugün';
+
+  @override
+  String get navDhikr => 'Zikir';
+
+  @override
+  String get riwayah => 'Rivayet';
+
+  @override
+  String get riwayahAuto => 'Otomatik, bölgeye göre';
+
+  @override
+  String get riwayahHafs => 'Âsım’dan Hafs';
+
+  @override
+  String get riwayahWarsh => 'Nâfi’den Verş';
+
+  @override
+  String get riwayahQalun => 'Nâfi’den Kâlûn';
+
+  @override
+  String get riwayahHafsHint => 'İslam dünyasının çoğunda okunur';
+
+  @override
+  String get riwayahWarshHint => 'Fas, Cezayir, Moritanya, Batı Afrika';
+
+  @override
+  String get riwayahQalunHint => 'Libya, Tunus';
+
+  @override
+  String get riwayahNote =>
+      'Her rivayet, Kral Fahd Kompleksi’nin kendi mushafında gösterilir. Tefsir ve meâller ayet ayet eşleştirilir.';
+
+  @override
+  String get general => 'Genel';
+
+  @override
+  String get dhikrSubtitle => 'Allah’ı an ki O da seni ansın';
+
+  @override
+  String get qiblaSubtitle => 'Bulunduğunuz yerden Kâbe’nin yönü';
 }

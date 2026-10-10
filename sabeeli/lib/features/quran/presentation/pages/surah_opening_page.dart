@@ -15,6 +15,7 @@ import '../../../../l10n/l10n.dart';
 import '../../domain/entities/quran_entities.dart';
 import '../cubit/quran_cubit.dart';
 import '../widgets/quran_sky/quran_sky_painters.dart';
+import '../widgets/quran_font.dart';
 
 /// The opening of a surah, reached from its star: its name in calligraphy, where it
 /// stands in the mushaf and in the revelation, and the way in. The elements arrive
@@ -97,7 +98,7 @@ class _SurahOpeningPageState extends State<SurahOpeningPage>
       AyahRef(widget.surah, widget.surah == 1 ? 2 : 1),
     );
     final quranStyle = TextStyle(
-      fontFamily: AppFonts.quran,
+      fontFamily: context.quranFont,
       color: Colors.white.withValues(alpha: 0.9),
     );
 
@@ -257,11 +258,11 @@ class _SurahOpeningPageState extends State<SurahOpeningPage>
                       ),
                     ),
                     const SizedBox(height: AppSpacing.xxl),
-                    if (surah.hasBasmalaHeader)
+                    if (data.hasBasmalaHeader(surah.number))
                       _stagger(
                         5,
                         Text(
-                          data.text(const AyahRef(1, 1)),
+                          data.basmala,
                           textAlign: TextAlign.center,
                           textDirection: TextDirection.rtl,
                           style: quranStyle.copyWith(fontSize: 24, height: 2),

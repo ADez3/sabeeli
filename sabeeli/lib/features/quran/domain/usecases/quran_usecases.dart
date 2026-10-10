@@ -16,12 +16,12 @@ class EditionTextParams extends Equatable {
 }
 
 @injectable
-class LoadQuranUseCase implements UseCase<QuranData, NoParams> {
+class LoadQuranUseCase implements UseCase<QuranData, Riwayah> {
   const LoadQuranUseCase(this._repository);
   final QuranRepository _repository;
 
   @override
-  Future<Result<QuranData>> call(NoParams params) => _repository.load();
+  Future<Result<QuranData>> call(Riwayah riwayah) => _repository.load(riwayah);
 }
 
 @injectable

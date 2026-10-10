@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -10,7 +9,10 @@ import '../../../../core/layout/breakpoints.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/utils/formatters.dart';
+import '../../../../core/widgets/ambient_background.dart';
 import '../../../../core/widgets/app_card.dart';
+import '../../../../core/widgets/hub_header.dart';
+import '../../../../core/widgets/icon_toggle.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../location/presentation/cubit/location_cubit.dart';
 import '../../../prayer_times/presentation/widgets/set_location_card.dart';
@@ -38,28 +40,45 @@ class _QiblaPageState extends State<QiblaPage> {
     return BlocProvider(
       create: (_) => getIt<QiblaCubit>()..start(position),
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(l10n.qibla),
-          actions: [
-            IconButton(
-              tooltip: _globe ? l10n.compassView : l10n.globeView,
-              icon: Icon(_globe ? LucideIcons.compass : LucideIcons.globe),
-              onPressed: () {
-                HapticFeedback.selectionClick();
-                setState(() => _globe = !_globe);
-              },
+        body: AmbientBackground(
+          child: SafeArea(
+            bottom: false,
+            child: Column(
+              children: [
+                ContentWidth(
+                  child: HubHeader(
+                    title: l10n.qibla,
+                    subtitle: l10n.qiblaSubtitle,
+                    trailing: IconToggle<bool>(
+                      selected: _globe,
+                      onChanged: (g) => setState(() => _globe = g),
+                      options: [
+                        (false, LucideIcons.compass, l10n.compassView),
+                        (true, LucideIcons.globe, l10n.globeView),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    // The page sits above the floating navigation bar.
+                    padding: EdgeInsets.only(bottom: context.navBarClearance),
+                    child: BlocListener<LocationCubit, LocationState>(
+                      listenWhen: (a, b) => a.location != b.location,
+                      listener: (context, s) => context
+                          .read<QiblaCubit>()
+                          .start(s.location?.coordinates),
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 350),
+                        child: _globe
+                            ? const _GlobeBody(key: ValueKey('globe'))
+                            : const _QiblaBody(key: ValueKey('compass')),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-        body: BlocListener<LocationCubit, LocationState>(
-          listenWhen: (a, b) => a.location != b.location,
-          listener: (context, s) =>
-              context.read<QiblaCubit>().start(s.location?.coordinates),
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 350),
-            child: _globe
-                ? const _GlobeBody(key: ValueKey('globe'))
-                : const _QiblaBody(key: ValueKey('compass')),
           ),
         ),
       ),

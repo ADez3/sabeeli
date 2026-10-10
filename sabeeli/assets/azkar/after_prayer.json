@@ -1,0 +1,136 @@
+{
+ "steps": [
+  {
+   "id": "istighfar",
+   "arabic": "أَسْتَغْفِرُ اللَّهَ",
+   "count": 3,
+   "transliteration": "Astaghfirullah",
+   "translation": "I ask Allah for forgiveness.",
+   "reference": "مسلم 1/ 414"
+  },
+  {
+   "id": "anta_as_salam",
+   "arabic": "اللَّهُمَّ أَنْتَ السَّلاَمُ، وَمِنْكَ السَّلاَمُ، تَبَارَكْتَ يَا ذَا الْجَلاَلِ وَالْإِكْرَامِ",
+   "count": 1,
+   "transliteration": "Allahumma antas-salam waminkas-salam, tabarakta ya dhal-jalali wal-ikram.",
+   "translation": "O Allah, You are As-Salam and from You is all peace, blessed are You, O Possessor of majesty and honour.",
+   "reference": "مسلم 1/ 414"
+  },
+  {
+   "id": "la_mani",
+   "arabic": "لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ [ثلاثاً]، اللَّهُمَّ لاَ مَانِعَ لِمَا أَعْطَيْتَ، وَلاَ مُعْطِيَ لِمَا مَنَعْتَ، وَلاَ يَنْفَعُ ذَا الْجَدِّ مِنْكَ الجَدُّ",
+   "count": 1,
+   "transliteration": "La ilaha illal-lahu wahdahu la shareeka lah, lahul-mulku walahul-hamd, wahuwa AAala kulli shayin qadeer, allahumma la maniAAa lima aAAtayt, wala muAAtiya lima manaAAt, wala yanfaAAu thal-jaddi minkal-jad.",
+   "translation": "None has the right to be worshipped except Allah, alone, without partner, to Him belongs all sovereignty and praise and He is over all things omnipotent.O Allah, none can prevent what You have willed to bestow and none can bestow what You have willed to prevent, and no wealth or majesty can benefit anyone, as from You is all wealth and majesty.",
+   "reference": "البخاري 1/ 255 ومسلم 1/ 414"
+  },
+  {
+   "id": "lahu_an_nima",
+   "arabic": "لَا إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ، وَلَهُ الْحَمدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ. لاَ حَوْلَ وَلاَ قُوَّةَ إِلاَّ بِاللَّهِ، لاَ إِلَهَ إِلاَّ اللَّهُ، وَلاَ نَعْبُدُ إِلاَّ إِيَّاهُ, لَهُ النِّعْمَةُ وَلَهُ الْفَضْلُ وَلَهُ الثَّنَاءُ الْحَسَنُ، لَا إِلَهَ إِلاَّ اللَّهُ مُخْلِصِينَ لَهُ الدِّينَ وَلَوْ كَرِهَ الكَافِرُونَ",
+   "count": 1,
+   "transliteration": "La ilaha illal-lah, wahdahu la shareeka lah, lahul-mulku walahul-hamd, wahuwa AAala kulli shayin qadeer. la hawla wala quwwata illa billah, la ilaha illal-lah, wala naAAbudu illa iyyah, lahun-niAAmatu walahul-fadl walahuth-thana-ol- hasan, la ilaha illal-lah mukhliseena lahud-deen walaw karihal-kafiroon.",
+   "translation": "None has the right to be worshipped except Allah, alone, without partner, to Him belongs all sovereignty and praise and He is over all things omnipotent. There is no might nor power except with Allah, none has the right to be worshipped except Allah and we worship none except Him. For Him is all favour, grace, and glorious praise. None has the right to be worshipped except Allah and we are sincere in faith and devotion to Him although the disbelievers detest it.",
+   "reference": "مسلم 1/ 415"
+  },
+  {
+   "id": "subhanallah",
+   "arabic": "سُبْحَانَ اللَّهِ",
+   "count": 33,
+   "transliteration": "SubhanAllah",
+   "translation": "How perfect Allah is.",
+   "reference": "مسلم 1/ 418"
+  },
+  {
+   "id": "alhamdulillah",
+   "arabic": "الْحَمْدُ لِلَّهِ",
+   "count": 33,
+   "transliteration": "Alhamdulillah",
+   "translation": "All praise is for Allah.",
+   "reference": "مسلم 1/ 418"
+  },
+  {
+   "id": "allahu_akbar",
+   "arabic": "اللَّهُ أَكْبَرُ",
+   "count": 33,
+   "transliteration": "Allahu akbar",
+   "translation": "Allah is the greatest.",
+   "reference": "مسلم 1/ 418"
+  },
+  {
+   "id": "tahlil_hundred",
+   "arabic": "لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+   "count": 1,
+   "transliteration": "La ilaha illal-lahu wahdahu la shareeka lah, lahul-mulku walahul-hamd, wahuwa AAala kulli shayin qadeer.",
+   "translation": "None has the right to be worshipped except Allah, alone, without partner, to Him belongs all sovereignty and praise and He is over all things omnipotent.",
+   "virtue": "من قال ذلك دبر كل صلاة غفرت خطاياه وإن كانت مثل زبد البحر",
+   "reference": "مسلم 1/ 418"
+  },
+  {
+   "id": "ikhlas",
+   "quran": [
+    112,
+    1,
+    4
+   ],
+   "count": 1,
+   "countFajrMaghrib": 3,
+   "reference": "أبو داود 2/ 86 والنسائي 3/ 68 وانظر صحيح التّرمذي 2/ 8 والسور الثلاث يقال لها المعوذات وانظر فتح الباري 9/ 62"
+  },
+  {
+   "id": "falaq",
+   "quran": [
+    113,
+    1,
+    5
+   ],
+   "count": 1,
+   "countFajrMaghrib": 3,
+   "reference": "أبو داود 2/ 86 والنسائي 3/ 68 وانظر صحيح التّرمذي 2/ 8 والسور الثلاث يقال لها المعوذات وانظر فتح الباري 9/ 62"
+  },
+  {
+   "id": "nas",
+   "quran": [
+    114,
+    1,
+    6
+   ],
+   "count": 1,
+   "countFajrMaghrib": 3,
+   "reference": "أبو داود 2/ 86 والنسائي 3/ 68 وانظر صحيح التّرمذي 2/ 8 والسور الثلاث يقال لها المعوذات وانظر فتح الباري 9/ 62"
+  },
+  {
+   "id": "ayat_al_kursi",
+   "quran": [
+    2,
+    255,
+    255
+   ],
+   "count": 1,
+   "virtue": "من قرأها دبر كل صلاة لم يمنعه من دخول الجنة إلا أن يموت",
+   "reference": "النسائي في عمل اليوم والليلة برقم 100، وابن السني برقم 121 وصححه الجامع 5/ 339 وسلسلة الأحاديث الصحيحة 2/ 697 برقم 972"
+  },
+  {
+   "id": "yuhyi_wa_yumit",
+   "arabic": "لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ يُحْيِي وَيُمِيتُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+   "count": 10,
+   "only": [
+    "fajr",
+    "maghrib"
+   ],
+   "transliteration": "La ilaha illal-lahu wahdahu la shareeka lah, lahul-mulku walahul-hamd, yuhyee wayumeet, wahuwa AAala kulli shayin qadeer.",
+   "translation": "None has the right to be worshipped except Allah, alone, without partner, to Him belongs all sovereignty and praise, He gives life and causes death and He is over all things omnipotent.",
+   "reference": "رواه التّرمذي 5/ 515 وأحمد 4/ 227 وانظر تخريجه في زاد المعاد 1/ 300"
+  },
+  {
+   "id": "ilman_nafia",
+   "arabic": "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْماً نافِعاً، وَرِزْقاً طَيِّباً، وَعَمَلاً مُتَقَبَّلاً",
+   "count": 1,
+   "only": [
+    "fajr"
+   ],
+   "transliteration": "Allahumma innee as-aluka AAilman nafiAAan, warizqan tayyiban, waAAamalan mutaqabbalan.",
+   "translation": "O Allah, I ask You for knowledge which is beneficial and sustenance which is good, and deeds which are acceptable.",
+   "reference": "ابن ماجه وغيره وانظر صحيح ابن ماجة 1/ 152 ومجمع الزوائد 10/ 111"
+  }
+ ]
+}

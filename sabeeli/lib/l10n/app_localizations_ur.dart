@@ -772,4 +772,111 @@ class AppLocalizationsUr extends AppLocalizations {
   String version(String version) {
     return 'ورژن $version';
   }
+
+  @override
+  String get afterPrayer => 'نماز کے بعد';
+
+  @override
+  String afterPrayerOf(String prayer) {
+    return '$prayer کے بعد';
+  }
+
+  @override
+  String get afterPrayerHint => 'سلام کے بعد کے اذکار، قدم بہ قدم';
+
+  @override
+  String get showTranslation => 'ترجمہ';
+
+  @override
+  String get turnTheBeads => 'دانے گھمائیں یا تھپتھپائیں';
+
+  @override
+  String get doneStep => 'مکمل';
+
+  @override
+  String get previousStep => 'پچھلا';
+
+  @override
+  String get skipStep => 'چھوڑیں';
+
+  @override
+  String remembrances(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'اللہ کے $count اذکار',
+      one: 'اللہ کا 1 ذکر',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String prayerIn(String prayer) {
+    return '$prayer میں باقی';
+  }
+
+  @override
+  String atTime(String time) {
+    return '$time پر';
+  }
+
+  @override
+  String get nowLabel => 'ابھی';
+
+  @override
+  String pageAyah(int page, int ayah) {
+    return 'صفحہ $page · آیت $ayah';
+  }
+
+  @override
+  String get tasbihHint => 'دانے گھمائیں';
+
+  @override
+  String get azkarHint => 'صبح، شام اور مزید';
+
+  @override
+  String get ayahOfTheDay => 'آج کی آیت';
+
+  @override
+  String get navToday => 'آج';
+
+  @override
+  String get navDhikr => 'ذکر';
+
+  @override
+  String get riwayah => 'روایت';
+
+  @override
+  String get riwayahAuto => 'خودکار، علاقے کے مطابق';
+
+  @override
+  String get riwayahHafs => 'حفص عن عاصم';
+
+  @override
+  String get riwayahWarsh => 'ورش عن نافع';
+
+  @override
+  String get riwayahQalun => 'قالون عن نافع';
+
+  @override
+  String get riwayahHafsHint => 'اکثر مسلم دنیا میں پڑھی جاتی ہے';
+
+  @override
+  String get riwayahWarshHint => 'مراکش، الجزائر، موریتانیہ، مغربی افریقہ';
+
+  @override
+  String get riwayahQalunHint => 'لیبیا، تیونس';
+
+  @override
+  String get riwayahNote =>
+      'ہر روایت شاہ فہد کمپلیکس کے اپنے مصحف میں دکھائی جاتی ہے۔ تفسیر اور تراجم آیت بہ آیت اس سے ملائے جاتے ہیں۔';
+
+  @override
+  String get general => 'عمومی';
+
+  @override
+  String get dhikrSubtitle => 'اللہ کو یاد کرو، وہ تمہیں یاد کرے گا';
+
+  @override
+  String get qiblaSubtitle => 'آپ کی جگہ سے کعبہ کی سمت';
 }

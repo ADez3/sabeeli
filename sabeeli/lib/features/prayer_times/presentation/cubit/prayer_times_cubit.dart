@@ -44,6 +44,14 @@ class PrayerTimesState extends Equatable {
     return fajr == null ? null : (prayer: Prayer.fajr, time: fajr);
   }
 
+  /// The obligatory prayer whose time most recently began: Fajr until Dhuhr
+  /// (sunrise is not a prayer), and last night's Isha before today's Fajr.
+  Prayer lastPrayerAt(DateTime now) => switch (today?.currentAt(now)) {
+    null || Prayer.isha => Prayer.isha,
+    Prayer.sunrise => Prayer.fajr,
+    final p => p,
+  };
+
   PrayerTimesState copyWith({
     PrayerStatus? status,
     PrayerSettings? settings,

@@ -2,7 +2,9 @@
 # Download every raw input used by the build scripts into tool/data/raw/.
 # Then run (from tool/data):
 #   python build_quran.py && python fetch_tafsir_translation.py && python build_translation_catalog.py
-#   python build_azkar.py && python build_hijri.py && python build_land_mask.py && python build_riwayat.py
+#   python build_azkar.py && python build_hijri.py && python build_land_mask.py
+# and, from sabeeli/: python tool/data/build_after_prayer.py, tool/data/build_riwayat.py and
+# tool/data/build_fonts.py (which downloads its own fonts).
 # Fonts are copied directly (see the bottom of this script).
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"

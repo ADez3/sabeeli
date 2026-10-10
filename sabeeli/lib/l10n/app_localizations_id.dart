@@ -773,4 +773,105 @@ class AppLocalizationsId extends AppLocalizations {
   String version(String version) {
     return 'Versi $version';
   }
+
+  @override
+  String get afterPrayer => 'Setelah salat';
+
+  @override
+  String afterPrayerOf(String prayer) {
+    return 'Setelah $prayer';
+  }
+
+  @override
+  String get afterPrayerHint => 'Zikir setelah salam, langkah demi langkah';
+
+  @override
+  String get showTranslation => 'Terjemahan';
+
+  @override
+  String get turnTheBeads => 'Putar butiran tasbih, atau ketuk';
+
+  @override
+  String get doneStep => 'Selesai';
+
+  @override
+  String get previousStep => 'Sebelumnya';
+
+  @override
+  String get skipStep => 'Lewati';
+
+  @override
+  String remembrances(int count) {
+    return '$count zikir kepada Allah';
+  }
+
+  @override
+  String prayerIn(String prayer) {
+    return '$prayer dalam';
+  }
+
+  @override
+  String atTime(String time) {
+    return 'pukul $time';
+  }
+
+  @override
+  String get nowLabel => 'Sekarang';
+
+  @override
+  String pageAyah(int page, int ayah) {
+    return 'Halaman $page · Ayat $ayah';
+  }
+
+  @override
+  String get tasbihHint => 'Putar butiran tasbih';
+
+  @override
+  String get azkarHint => 'Pagi, petang, dan lainnya';
+
+  @override
+  String get ayahOfTheDay => 'Ayat hari ini';
+
+  @override
+  String get navToday => 'Hari ini';
+
+  @override
+  String get navDhikr => 'Zikir';
+
+  @override
+  String get riwayah => 'Riwayat';
+
+  @override
+  String get riwayahAuto => 'Otomatis, sesuai wilayah';
+
+  @override
+  String get riwayahHafs => 'Hafs dari ʿAsim';
+
+  @override
+  String get riwayahWarsh => 'Warsy dari Nafiʿ';
+
+  @override
+  String get riwayahQalun => 'Qalun dari Nafiʿ';
+
+  @override
+  String get riwayahHafsHint => 'Dibaca di sebagian besar dunia Islam';
+
+  @override
+  String get riwayahWarshHint => 'Maroko, Aljazair, Mauritania, Afrika Barat';
+
+  @override
+  String get riwayahQalunHint => 'Libya, Tunisia';
+
+  @override
+  String get riwayahNote =>
+      'Setiap riwayat ditampilkan dalam mushafnya sendiri dari Kompleks Raja Fahd. Tafsir dan terjemahan dicocokkan ayat demi ayat.';
+
+  @override
+  String get general => 'Umum';
+
+  @override
+  String get dhikrSubtitle => 'Ingatlah Allah, niscaya Dia mengingatmu';
+
+  @override
+  String get qiblaSubtitle => 'Arah Ka’bah dari tempat Anda';
 }

@@ -66,6 +66,7 @@ class QuranLocalDataSource {
     return ReaderPreferences(
       fontScale: ((j['scale'] as num?)?.toDouble() ?? 1.0).clamp(0.8, 1.8),
       translationId: j['translation'] as String?,
+      riwayah: Riwayah.values.asNameMap()[j['riwayah']],
     );
   }
 
@@ -73,5 +74,6 @@ class QuranLocalDataSource {
       _store.setJson(_prefsKey, {
         'scale': p.fontScale,
         if (p.translationId != null) 'translation': p.translationId,
+        if (p.riwayah != null) 'riwayah': p.riwayah!.name,
       });
 }

@@ -4,12 +4,50 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/astronomy/prayer.dart';
+import '../../../quran/domain/entities/quran_entities.dart';
+import '../../domain/entities/after_prayer.dart';
 import '../../domain/entities/azkar_entities.dart';
 
 /// Hisn al-Muslim in Arabic, merged with its English translation by id.
 @lazySingleton
 class AzkarAssetDataSource {
   List<AzkarCategory>? _cache;
+  List<AfterPrayerStep>? _afterPrayer;
+
+  /// The guided after-prayer sequence (built by tool/data/build_after_prayer.py).
+  Future<List<AfterPrayerStep>> afterPrayer() async {
+    final cached = _afterPrayer;
+    if (cached != null) return cached;
+    final raw = await rootBundle.loadString('assets/azkar/after_prayer.json');
+    final steps = [
+      for (final s
+          in ((jsonDecode(raw) as Map<String, dynamic>)['steps']
+                  as List<dynamic>)
+              .cast<Map<String, dynamic>>())
+        _step(s),
+    ];
+    return _afterPrayer = steps;
+  }
+
+  static AfterPrayerStep _step(Map<String, dynamic> s) {
+    final quran = (s['quran'] as List<dynamic>?)?.cast<int>();
+    return AfterPrayerStep(
+      id: s['id'] as String,
+      arabic: s['arabic'] as String?,
+      quranFrom: quran == null ? null : AyahRef(quran[0], quran[1]),
+      quranTo: quran == null ? null : AyahRef(quran[0], quran[2]),
+      count: (s['count'] as num).toInt(),
+      countAfterFajrAndMaghrib: (s['countFajrMaghrib'] as num?)?.toInt(),
+      only: (s['only'] as List<dynamic>?)
+          ?.map((p) => Prayer.values.byName(p as String))
+          .toSet(),
+      translation: s['translation'] as String?,
+      transliteration: s['transliteration'] as String?,
+      reference: s['reference'] as String?,
+      virtue: s['virtue'] as String?,
+    );
+  }
 
   Future<List<AzkarCategory>> load() async {
     final cached = _cache;

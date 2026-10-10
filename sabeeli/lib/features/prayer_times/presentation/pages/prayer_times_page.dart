@@ -604,6 +604,16 @@ class _Header extends StatelessWidget {
         children: [
           Row(
             children: [
+              if (Navigator.of(context).canPop())
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(end: AppSpacing.xs),
+                  child: IconButton(
+                    tooltip: MaterialLocalizations.of(context)
+                        .backButtonTooltip,
+                    icon: Icon(context.backArrow, color: _white),
+                    onPressed: () => Navigator.of(context).maybePop(),
+                  ),
+                ),
               Expanded(
                 child: Text(
                   title,

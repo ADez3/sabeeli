@@ -15,8 +15,13 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.primary,
     required this.onPrimary,
     required this.accent,
+    required this.secondary,
+    required this.rose,
+    required this.success,
     required this.text,
     required this.textMuted,
+    required this.textFaint,
+    required this.hairline,
     required this.mushafPage,
     required this.ayahHighlight,
     required this.danger,
@@ -30,10 +35,25 @@ class AppColors extends ThemeExtension<AppColors> {
   final Color primary;
   final Color onPrimary;
 
-  /// Gold: reserved for the sacred and the important. Use sparingly.
+  /// Dawn amber: reserved for the sacred and the important. Use sparingly.
   final Color accent;
+
+  /// Twilight lavender: a second hue for skies, auroras and quiet highlights.
+  final Color secondary;
+
+  /// Dawn rose: only in sky gradients and sky-related highlights.
+  final Color rose;
+
+  /// Something completed (a finished round, a read surah). Cool, not emerald.
+  final Color success;
   final Color text;
   final Color textMuted;
+
+  /// Tertiary text: captions, hints, disabled labels.
+  final Color textFaint;
+
+  /// 1 px separators and card rims.
+  final Color hairline;
 
   /// Page colour of the Quran reader, softer than [background] for long reading.
   final Color mushafPage;
@@ -41,35 +61,45 @@ class AppColors extends ThemeExtension<AppColors> {
   final Color danger;
 
   static const dark = AppColors(
-    background: AppPalette.ink,
-    surface: AppPalette.inkSurface,
-    surfaceHigh: AppPalette.inkSurfaceHigh,
-    surfaceHighest: AppPalette.inkSurfaceHighest,
-    outline: AppPalette.inkOutline,
+    background: AppPalette.night,
+    surface: AppPalette.nightSurface,
+    surfaceHigh: AppPalette.nightRaised,
+    surfaceHighest: AppPalette.nightHighest,
+    outline: Color(0xFF262D4A),
     primary: AppPalette.moonlight,
-    onPrimary: AppPalette.ink,
+    onPrimary: AppPalette.night,
     accent: AppPalette.dawn,
+    secondary: AppPalette.twilight,
+    rose: AppPalette.dawnRose,
+    success: AppPalette.mint,
     text: AppPalette.starText,
-    textMuted: AppPalette.dustText,
-    mushafPage: Color(0xFF0D1019),
-    ayahHighlight: Color(0x339DB2FF),
-    danger: AppPalette.danger,
+    textMuted: AppPalette.mistText,
+    textFaint: AppPalette.dimText,
+    hairline: AppPalette.nightHairline,
+    mushafPage: Color(0xFF0C1020),
+    ayahHighlight: Color(0x33A9C2FF),
+    danger: AppPalette.nightDanger,
   );
 
   static const light = AppColors(
     background: AppPalette.paper,
     surface: AppPalette.white,
-    surfaceHigh: AppPalette.stone,
-    surfaceHighest: AppPalette.stoneHigh,
-    outline: AppPalette.stoneOutline,
+    surfaceHigh: AppPalette.paperRaised,
+    surfaceHighest: AppPalette.paperSunken,
+    outline: Color(0xFFE2DCD2),
     primary: AppPalette.indigo,
     onPrimary: Colors.white,
     accent: AppPalette.amber,
+    secondary: AppPalette.violet,
+    rose: AppPalette.rose,
+    success: AppPalette.teal,
     text: AppPalette.inkText,
     textMuted: AppPalette.slateText,
-    mushafPage: Color(0xFFFBFAF6),
-    ayahHighlight: Color(0x223A4FD0),
-    danger: Color(0xFFC8433B),
+    textFaint: AppPalette.greyText,
+    hairline: AppPalette.paperHairline,
+    mushafPage: Color(0xFFFBF8F2),
+    ayahHighlight: Color(0x223A57D6),
+    danger: AppPalette.paperDanger,
   );
 
   @override
@@ -88,8 +118,13 @@ class AppColors extends ThemeExtension<AppColors> {
       primary: l(primary, other.primary),
       onPrimary: l(onPrimary, other.onPrimary),
       accent: l(accent, other.accent),
+      secondary: l(secondary, other.secondary),
+      rose: l(rose, other.rose),
+      success: l(success, other.success),
       text: l(text, other.text),
       textMuted: l(textMuted, other.textMuted),
+      textFaint: l(textFaint, other.textFaint),
+      hairline: l(hairline, other.hairline),
       mushafPage: l(mushafPage, other.mushafPage),
       ayahHighlight: l(ayahHighlight, other.ayahHighlight),
       danger: l(danger, other.danger),

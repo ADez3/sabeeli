@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/layout/breakpoints.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_fonts.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../domain/entities/quran_entities.dart';
+import 'quran_font.dart';
 import 'ayah_number.dart';
 import 'quran_ornaments.dart';
 
@@ -63,7 +63,7 @@ class _MushafPageState extends State<MushafPage> {
     final fontSize = baseSize * widget.fontScale;
 
     final quranStyle = TextStyle(
-      fontFamily: AppFonts.quran,
+      fontFamily: context.quranFont,
       fontSize: fontSize,
       height: 2.05,
       color: colors.text,
@@ -90,12 +90,12 @@ class _MushafPageState extends State<MushafPage> {
         for (final group in groups) ...[
           if (group.first.ayah == 1) ...[
             SurahBanner(nameArabic: data.surah(group.first.surah).nameArabic),
-            if (data.surah(group.first.surah).hasBasmalaHeader)
+            if (data.hasBasmalaHeader(group.first.surah))
               Padding(
                 padding: const EdgeInsets.only(bottom: AppSpacing.sm),
                 child: Text(
-                  // Al-Fatihah 1:1 is the basmala; reused so it is the same text and font.
-                  data.text(const AyahRef(1, 1)),
+                  // The riwayah's own basmala, in its own spelling and font.
+                  data.basmala,
                   textAlign: TextAlign.center,
                   textDirection: TextDirection.rtl,
                   style: quranStyle.copyWith(fontSize: fontSize * 0.95),

@@ -7,6 +7,7 @@ import '../../../../core/theme/app_fonts.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../../core/widgets/ambient_scaffold.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -31,7 +32,7 @@ class AboutPage extends StatelessWidget {
     final l10n = context.l10n;
     final colors = context.colors;
     final text = Theme.of(context).textTheme;
-    return Scaffold(
+    return AmbientScaffold(
       appBar: AppBar(title: Text(l10n.about)),
       body: ContentWidth(
         child: ListView(

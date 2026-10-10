@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'core/di/injection.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'core/theme/sky_ambience.dart';
 import 'core/utils/numerals.dart';
 import 'features/azkar/presentation/cubit/azkar_cubit.dart';
 import 'features/hijri/presentation/cubit/hijri_cubit.dart';
@@ -51,21 +52,27 @@ class SabeeliApp extends StatelessWidget {
           final locationCountry = context.select(
             (LocationCubit c) => c.state.location?.countryCode,
           );
-          return NumeralsScope(
-            numerals: Numerals.resolve(
-              settings.numeralStyle,
-              languageCode: Localizations.localeOf(context).languageCode,
-              // The phone's region first (a Moroccan phone in French is still
-              // Moroccan), then the country of the saved location.
-              countryCode:
-                  WidgetsBinding
-                      .instance
-                      .platformDispatcher
-                      .locale
-                      .countryCode ??
-                  locationCountry,
+          final where = context.select(
+            (LocationCubit c) => c.state.location?.coordinates,
+          );
+          return SkyAmbience(
+            where: where,
+            child: NumeralsScope(
+              numerals: Numerals.resolve(
+                settings.numeralStyle,
+                languageCode: Localizations.localeOf(context).languageCode,
+                // The phone's region first (a Moroccan phone in French is still
+                // Moroccan), then the country of the saved location.
+                countryCode:
+                    WidgetsBinding
+                        .instance
+                        .platformDispatcher
+                        .locale
+                        .countryCode ??
+                    locationCountry,
+              ),
+              child: child!,
             ),
-            child: child!,
           );
         },
       ),

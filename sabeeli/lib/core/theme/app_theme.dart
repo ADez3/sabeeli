@@ -36,36 +36,24 @@ abstract final class AppTheme {
       brightness: brightness,
       colorScheme: scheme,
       fontFamily: AppFonts.ui,
+      fontFamilyFallback: AppFonts.uiFallback,
       scaffoldBackgroundColor: c.background,
+      splashFactory: InkSparkle.splashFactory,
       extensions: [c],
     );
 
-    final text = base.textTheme.apply(bodyColor: c.text, displayColor: c.text);
+    final text = _textTheme(base.textTheme, c);
 
     return base.copyWith(
-      textTheme: text.copyWith(
-        displaySmall: text.displaySmall?.copyWith(
-          fontWeight: FontWeight.w600,
-          letterSpacing: -0.5,
-        ),
-        headlineMedium: text.headlineMedium?.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
-        headlineSmall: text.headlineSmall?.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
-        titleLarge: text.titleLarge?.copyWith(fontWeight: FontWeight.w600),
-        titleMedium: text.titleMedium?.copyWith(fontWeight: FontWeight.w600),
-        labelLarge: text.labelLarge?.copyWith(fontWeight: FontWeight.w600),
-      ),
+      textTheme: text,
       appBarTheme: AppBarTheme(
-        backgroundColor: c.background,
+        backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         foregroundColor: c.text,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: false,
-        titleTextStyle: text.titleLarge?.copyWith(fontWeight: FontWeight.w600),
+        titleTextStyle: text.titleLarge,
         systemOverlayStyle: brightness == Brightness.dark
             ? SystemUiOverlayStyle.light.copyWith(
                 statusBarColor: Colors.transparent,
@@ -80,8 +68,8 @@ abstract final class AppTheme {
         elevation: 0,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-          side: BorderSide(color: c.outline.withValues(alpha: 0.6)),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+          side: BorderSide(color: c.hairline),
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(
@@ -126,19 +114,15 @@ abstract final class AppTheme {
           borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
         ),
       ),
-      dividerTheme: DividerThemeData(
-        color: c.outline.withValues(alpha: 0.6),
-        space: 1,
-        thickness: 1,
-      ),
+      dividerTheme: DividerThemeData(color: c.hairline, space: 1, thickness: 1),
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: c.surface,
         surfaceTintColor: Colors.transparent,
         showDragHandle: true,
-        dragHandleColor: c.outline,
+        dragHandleColor: c.textFaint.withValues(alpha: 0.5),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
-            top: Radius.circular(AppSpacing.radiusLg),
+            top: Radius.circular(AppSpacing.radiusXl),
           ),
         ),
       ),
@@ -153,22 +137,18 @@ abstract final class AppTheme {
         style: FilledButton.styleFrom(
           backgroundColor: c.primary,
           foregroundColor: c.onPrimary,
-          minimumSize: const Size(0, 48),
+          minimumSize: const Size(0, 52),
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
-          ),
-          textStyle: text.labelLarge?.copyWith(fontWeight: FontWeight.w600),
+          shape: const StadiumBorder(),
+          textStyle: text.labelLarge?.copyWith(fontSize: 15),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: c.text,
-          minimumSize: const Size(0, 48),
+          minimumSize: const Size(0, 52),
           side: BorderSide(color: c.outline),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
-          ),
+          shape: const StadiumBorder(),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -197,9 +177,7 @@ abstract final class AppTheme {
         selectedColor: c.primary.withValues(alpha: 0.18),
         side: BorderSide(color: c.outline),
         labelStyle: text.labelMedium,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
-        ),
+        shape: const StadiumBorder(),
       ),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
@@ -214,8 +192,10 @@ abstract final class AppTheme {
         unselectedLabelColor: c.textMuted,
         indicatorColor: c.primary,
         dividerColor: Colors.transparent,
-        labelStyle: text.titleSmall?.copyWith(fontWeight: FontWeight.w600),
-        unselectedLabelStyle: text.titleSmall,
+        labelStyle: text.titleSmall,
+        unselectedLabelStyle: text.titleSmall?.copyWith(
+          fontWeight: FontWeight.w400,
+        ),
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: c.primary,
@@ -232,6 +212,47 @@ abstract final class AppTheme {
           TargetPlatform.android: FadeForwardsPageTransitionsBuilder(),
         },
       ),
+    );
+  }
+
+  /// Readex Pro for reading and controls; the Fraunces serif (with Reem Kufi for
+  /// Arabic) for display sizes. Letter-spacing is zero throughout: any tracking
+  /// breaks the joins of Arabic script.
+  static TextTheme _textTheme(TextTheme base, AppColors c) {
+    final t = base.apply(
+      fontFamily: AppFonts.ui,
+      fontFamilyFallback: AppFonts.uiFallback,
+      bodyColor: c.text,
+      displayColor: c.text,
+    );
+    TextStyle? flat(TextStyle? s, FontWeight w) =>
+        s?.copyWith(letterSpacing: 0, fontWeight: w);
+    TextStyle? serif(TextStyle? s, FontWeight w) => s?.copyWith(
+      fontFamily: AppFonts.serif,
+      fontFamilyFallback: AppFonts.displayFallback,
+      fontWeight: w,
+      letterSpacing: 0,
+      height: 1.15,
+    );
+    return t.copyWith(
+      displayLarge: serif(t.displayLarge, FontWeight.w300),
+      displayMedium: serif(t.displayMedium, FontWeight.w300),
+      displaySmall: serif(t.displaySmall, FontWeight.w300),
+      headlineLarge: serif(t.headlineLarge, FontWeight.w300),
+      headlineMedium: serif(t.headlineMedium, FontWeight.w300),
+      headlineSmall: serif(t.headlineSmall, FontWeight.w500),
+      titleLarge: flat(t.titleLarge, FontWeight.w500),
+      titleMedium: flat(t.titleMedium, FontWeight.w500),
+      titleSmall: flat(t.titleSmall, FontWeight.w500),
+      bodyLarge: flat(t.bodyLarge, FontWeight.w400),
+      bodyMedium: flat(t.bodyMedium, FontWeight.w400),
+      bodySmall: flat(
+        t.bodySmall,
+        FontWeight.w400,
+      )?.copyWith(color: c.textMuted),
+      labelLarge: flat(t.labelLarge, FontWeight.w500),
+      labelMedium: flat(t.labelMedium, FontWeight.w500),
+      labelSmall: flat(t.labelSmall, FontWeight.w500),
     );
   }
 }

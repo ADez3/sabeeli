@@ -7,7 +7,7 @@ import '../../../../l10n/l10n.dart';
 import '../widgets/app_sync.dart';
 import '../widgets/glass_nav_bar.dart';
 
-/// The five top-level destinations: a floating glass bar on phones, a rail on wider
+/// The four places of the app: a floating glass bar on phones, a rail on wider
 /// windows.
 class ShellPage extends StatelessWidget {
   const ShellPage({super.key, required this.navigationShell});
@@ -24,11 +24,10 @@ class ShellPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final destinations = [
-      (LucideIcons.house, l10n.navHome),
+      (LucideIcons.sunMoon, l10n.navToday),
       (LucideIcons.bookOpen, l10n.navQuran),
-      (LucideIcons.clock, l10n.navPrayer),
-      (LucideIcons.sparkles, l10n.navAzkar),
-      (LucideIcons.layoutGrid, l10n.navMore),
+      (LucideIcons.sparkles, l10n.navDhikr),
+      (LucideIcons.compass, l10n.qibla),
     ];
 
     final body = AppSync(child: navigationShell);

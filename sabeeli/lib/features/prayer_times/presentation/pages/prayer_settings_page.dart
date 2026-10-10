@@ -13,6 +13,7 @@ import '../../../../l10n/l10n.dart';
 import '../../domain/entities/prayer_settings.dart';
 import '../cubit/prayer_times_cubit.dart';
 import '../widgets/prayer_labels.dart';
+import '../../../../core/widgets/ambient_scaffold.dart';
 
 class PrayerSettingsPage extends StatelessWidget {
   const PrayerSettingsPage({super.key});
@@ -27,7 +28,7 @@ class PrayerSettingsPage extends StatelessWidget {
     final settings = context.watch<PrayerTimesCubit>().state.settings;
     final calc = settings.calculation;
 
-    return Scaffold(
+    return AmbientScaffold(
       appBar: AppBar(title: Text(l10n.settings)),
       body: ContentWidth(
         child: ListView(

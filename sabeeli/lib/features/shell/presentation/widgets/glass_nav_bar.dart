@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/sky_ambience.dart';
 
 class GlassNavItem {
   const GlassNavItem({required this.icon, required this.label});
@@ -25,7 +26,7 @@ class GlassNavBar extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onSelected;
 
-  static const _slot = 58.0;
+  static const _slot = 64.0;
   static const _height = 62.0;
   static const _inset = 7.0;
   static const _disc = _height - _inset * 2;
@@ -61,20 +62,18 @@ class GlassNavBar extends StatelessWidget {
                 height: _height,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(_height / 2),
-                  color: dark
-                      ? colors.surfaceHigh.withValues(alpha: 0.62)
-                      : Colors.white.withValues(alpha: 0.72),
-                ),
-                // The hairline is drawn on top so it takes no layout space.
-                foregroundDecoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(_height / 2),
-                  border: Border.all(
-                    color: dark
-                        ? Colors.white.withValues(alpha: 0.09)
-                        : Colors.black.withValues(alpha: 0.06),
-                    width: 0.8,
+                  // A breath of the real sky in the glass.
+                  color: Color.lerp(
+                    dark
+                        ? colors.surfaceHigh.withValues(alpha: 0.62)
+                        : Colors.white.withValues(alpha: 0.72),
+                    context.sky.colors.middle.withValues(alpha: 0.62),
+                    dark ? 0.10 : 0.05,
                   ),
                 ),
+                // The rim is drawn on top so it takes no layout space: light
+                // catching the top edge and fading round the sides.
+                foregroundDecoration: _RimDecoration(dark: dark),
                 child: Stack(
                   children: [
                     AnimatedPositionedDirectional(
@@ -167,6 +166,47 @@ class _NavIcon extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _RimDecoration extends Decoration {
+  const _RimDecoration({required this.dark});
+
+  final bool dark;
+
+  @override
+  BoxPainter createBoxPainter([VoidCallback? onChanged]) => _RimPainter(dark);
+}
+
+class _RimPainter extends BoxPainter {
+  _RimPainter(this.dark);
+
+  final bool dark;
+
+  @override
+  void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
+    final rect = offset & configuration.size!;
+    final rrect = RRect.fromRectAndRadius(
+      rect.deflate(0.5),
+      Radius.circular(rect.height / 2),
+    );
+    final top = dark
+        ? Colors.white.withValues(alpha: 0.22)
+        : Colors.white.withValues(alpha: 0.9);
+    final bottom = dark
+        ? Colors.white.withValues(alpha: 0.04)
+        : Colors.black.withValues(alpha: 0.08);
+    canvas.drawRRect(
+      rrect,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1
+        ..shader = LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [top, bottom],
+        ).createShader(rect),
     );
   }
 }
