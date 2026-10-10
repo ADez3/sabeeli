@@ -11,5 +11,7 @@ class MainActivity : FlutterActivity() {
         // read the current display rotation.
         EventChannel(flutterEngine.dartExecutor.binaryMessenger, "dev.adez.sabeeli/compass")
             .setStreamHandler(CompassStreamHandler(this))
+        EventChannel(flutterEngine.dartExecutor.binaryMessenger, "dev.adez.sabeeli/tilt")
+            .setStreamHandler(TiltStreamHandler(this))
     }
 }

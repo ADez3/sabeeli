@@ -1,10 +1,12 @@
 import CoreLocation
+import CoreMotion
 import Flutter
 import UIKit
 
 @main
 @objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
   private let compass = CompassStreamHandler()
+  private let tilt = TiltStreamHandler()
 
   override func application(
     _ application: UIApplication,
@@ -18,7 +20,33 @@ import UIKit
     if let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "SabeeliCompass") {
       FlutterEventChannel(name: "dev.adez.sabeeli/compass", binaryMessenger: registrar.messenger())
         .setStreamHandler(compass)
+      FlutterEventChannel(name: "dev.adez.sabeeli/tilt", binaryMessenger: registrar.messenger())
+        .setStreamHandler(tilt)
     }
+  }
+}
+
+/// Streams how the phone is tilted, for the parallax of the home sky. Same contract
+/// as Android's TiltStreamHandler: `[x, y]` gravity in units of g, upright ≈ [0, 1].
+final class TiltStreamHandler: NSObject, FlutterStreamHandler {
+  private let motion = CMMotionManager()
+
+  func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
+    guard motion.isDeviceMotionAvailable else {
+      return FlutterError(code: "unavailable", message: "No motion sensor", details: nil)
+    }
+    motion.deviceMotionUpdateInterval = 1.0 / 30.0
+    motion.startDeviceMotionUpdates(to: .main) { data, _ in
+      guard let g = data?.gravity else { return }
+      // Core Motion's y axis points the other way from Android's.
+      events([g.x, -g.y])
+    }
+    return nil
+  }
+
+  func onCancel(withArguments arguments: Any?) -> FlutterError? {
+    motion.stopDeviceMotionUpdates()
+    return nil
   }
 }
 

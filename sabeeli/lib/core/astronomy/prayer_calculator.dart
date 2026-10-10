@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'calculation_method.dart';
 import 'coordinates.dart';
 import 'prayer.dart';
+import 'solar.dart';
 
 /// Everything that changes the computed times, so a cached [PrayerTimes] can be
 /// compared against the current settings with `==`.
@@ -266,18 +267,8 @@ abstract final class PrayerCalculator {
   }
 
   /// Declination of the sun and the equation of time at Julian day [jd].
-  static ({double declination, double equation}) _sunPosition(double jd) {
-    final d = jd - 2451545.0;
-    final g = _fixAngle(357.529 + 0.98560028 * d);
-    final q = _fixAngle(280.459 + 0.98564736 * d);
-    final l = _fixAngle(q + 1.915 * _dsin(g) + 0.020 * _dsin(2 * g));
-    final e = 23.439 - 0.00000036 * d;
-    final ra = _darctan2(_dcos(e) * _dsin(l), _dcos(l)) / 15;
-    return (
-      declination: _darcsin(_dsin(e) * _dsin(l)),
-      equation: q / 15 - _fixHour(ra),
-    );
-  }
+  static ({double declination, double equation}) _sunPosition(double jd) =>
+      Solar.sun(jd);
 
   static double _julian(int year, int month, int day) {
     if (month <= 2) {
@@ -298,13 +289,9 @@ abstract final class PrayerCalculator {
   static double _dsin(double d) => math.sin(d * math.pi / 180);
   static double _dcos(double d) => math.cos(d * math.pi / 180);
   static double _dtan(double d) => math.tan(d * math.pi / 180);
-  static double _darcsin(double x) => math.asin(x) * 180 / math.pi;
   static double _darccos(double x) => math.acos(x) * 180 / math.pi;
-  static double _darctan2(double y, double x) =>
-      math.atan2(y, x) * 180 / math.pi;
   static double _darccot(double x) => math.atan(1 / x) * 180 / math.pi;
 
-  static double _fixAngle(double a) => _fix(a, 360);
   static double _fixHour(double a) => _fix(a, 24);
   static double _fix(double a, double b) {
     final r = a - b * (a / b).floor();

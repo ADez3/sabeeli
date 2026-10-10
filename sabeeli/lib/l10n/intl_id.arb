@@ -28,6 +28,9 @@
   "today": "Hari ini",
   "tomorrow": "Besok",
   "prayerTimes": "Jadwal salat",
+  "diveHint": "Geser ke atas untuk harimu",
+  "now": "Sekarang",
+  "yourDay": "Harimu",
 
   "location": "Lokasi",
   "setLocation": "Atur lokasi Anda",

@@ -28,6 +28,9 @@
   "today": "اليوم",
   "tomorrow": "غدًا",
   "prayerTimes": "مواقيت الصلاة",
+  "diveHint": "اسحب للأعلى ليومك",
+  "now": "الآن",
+  "yourDay": "يومك",
 
   "location": "الموقع",
   "setLocation": "حدّد موقعك",

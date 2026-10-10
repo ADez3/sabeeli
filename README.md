@@ -11,10 +11,18 @@ No ads. No account. No tracking. Your location never leaves your device.
 </div>
 
 <p align="center">
-  <img src="docs/screenshots/home.png" width="200" alt="Home">
-  <img src="docs/screenshots/prayer.png" width="200" alt="Prayer times">
+  <img src="docs/screenshots/home.png" width="200" alt="Home: the living sky at night">
+  <img src="docs/screenshots/prayer.png" width="200" alt="Your day: the prayers along the day's sky">
   <img src="docs/screenshots/reader.png" width="200" alt="Quran reader">
   <img src="docs/screenshots/tafsir.png" width="200" alt="Tafsir">
+</p>
+
+<p align="center"><em>Home is the real sky above you: the sun and the moon where they actually are, in the moon's real phase. Below, the same screen previewed at other hours.</em></p>
+<p align="center">
+  <img src="docs/screenshots/sky_dawn.png" width="200" alt="The sky at dawn">
+  <img src="docs/screenshots/sky_morning.png" width="200" alt="The sky in the morning">
+  <img src="docs/screenshots/sky_sunset.png" width="200" alt="The sky at sunset">
+  <img src="docs/screenshots/sky_moon.png" width="200" alt="The sky at night with the moon">
 </p>
 <p align="center">
   <img src="docs/screenshots/qibla.png" width="200" alt="Qibla">
@@ -23,7 +31,7 @@ No ads. No account. No tracking. Your location never leaves your device.
   <img src="docs/screenshots/hijri.png" width="200" alt="Hijri calendar">
 </p>
 <p align="center">
-  <img src="docs/screenshots/home_ar_light.png" width="200" alt="Home in Arabic, light mode">
+  <img src="docs/screenshots/home_ar.png" width="200" alt="Home in Arabic">
   <img src="docs/screenshots/reader_ar_light.png" width="200" alt="Quran reader, light mode">
   <img src="docs/screenshots/quran.png" width="200" alt="Surah index">
   <img src="docs/screenshots/azkar.png" width="200" alt="Azkar categories">
@@ -49,10 +57,11 @@ No ads. No account. No tracking. Your location never leaves your device.
   - Western (123), Arabic (١٢٣) or Persian (۱۲۳), chosen automatically from your region, so Morocco gets Western digits and Egypt Arabic ones.
   - The choice applies everywhere, ayah numbers in the mushaf included.
 - **Languages:** العربية, English, Français, اردو, Bahasa Indonesia, Türkçe, with full right-to-left support.
-- **Design:**
-  - The home screen takes the colour of the sky for the current prayer period, with the day's prayers along a sun path.
-  - A compact floating glass navigation capsule with a sliding active indicator.
-  - Dark by default with a light mode, and a layout that adapts to phones, tablets and desktop.
+- **A living sky:**
+  - Home is the sky above you right now, drawn in code from real astronomy: the sun and the moon at their true positions, the moon in its real phase, stars and shooting stars at night, and dunes with a mosque on the horizon.
+  - The layers move with the tilt of the phone.
+  - Swipe up to dive into **your day**: the prayers along a timeline coloured by the sky of every hour, with a marker for the present moment.
+- **Design:** dark by default with a light mode, a floating glass navigation capsule, Lucide icons, and layouts that adapt to phones, tablets and desktop. Animations respect the system "reduce motion" setting.
 
 ## Building
 

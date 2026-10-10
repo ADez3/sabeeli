@@ -93,6 +93,15 @@ class AppLocalizationsTr extends AppLocalizations {
   String get prayerTimes => 'Namaz vakitleri';
 
   @override
+  String get diveHint => 'Gününüz için yukarı kaydırın';
+
+  @override
+  String get now => 'Şimdi';
+
+  @override
+  String get yourDay => 'Gününüz';
+
+  @override
   String get location => 'Konum';
 
   @override

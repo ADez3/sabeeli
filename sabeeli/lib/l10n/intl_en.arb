@@ -32,6 +32,9 @@
   "today": "Today",
   "tomorrow": "Tomorrow",
   "prayerTimes": "Prayer times",
+  "diveHint": "Swipe up for your day",
+  "now": "Now",
+  "yourDay": "Your day",
 
   "location": "Location",
   "setLocation": "Set your location",

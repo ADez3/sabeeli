@@ -256,6 +256,24 @@ abstract class AppLocalizations {
   /// **'Prayer times'**
   String get prayerTimes;
 
+  /// No description provided for @diveHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe up for your day'**
+  String get diveHint;
+
+  /// No description provided for @now.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get now;
+
+  /// No description provided for @yourDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Your day'**
+  String get yourDay;
+
   /// No description provided for @location.
   ///
   /// In en, this message translates to:

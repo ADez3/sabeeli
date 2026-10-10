@@ -93,6 +93,15 @@ class AppLocalizationsId extends AppLocalizations {
   String get prayerTimes => 'Jadwal salat';
 
   @override
+  String get diveHint => 'Geser ke atas untuk harimu';
+
+  @override
+  String get now => 'Sekarang';
+
+  @override
+  String get yourDay => 'Harimu';
+
+  @override
   String get location => 'Lokasi';
 
   @override

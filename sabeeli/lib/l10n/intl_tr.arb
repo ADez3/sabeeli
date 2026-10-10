@@ -28,6 +28,9 @@
   "today": "Bugün",
   "tomorrow": "Yarın",
   "prayerTimes": "Namaz vakitleri",
+  "diveHint": "Gününüz için yukarı kaydırın",
+  "now": "Şimdi",
+  "yourDay": "Gününüz",
 
   "location": "Konum",
   "setLocation": "Konumunuzu belirleyin",

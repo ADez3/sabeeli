@@ -84,7 +84,15 @@ final appRouter = GoRouter(
             GoRoute(
               path: AppRoutes.prayer,
               name: AppRoutes.prayerName,
-              builder: (_, _) => const PrayerTimesPage(),
+              // The dive from the home sky passes a fresh `dive` value, so the page is
+              // rebuilt and replays its arrival.
+              builder: (_, state) {
+                final dive = state.uri.queryParameters['dive'];
+                return PrayerTimesPage(
+                  key: ValueKey(dive),
+                  arrivedByDive: dive != null,
+                );
+              },
               routes: [
                 GoRoute(
                   path: AppRoutes.prayerSettings,

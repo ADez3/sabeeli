@@ -93,6 +93,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get prayerTimes => 'Horaires de prière';
 
   @override
+  String get diveHint => 'Glissez vers le haut pour votre journée';
+
+  @override
+  String get now => 'Maintenant';
+
+  @override
+  String get yourDay => 'Votre journée';
+
+  @override
   String get location => 'Localisation';
 
   @override

@@ -93,6 +93,15 @@ class AppLocalizationsUr extends AppLocalizations {
   String get prayerTimes => 'اوقاتِ نماز';
 
   @override
+  String get diveHint => 'اپنے دن کے لیے اوپر سوائپ کریں';
+
+  @override
+  String get now => 'ابھی';
+
+  @override
+  String get yourDay => 'آپ کا دن';
+
+  @override
   String get location => 'مقام';
 
   @override
