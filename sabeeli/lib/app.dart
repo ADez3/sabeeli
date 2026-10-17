@@ -36,8 +36,15 @@ class SabeeliApp extends StatelessWidget {
       builder: (context, settings) => MaterialApp.router(
         onGenerateTitle: (context) => context.l10n.appName,
         debugShowCheckedModeBanner: false,
-        theme: AppTheme.light,
-        darkTheme: AppTheme.dark,
+        // The chosen language, or the phone's when following the system.
+        theme: AppTheme.lightFor(
+          settings.languageCode ??
+              WidgetsBinding.instance.platformDispatcher.locale.languageCode,
+        ),
+        darkTheme: AppTheme.darkFor(
+          settings.languageCode ??
+              WidgetsBinding.instance.platformDispatcher.locale.languageCode,
+        ),
         themeMode: settings.themeMode,
         locale: settings.languageCode == null
             ? null

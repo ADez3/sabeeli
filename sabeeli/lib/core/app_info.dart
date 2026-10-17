@@ -3,7 +3,7 @@ abstract final class AppInfo {
   static const name = 'Sabeeli';
 
   /// Keep in step with `version` in pubspec.yaml.
-  static const version = '0.0.1 beta';
+  static const version = '0.0.2 beta';
 
   static const privacyPolicyUrl =
       'https://github.com/ADez3/sabeeli/blob/main/docs/privacy.md';

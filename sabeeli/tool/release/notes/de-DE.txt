@@ -1,0 +1,6 @@
+• Die Gebetszeiten für Marokko entsprechen jetzt den Tabellen des Habous-Ministeriums (Dhuhr und Sonnenaufgang wichen um einige Minuten ab).
+• Neue Stundenkorrektur in den Gebetseinstellungen, für Handys mit falscher Zeitzone.
+• Der Qibla-Kompass funktioniert jetzt sofort beim Öffnen.
+• Bildschirme liegen nicht mehr unter der Drei-Tasten-Navigation.
+• Beim Herauszoomen bleibt der Koran-Himmel zentriert.
+• Jetzt auch auf Bengalisch, Malaiisch, Persisch, Russisch und Deutsch.

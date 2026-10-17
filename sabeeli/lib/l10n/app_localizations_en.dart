@@ -190,6 +190,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'Add or remove minutes to match your local mosque.';
 
   @override
+  String get hourShift => 'Hour correction';
+
+  @override
+  String get hourShiftHint =>
+      'Only if every time is off by whole hours: your phone\'s time zone is wrong (for example, still on GMT+1 after the country changed its time). Setting the right time zone on the phone is better.';
+
+  @override
+  String hoursShort(int hours) {
+    return '$hours h';
+  }
+
+  @override
   String minutesShort(int minutes) {
     return '$minutes min';
   }

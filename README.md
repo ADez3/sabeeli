@@ -22,37 +22,15 @@ No ads. No account. No tracking. Prayer times are computed on your phone; only a
 <p align="center"><em>After every prayer, the adhkar of the Sunnah step by step, counted on a misbaha. The Quran can be read in Hafs, Warsh or Qalun, each in its own King Fahd Complex mushaf.</em></p>
 <p align="center">
   <img src="docs/screenshots/after_prayer.png" width="200" alt="After-prayer adhkar on the misbaha">
-  <img src="docs/screenshots/after_prayer_warsh.png" width="200" alt="Ayat al-Kursi after prayer, in the Warsh mushaf">
   <img src="docs/screenshots/warsh.png" width="200" alt="The reader in the riwayah of Warsh">
-  <img src="docs/screenshots/riwayah.png" width="200" alt="Choosing the riwayah">
+  <img src="docs/screenshots/khatmah.png" width="200" alt="Planning a khatmah">
+  <img src="docs/screenshots/dhikr.png" width="200" alt="Dhikr">
 </p>
 <p align="center">
-  <img src="docs/screenshots/dhikr.png" width="200" alt="Dhikr">
-  <img src="docs/screenshots/tasbih.png" width="200" alt="Misbaha">
   <img src="docs/screenshots/qibla.png" width="200" alt="Qibla compass">
   <img src="docs/screenshots/qibla_globe.png" width="200" alt="The Qibla path on a globe">
-</p>
-<p align="center">
-  <img src="docs/screenshots/surah_opening.png" width="200" alt="A surah's opening">
-  <img src="docs/screenshots/hijri.png" width="200" alt="Moon-phase Hijri calendar">
-  <img src="docs/screenshots/dhikr_light.png" width="200" alt="Light mode">
-  <img src="docs/screenshots/reader_ar_light.png" width="200" alt="Quran reader in Arabic, light mode">
-</p>
-
-<p align="center"><em>A calm first launch, a khatmah plan that marks today's surahs in the sky, and reminders for the adhkar, the daily reading and the sunnah fasts, all optional.</em></p>
-<p align="center">
-  <img src="docs/screenshots/welcome.png" width="200" alt="The welcome screen">
-  <img src="docs/screenshots/khatmah.png" width="200" alt="Planning a khatmah">
   <img src="docs/screenshots/reminders.png" width="200" alt="Daily and fasting reminders">
-  <img src="docs/screenshots/beta.png" width="200" alt="The beta notice: shake to report a problem">
-</p>
-
-<p align="center"><em>The sky is the real one above you: the sun and the moon where they actually are, in the moon's real phase. Below, the same scene at other hours.</em></p>
-<p align="center">
-  <img src="docs/screenshots/sky_dawn.png" width="200" alt="The sky at dawn">
-  <img src="docs/screenshots/sky_morning.png" width="200" alt="The sky in the morning">
-  <img src="docs/screenshots/sky_sunset.png" width="200" alt="The sky at sunset">
-  <img src="docs/screenshots/sky_moon.png" width="200" alt="The sky at night with the moon">
+  <img src="docs/screenshots/welcome.png" width="200" alt="The welcome screen">
 </p>
 
 ## Features
@@ -84,7 +62,7 @@ No ads. No account. No tracking. Prayer times are computed on your phone; only a
   - The choice applies everywhere, ayah numbers in the mushaf included.
 - **A home-screen widget (Android):** the next prayer and its time. It refreshes itself only when a prayer begins.
 - **A first-launch welcome** over the living sky: the language, your place, and the prayer notifications.
-- **Languages:** العربية, English, Français, اردو, Bahasa Indonesia, Türkçe, with full right-to-left support.
+- **Languages:** العربية, English, Français, اردو, Bahasa Indonesia, Türkçe, বাংলা, Bahasa Melayu, فارسی, Русский, Deutsch, with full right-to-left support.
 - **Today, under a living sky:**
   - The sky above you right now, drawn in code from real astronomy: the sun and the moon at their true positions, the moon in its real phase, stars and shooting stars at night, and dunes with a mosque on the horizon. The layers move with the tilt of the phone.
   - The next prayer written across it with a rolling countdown, and the day's five times on the horizon. Tap them to dive into **your day**: the prayers along a timeline coloured by the sky of every hour.

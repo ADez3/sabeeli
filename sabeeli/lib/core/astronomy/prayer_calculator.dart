@@ -15,6 +15,7 @@ class CalculationParameters extends Equatable {
     this.madhab = AsrMadhab.standard,
     this.highLatitudeRule = HighLatitudeRule.middleOfTheNight,
     this.userAdjustments = const {},
+    this.hourShift = 0,
   });
 
   final CalculationMethod method;
@@ -25,6 +26,14 @@ class CalculationParameters extends Equatable {
   /// [CalculationMethod.adjustments] (to match the local mosque, for example).
   final Map<Prayer, int> userAdjustments;
 
+  /// Whole hours added to every time, for a phone whose time zone is wrong.
+  ///
+  /// A phone that still believes Morocco is on GMT+1, with its clock set back
+  /// by hand to show the real hour, counts UTC an hour behind. Shifting every
+  /// instant by −1 h puts the display, the countdown and the notifications back
+  /// on the real hour together.
+  final int hourShift;
+
   int adjustmentFor(Prayer prayer) =>
       (method.adjustments[prayer] ?? 0) + (userAdjustments[prayer] ?? 0);
 
@@ -33,11 +42,13 @@ class CalculationParameters extends Equatable {
     AsrMadhab? madhab,
     HighLatitudeRule? highLatitudeRule,
     Map<Prayer, int>? userAdjustments,
+    int? hourShift,
   }) => CalculationParameters(
     method: method ?? this.method,
     madhab: madhab ?? this.madhab,
     highLatitudeRule: highLatitudeRule ?? this.highLatitudeRule,
     userAdjustments: userAdjustments ?? this.userAdjustments,
+    hourShift: hourShift ?? this.hourShift,
   );
 
   @override
@@ -46,6 +57,7 @@ class CalculationParameters extends Equatable {
     madhab,
     highLatitudeRule,
     userAdjustments,
+    hourShift,
   ];
 }
 
@@ -205,7 +217,8 @@ abstract final class PrayerCalculator {
     DateTime at(double hours, [Prayer? prayer]) {
       final minutes = prayer == null ? 0 : parameters.adjustmentFor(prayer);
       // Rounded to the minute: that is the precision every timetable publishes.
-      final totalSeconds = (hours * 3600).round() + minutes * 60;
+      final totalSeconds =
+          (hours * 3600).round() + minutes * 60 + parameters.hourShift * 3600;
       final rounded = ((totalSeconds + 30) ~/ 60) * 60;
       return base.add(Duration(seconds: rounded));
     }

@@ -188,6 +188,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get adjustmentsHint => 'أضف دقائق أو أنقصها لتوافق مسجدك المحلي.';
 
   @override
+  String get hourShift => 'تصحيح الساعة';
+
+  @override
+  String get hourShiftHint =>
+      'فقط إذا كانت كل المواقيت مزاحة بساعات كاملة: المنطقة الزمنية في هاتفك خاطئة (مثلًا ما زالت على GMT+1 بعد أن غيّر البلد توقيته). الأفضل ضبط المنطقة الزمنية الصحيحة في الهاتف.';
+
+  @override
+  String hoursShort(int hours) {
+    return '$hours س';
+  }
+
+  @override
   String minutesShort(int minutes) {
     return '$minutes د';
   }

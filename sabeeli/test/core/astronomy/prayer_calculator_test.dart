@@ -149,4 +149,61 @@ void main() {
       ); // Jakarta
     });
   });
+
+  group('Morocco (Ministry of Habous)', () {
+    const casablanca = Coordinates(latitude: 33.5731, longitude: -7.5898);
+    // The Ministry-calibrated Casablanca table for 17–23 October 2026, in GMT:
+    // Fajr, sunrise, Dhuhr, Asr, Maghrib, Isha.
+    const table = [
+      '05:09 06:34 12:21 15:28 17:59 19:12',
+      '05:10 06:34 12:21 15:27 17:58 19:11',
+      '05:10 06:35 12:20 15:26 17:57 19:10',
+      '05:11 06:36 12:20 15:25 17:56 19:09',
+      '05:12 06:37 12:20 15:24 17:55 19:08',
+      '05:13 06:38 12:20 15:23 17:54 19:07',
+      '05:13 06:39 12:20 15:23 17:53 19:06',
+    ];
+
+    test('matches the published table to the minute, or one minute off', () {
+      for (final (i, row) in table.indexed) {
+        final date = DateTime(2026, 10, 17 + i);
+        final times = PrayerCalculator.calculate(
+          coordinates: casablanca,
+          date: date,
+          parameters: const CalculationParameters(
+            method: CalculationMethod.morocco,
+          ),
+        );
+        for (final (j, hhmm) in row.split(' ').indexed) {
+          expectTime(
+            times.timeOf(Prayer.values[j]),
+            date,
+            hhmm,
+            0,
+            toleranceMinutes: 1,
+          );
+        }
+      }
+    });
+
+    test('the hour correction moves every time by whole hours', () {
+      final date = DateTime(2026, 10, 17);
+      PrayerTimes at(int shift) => PrayerCalculator.calculate(
+        coordinates: casablanca,
+        date: date,
+        parameters: CalculationParameters(
+          method: CalculationMethod.morocco,
+          hourShift: shift,
+        ),
+      );
+      final base = at(0);
+      final back = at(-1);
+      for (final p in Prayer.values) {
+        expect(
+          base.timeOf(p).difference(back.timeOf(p)),
+          const Duration(hours: 1),
+        );
+      }
+    });
+  });
 }

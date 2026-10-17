@@ -65,6 +65,10 @@
   "highLatNone": "None",
   "adjustments": "Manual adjustments",
   "adjustmentsHint": "Add or remove minutes to match your local mosque.",
+  "hourShift": "Hour correction",
+  "hourShiftHint": "Only if every time is off by whole hours: your phone's time zone is wrong (for example, still on GMT+1 after the country changed its time). Setting the right time zone on the phone is better.",
+  "hoursShort": "{hours} h",
+  "@hoursShort": {"placeholders": {"hours": {"type": "int"}}},
   "minutesShort": "{minutes} min",
   "@minutesShort": {"placeholders": {"minutes": {"type": "int"}}},
 

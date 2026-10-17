@@ -228,7 +228,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
                             ),
                           ),
                           // In Arabic the title already is the Arabic name.
-                          if (context.languageCode != 'ar')
+                          if (!context.readsArabicScript)
                             Text(
                               surah.nameArabic,
                               textDirection: TextDirection.rtl,

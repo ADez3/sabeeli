@@ -190,6 +190,18 @@ class AppLocalizationsTr extends AppLocalizations {
       'Yerel caminize uyması için dakika ekleyin veya çıkarın.';
 
   @override
+  String get hourShift => 'Saat düzeltmesi';
+
+  @override
+  String get hourShiftHint =>
+      'Yalnızca tüm vakitler tam saatlerle kaymışsa: telefonunuzun saat dilimi yanlıştır (örneğin ülke saatini değiştirdikten sonra hâlâ GMT+1). Telefonda doğru saat dilimini ayarlamak daha iyidir.';
+
+  @override
+  String hoursShort(int hours) {
+    return '$hours sa';
+  }
+
+  @override
   String minutesShort(int minutes) {
     return '$minutes dk';
   }

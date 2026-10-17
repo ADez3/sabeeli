@@ -6,9 +6,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_ar.dart';
+import 'app_localizations_bn.dart';
+import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';
+import 'app_localizations_fa.dart';
 import 'app_localizations_fr.dart';
 import 'app_localizations_id.dart';
+import 'app_localizations_ms.dart';
+import 'app_localizations_ru.dart';
 import 'app_localizations_tr.dart';
 import 'app_localizations_ur.dart';
 
@@ -99,9 +104,14 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('ar'),
+    Locale('bn'),
+    Locale('de'),
     Locale('en'),
+    Locale('fa'),
     Locale('fr'),
     Locale('id'),
+    Locale('ms'),
+    Locale('ru'),
     Locale('tr'),
     Locale('ur'),
   ];
@@ -441,6 +451,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add or remove minutes to match your local mosque.'**
   String get adjustmentsHint;
+
+  /// No description provided for @hourShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Hour correction'**
+  String get hourShift;
+
+  /// No description provided for @hourShiftHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Only if every time is off by whole hours: your phone\'s time zone is wrong (for example, still on GMT+1 after the country changed its time). Setting the right time zone on the phone is better.'**
+  String get hourShiftHint;
+
+  /// No description provided for @hoursShort.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h'**
+  String hoursShort(int hours);
 
   /// No description provided for @minutesShort.
   ///
@@ -2141,9 +2169,14 @@ class _AppLocalizationsDelegate
   @override
   bool isSupported(Locale locale) => <String>[
     'ar',
+    'bn',
+    'de',
     'en',
+    'fa',
     'fr',
     'id',
+    'ms',
+    'ru',
     'tr',
     'ur',
   ].contains(locale.languageCode);
@@ -2157,12 +2190,22 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   switch (locale.languageCode) {
     case 'ar':
       return AppLocalizationsAr();
+    case 'bn':
+      return AppLocalizationsBn();
+    case 'de':
+      return AppLocalizationsDe();
     case 'en':
       return AppLocalizationsEn();
+    case 'fa':
+      return AppLocalizationsFa();
     case 'fr':
       return AppLocalizationsFr();
     case 'id':
       return AppLocalizationsId();
+    case 'ms':
+      return AppLocalizationsMs();
+    case 'ru':
+      return AppLocalizationsRu();
     case 'tr':
       return AppLocalizationsTr();
     case 'ur':

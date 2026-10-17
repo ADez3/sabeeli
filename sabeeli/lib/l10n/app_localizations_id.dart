@@ -190,6 +190,18 @@ class AppLocalizationsId extends AppLocalizations {
       'Tambah atau kurangi menit agar sesuai dengan masjid setempat.';
 
   @override
+  String get hourShift => 'Koreksi jam';
+
+  @override
+  String get hourShiftHint =>
+      'Hanya jika semua waktu bergeser beberapa jam penuh: zona waktu ponsel Anda salah (misalnya masih GMT+1 setelah negara mengubah waktunya). Lebih baik atur zona waktu yang benar di ponsel.';
+
+  @override
+  String hoursShort(int hours) {
+    return '$hours j';
+  }
+
+  @override
   String minutesShort(int minutes) {
     return '$minutes mnt';
   }

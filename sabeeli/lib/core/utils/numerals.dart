@@ -100,6 +100,10 @@ enum Numerals {
     if (c >= 0x30 && c <= 0x39) return c - 0x30;
     if (c >= 0x0660 && c <= 0x0669) return c - 0x0660;
     if (c >= 0x06F0 && c <= 0x06F9) return c - 0x06F0;
+    // Date formatting for Bengali (and Hindi) writes its own digits; they are
+    // rewritten too, so every number on screen follows the user's choice.
+    if (c >= 0x09E6 && c <= 0x09EF) return c - 0x09E6;
+    if (c >= 0x0966 && c <= 0x096F) return c - 0x0966;
     return null;
   }
 }

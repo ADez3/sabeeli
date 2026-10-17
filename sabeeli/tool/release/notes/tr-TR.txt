@@ -1,0 +1,6 @@
+• Fas'taki namaz vakitleri artık Habous Bakanlığı'nın cetvelleriyle uyumlu (öğle ve güneş vakitleri birkaç dakika kaymıştı).
+• Saat dilimi yanlış olan telefonlar için namaz ayarlarında yeni saat düzeltmesi.
+• Kıble pusulası artık açılır açılmaz çalışıyor.
+• Ekranlar artık üç düğmeli gezinme çubuğunun altında kalmıyor.
+• Kur'an göğünü uzaklaştırırken görünüm ortada kalıyor.
+• Artık Bengalce, Malayca, Farsça, Rusça ve Almanca dillerinde de.

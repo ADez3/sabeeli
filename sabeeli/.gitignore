@@ -49,3 +49,7 @@ app.*.map.json
 
 # Python data scripts
 __pycache__/
+
+# Play service account keys belong outside the repository
+*service-account*.json
+play-*.json

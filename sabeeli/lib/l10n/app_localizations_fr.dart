@@ -191,6 +191,18 @@ class AppLocalizationsFr extends AppLocalizations {
       'Ajoutez ou retirez des minutes pour correspondre à votre mosquée locale.';
 
   @override
+  String get hourShift => 'Correction d\'heure';
+
+  @override
+  String get hourShiftHint =>
+      'Seulement si tous les horaires sont décalés d\'heures entières : le fuseau horaire du téléphone est faux (par exemple encore GMT+1 après un changement d\'heure du pays). Mieux vaut régler le bon fuseau sur le téléphone.';
+
+  @override
+  String hoursShort(int hours) {
+    return '$hours h';
+  }
+
+  @override
   String minutesShort(int minutes) {
     return '$minutes min';
   }

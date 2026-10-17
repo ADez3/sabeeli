@@ -1,0 +1,6 @@
+• Les horaires au Maroc suivent désormais les tables du ministère des Habous (le Dhuhr et le lever du soleil étaient décalés de quelques minutes).
+• Nouvelle correction d'heure dans les réglages de prière, pour les téléphones au fuseau horaire erroné.
+• La boussole de la Qibla fonctionne dès l'ouverture.
+• Les écrans ne passent plus sous la barre de navigation à trois boutons.
+• Le dézoom du ciel du Coran reste centré.
+• Désormais en bengali, malais, persan, russe et allemand.

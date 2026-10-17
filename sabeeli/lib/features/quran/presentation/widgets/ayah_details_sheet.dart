@@ -124,7 +124,7 @@ class _AyahDetailsSheetState extends State<_AyahDetailsSheet> {
                     ],
                   ),
                 ),
-                if (context.languageCode != 'ar')
+                if (!context.readsArabicScript)
                   Text(
                     surah.nameArabic,
                     textDirection: TextDirection.rtl,

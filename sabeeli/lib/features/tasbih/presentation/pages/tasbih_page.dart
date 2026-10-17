@@ -34,7 +34,8 @@ class _TasbihView extends StatelessWidget {
     final text = Theme.of(context).textTheme;
     final cubit = context.read<TasbihCubit>();
     final s = context.watch<TasbihCubit>().state;
-    final isArabicUi = context.languageCode == 'ar';
+    // Arabic, Persian and Urdu readers say the phrases from the Arabic script.
+    final isArabicUi = const {'ar', 'fa', 'ur'}.contains(context.languageCode);
 
     return AmbientScaffold(
       appBar: AppBar(

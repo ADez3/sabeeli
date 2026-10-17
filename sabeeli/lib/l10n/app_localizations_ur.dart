@@ -190,6 +190,18 @@ class AppLocalizationsUr extends AppLocalizations {
       'اپنی مقامی مسجد کے مطابق منٹ بڑھائیں یا کم کریں۔';
 
   @override
+  String get hourShift => 'گھنٹے کی درستی';
+
+  @override
+  String get hourShiftHint =>
+      'صرف اگر تمام اوقات پورے گھنٹوں سے ہٹے ہوں: آپ کے فون کا ٹائم زون غلط ہے (مثلاً ملک کے وقت بدلنے کے بعد بھی GMT+1)۔ بہتر ہے فون میں درست ٹائم زون منتخب کریں۔';
+
+  @override
+  String hoursShort(int hours) {
+    return '$hours گھنٹے';
+  }
+
+  @override
   String minutesShort(int minutes) {
     return '$minutes منٹ';
   }

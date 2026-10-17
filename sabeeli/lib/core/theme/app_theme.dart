@@ -9,7 +9,17 @@ abstract final class AppTheme {
   static ThemeData get dark => _build(AppColors.dark, Brightness.dark);
   static ThemeData get light => _build(AppColors.light, Brightness.light);
 
-  static ThemeData _build(AppColors c, Brightness brightness) {
+  /// The themes for a UI language (the font changes for Persian and Urdu).
+  static ThemeData darkFor(String? languageCode) =>
+      _build(AppColors.dark, Brightness.dark, AppFonts.uiFor(languageCode));
+  static ThemeData lightFor(String? languageCode) =>
+      _build(AppColors.light, Brightness.light, AppFonts.uiFor(languageCode));
+
+  static ThemeData _build(
+    AppColors c,
+    Brightness brightness, [
+    String font = AppFonts.ui,
+  ]) {
     final scheme =
         ColorScheme.fromSeed(
           seedColor: c.primary,
@@ -35,14 +45,14 @@ abstract final class AppTheme {
       useMaterial3: true,
       brightness: brightness,
       colorScheme: scheme,
-      fontFamily: AppFonts.ui,
+      fontFamily: font,
       fontFamilyFallback: AppFonts.uiFallback,
       scaffoldBackgroundColor: c.background,
       splashFactory: InkSparkle.splashFactory,
       extensions: [c],
     );
 
-    final text = _textTheme(base.textTheme, c);
+    final text = _textTheme(base.textTheme, c, font);
 
     return base.copyWith(
       textTheme: text,
@@ -218,9 +228,9 @@ abstract final class AppTheme {
   /// One family, Readex Pro: light weights for display sizes, regular and
   /// medium for reading and controls. Letter-spacing is zero throughout: any
   /// tracking breaks the joins of Arabic script.
-  static TextTheme _textTheme(TextTheme base, AppColors c) {
+  static TextTheme _textTheme(TextTheme base, AppColors c, String font) {
     final t = base.apply(
-      fontFamily: AppFonts.ui,
+      fontFamily: font,
       fontFamilyFallback: AppFonts.uiFallback,
       bodyColor: c.text,
       displayColor: c.text,

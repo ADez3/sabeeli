@@ -1,0 +1,6 @@
+• Moroccan prayer times now match the Ministry of Habous tables (Dhuhr and sunrise were a few minutes off).
+• New hour correction in prayer settings, for phones whose time zone is wrong.
+• The Qibla compass now works as soon as you open it.
+• Screens no longer go under the three-button navigation bar.
+• Zooming out of the Quran sky keeps it centred.
+• Now in Bengali, Malay, Persian, Russian and German.

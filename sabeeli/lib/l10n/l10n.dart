@@ -14,6 +14,11 @@ abstract final class L10n {
     (code: 'ur', nativeName: 'اردو'),
     (code: 'id', nativeName: 'Bahasa Indonesia'),
     (code: 'tr', nativeName: 'Türkçe'),
+    (code: 'bn', nativeName: 'বাংলা'),
+    (code: 'ms', nativeName: 'Bahasa Melayu'),
+    (code: 'fa', nativeName: 'فارسی'),
+    (code: 'ru', nativeName: 'Русский'),
+    (code: 'de', nativeName: 'Deutsch'),
   ];
 
   static List<Locale> get all => AppLocalizations.supportedLocales;

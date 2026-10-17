@@ -5,10 +5,15 @@ import '../../../../l10n/l10n.dart';
 import '../../domain/entities/quran_entities.dart';
 
 extension SurahLabels on BuildContext {
-  /// The surah's name as a reader of the current UI language knows it: Arabic for
-  /// Arabic readers, the common transliteration for everyone else.
+  /// The surah's name as a reader of the current UI language knows it: in
+  /// Arabic script for readers of Arabic, Persian and Urdu, the common
+  /// transliteration for everyone else.
   String surahName(SurahInfo surah) =>
-      languageCode == 'ar' ? surah.nameArabic : surah.nameTransliterated;
+      readsArabicScript ? surah.nameArabic : surah.nameTransliterated;
+
+  /// Arabic, Persian and Urdu readers know the surah names in Arabic script, so
+  /// a calligraphic name beside the title would only repeat it.
+  bool get readsArabicScript => const {'ar', 'fa', 'ur'}.contains(languageCode);
 
   /// "Meccan · 286 ayahs" (with the English meaning for English readers).
   String surahSubtitle(SurahInfo surah) {

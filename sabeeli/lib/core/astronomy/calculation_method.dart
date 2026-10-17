@@ -71,7 +71,13 @@ enum CalculationMethod {
   ),
   france(fajrAngle: 12, ishaAngle: 12),
   russia(fajrAngle: 16, ishaAngle: 15),
-  morocco(fajrAngle: 19, ishaAngle: 17, adjustments: {Prayer.maghrib: 5}),
+  // The Ministry of Habous tables: checked against a month of Casablanca times,
+  // these offsets give the same minute for 181 of 186 times (the rest by one).
+  morocco(
+    fajrAngle: 19,
+    ishaAngle: 17,
+    adjustments: {Prayer.sunrise: -3, Prayer.dhuhr: 5, Prayer.maghrib: 5},
+  ),
   algeria(fajrAngle: 18, ishaAngle: 17, adjustments: {Prayer.maghrib: 3}),
   tunisia(fajrAngle: 18, ishaAngle: 18),
   jordan(fajrAngle: 18, ishaAngle: 18, adjustments: {Prayer.maghrib: 5}),

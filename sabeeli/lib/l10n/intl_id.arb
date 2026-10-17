@@ -61,6 +61,9 @@
   "highLatNone": "Tidak ada",
   "adjustments": "Penyesuaian manual",
   "adjustmentsHint": "Tambah atau kurangi menit agar sesuai dengan masjid setempat.",
+  "hourShift": "Koreksi jam",
+  "hourShiftHint": "Hanya jika semua waktu bergeser beberapa jam penuh: zona waktu ponsel Anda salah (misalnya masih GMT+1 setelah negara mengubah waktunya). Lebih baik atur zona waktu yang benar di ponsel.",
+  "hoursShort": "{hours} j",
   "minutesShort": "{minutes} mnt",
 
   "methodMuslimWorldLeague": "Liga Muslim Dunia",

@@ -524,7 +524,7 @@ class _SurahTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final text = Theme.of(context).textTheme;
-    final isArabicUi = context.languageCode == 'ar';
+    final isArabicUi = context.readsArabicScript;
     return InkWell(
       onTap: () => _openSurah(context, surah.number),
       child: Padding(

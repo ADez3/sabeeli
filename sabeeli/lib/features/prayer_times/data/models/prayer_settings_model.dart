@@ -27,6 +27,7 @@ abstract final class PrayerSettingsModel {
             if (prayers[e.key] != null)
               prayers[e.key]!: (e.value as num).toInt(),
         },
+        hourShift: (json['hourShift'] as num?)?.toInt() ?? 0,
       ),
       alerts: {
         ...PrayerSettings.defaultAlerts,
@@ -66,6 +67,7 @@ abstract final class PrayerSettingsModel {
       for (final e in s.calculation.userAdjustments.entries)
         e.key.name: e.value,
     },
+    'hourShift': s.calculation.hourShift,
     'alerts': {for (final e in s.alerts.entries) e.key.name: e.value.name},
     'reminder': s.reminderMinutes,
     'methodChosen': s.methodChosenByUser,

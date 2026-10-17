@@ -61,6 +61,9 @@
   "highLatNone": "Yok",
   "adjustments": "Manuel düzeltmeler",
   "adjustmentsHint": "Yerel caminize uyması için dakika ekleyin veya çıkarın.",
+  "hourShift": "Saat düzeltmesi",
+  "hourShiftHint": "Yalnızca tüm vakitler tam saatlerle kaymışsa: telefonunuzun saat dilimi yanlıştır (örneğin ülke saatini değiştirdikten sonra hâlâ GMT+1). Telefonda doğru saat dilimini ayarlamak daha iyidir.",
+  "hoursShort": "{hours} sa",
   "minutesShort": "{minutes} dk",
 
   "methodMuslimWorldLeague": "Müslüman Dünya Birliği",

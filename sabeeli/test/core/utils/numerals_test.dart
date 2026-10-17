@@ -31,6 +31,8 @@ void main() {
     );
     expect(Numerals.persian.apply('5%'), '۵٪');
     expect(Numerals.western.apply('٩٣٫٧ ٪'), '93.7 %');
+    // Bengali date formatting writes its own digits; they follow the setting.
+    expect(Numerals.western.apply('৫:০৯'), '5:09');
     // A full stop that ends a sentence is not a decimal point.
     expect(Numerals.arabicIndic.apply('Page 4. Next'), 'Page ٤. Next');
   });

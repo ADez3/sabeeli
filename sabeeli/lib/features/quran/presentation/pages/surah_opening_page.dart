@@ -14,6 +14,7 @@ import '../../../../core/widgets/glass_panel.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/entities/quran_entities.dart';
 import '../cubit/quran_cubit.dart';
+import '../widgets/surah_labels.dart';
 import '../widgets/quran_sky/quran_sky_painters.dart';
 import '../widgets/quran_font.dart';
 
@@ -216,7 +217,7 @@ class _SurahOpeningPageState extends State<SurahOpeningPage>
                         ),
                       ),
                     ),
-                    if (context.languageCode != 'ar')
+                    if (!context.readsArabicScript)
                       _stagger(
                         3,
                         Text(

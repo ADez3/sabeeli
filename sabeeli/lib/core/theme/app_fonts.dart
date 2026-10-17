@@ -7,6 +7,12 @@ abstract final class AppFonts {
   /// Glyphs Readex Pro lacks (Persian digits, Urdu letters) come from here.
   static const uiFallback = ['IBMPlexSansArabic'];
 
+  /// Persian and Urdu use letters Readex Pro lacks (ی ک ہ ے ٹ). A fallback font
+  /// for those letters alone breaks the joins inside a word, so for these
+  /// languages the whole UI is set in IBM Plex Sans Arabic, which has them all.
+  static String uiFor(String? languageCode) =>
+      languageCode == 'ur' || languageCode == 'fa' ? 'IBMPlexSansArabic' : ui;
+
   /// Naskh for adhkar and other long Arabic prose, and surah names.
   static const display = 'Amiri';
 

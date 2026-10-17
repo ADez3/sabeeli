@@ -192,6 +192,31 @@ class PrayerSettingsPage extends StatelessWidget {
                 ],
               ),
             ),
+            SectionHeader(l10n.hourShift),
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: AppSpacing.md,
+                left: AppSpacing.xs,
+                right: AppSpacing.xs,
+              ),
+              child: Text(
+                l10n.hourShiftHint,
+                style: Theme.of(context).textTheme.bodySmall
+                    ?.copyWith(color: colors.textMuted),
+              ),
+            ),
+            AppCard(
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+              child: _AdjustmentRow(
+                label: l10n.hourShift,
+                value: calc.hourShift,
+                limit: 3,
+                unit: (h) => l10n.hoursShort(h),
+                onChanged: (v) => cubit.updateSettings(
+                  settings.copyWith(calculation: calc.copyWith(hourShift: v)),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -281,16 +306,25 @@ class PrayerSettingsPage extends StatelessWidget {
   }
 }
 
+/// A − value + stepper, in minutes by default.
 class _AdjustmentRow extends StatelessWidget {
   const _AdjustmentRow({
     required this.label,
     required this.value,
     required this.onChanged,
+    this.limit = 30,
+    this.unit,
   });
 
   final String label;
   final int value;
   final ValueChanged<int> onChanged;
+
+  /// The value stays within ±[limit].
+  final int limit;
+
+  /// Formats the absolute value; minutes when null.
+  final String Function(int)? unit;
 
   @override
   Widget build(BuildContext context) {
@@ -306,7 +340,7 @@ class _AdjustmentRow extends StatelessWidget {
             child: Text(label, style: Theme.of(context).textTheme.bodyLarge),
           ),
           IconButton(
-            onPressed: value > -30 ? () => onChanged(value - 1) : null,
+            onPressed: value > -limit ? () => onChanged(value - 1) : null,
             icon: const Icon(LucideIcons.circleMinus),
           ),
           SizedBox(
@@ -314,7 +348,7 @@ class _AdjustmentRow extends StatelessWidget {
             child: Text(
               value == 0
                   ? context.digits(0)
-                  : '${value > 0 ? '+' : '−'}${context.digits(context.l10n.minutesShort(value.abs()))}',
+                  : '${value > 0 ? '+' : '−'}${context.digits((unit ?? context.l10n.minutesShort)(value.abs()))}',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: value == 0 ? colors.textMuted : colors.primary,
@@ -323,7 +357,7 @@ class _AdjustmentRow extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: value < 30 ? () => onChanged(value + 1) : null,
+            onPressed: value < limit ? () => onChanged(value + 1) : null,
             icon: const Icon(LucideIcons.circlePlus),
           ),
         ],

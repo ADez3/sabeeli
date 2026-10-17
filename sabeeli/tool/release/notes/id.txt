@@ -1,0 +1,6 @@
+• Jadwal salat di Maroko kini sesuai dengan tabel Kementerian Habous (Zuhur dan waktu terbit sebelumnya meleset beberapa menit).
+• Koreksi jam baru di pengaturan salat, untuk ponsel yang zona waktunya salah.
+• Kompas kiblat kini langsung berfungsi saat dibuka.
+• Layar tidak lagi tertutup bilah navigasi tiga tombol.
+• Memperkecil tampilan langit Al-Qur'an kini tetap di tengah.
+• Kini tersedia dalam bahasa Bengali, Melayu, Persia, Rusia, dan Jerman.
